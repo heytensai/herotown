@@ -2,9 +2,9 @@
 
 #define WIDTH 640
 #define HEIGHT 480
-#define COLORDEPTH 24
+#define COLORDEPTH 32
 
-static void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel);
+static void putpixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b);
 
 static SDL_Surface *screen = NULL;
 static int global_running = 1;
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 		pixels = (Uint32 *)screen->pixels;
 		for (int _x=0; _x<WIDTH; _x++){
 			for (int _y=0; _y<HEIGHT; _y++){
-				putpixel(screen, _x, _y, SDL_MapRGB(screen->format, 0x00, ((_x + x) & 0xff), ((_y + y) & 0xff)));
+				putpixel(screen, _x, _y, 0x00, ((_x + x) & 0xff), ((_y + y) & 0xff));
 			}
 		}
 		if (SDL_MUSTLOCK(screen)){
@@ -155,35 +155,12 @@ int main(int argc, char **argv)
  * Set the pixel at (x, y) to the given value
  * NOTE: The surface must be locked before calling this!
  */
-static void putpixel(SDL_Surface *surface, int x, int y, Uint32 pixel)
+static void putpixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b)
 {
-    int bpp = surface->format->BytesPerPixel;
-    /* Here p is the address to the pixel we want to set */
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+	int bpp = surface->format->BytesPerPixel;
+	/* Here p is the address to the pixel we want to set */
+	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
-    switch(bpp) {
-    case 1:
-        *p = pixel;
-        break;
-
-    case 2:
-        *(Uint16 *)p = pixel;
-        break;
-
-    case 3:
-        if(SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-            p[0] = (pixel >> 16) & 0xff;
-            p[1] = (pixel >> 8) & 0xff;
-            p[2] = pixel & 0xff;
-        } else {
-            p[0] = pixel & 0xff;
-            p[1] = (pixel >> 8) & 0xff;
-            p[2] = (pixel >> 16) & 0xff;
-        }
-        break;
-
-    case 4:
-        *(Uint32 *)p = pixel;
-        break;
-    }
+	Uint32 pixel = SDL_MapRGB(surface->format, r, g, b);
+	*(Uint32 *)p = pixel;
 }
