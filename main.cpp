@@ -10,6 +10,8 @@ static SDL_Surface *screen = NULL;
 static int global_running = 1;
 static int x = 0;
 static int y = 0;
+static int width = WIDTH;
+static int height = HEIGHT;
 
 static void video_init()
 {
@@ -22,7 +24,7 @@ static void video_init()
 
 static void create_window()
 {
-	screen = SDL_SetVideoMode(WIDTH, HEIGHT, COLORDEPTH, SDL_HWSURFACE|SDL_RESIZABLE);
+	screen = SDL_SetVideoMode(width, height, COLORDEPTH, SDL_HWSURFACE|SDL_RESIZABLE);
 	if (screen == NULL){
 		fprintf(stderr, "E: video init: %s\n", SDL_GetError());
 		exit(1);
@@ -107,9 +109,15 @@ int main(int argc, char **argv)
 						} break;
 					}
 				} break;
+				case SDL_VIDEORESIZE:
+				{
+					fprintf(stdout, "new window size: %i, %i\n", event.resize.w, event.resize.h);
+					//width = event.resize.w;
+					//height = event.resize.h;
+				} break;
 				default:
 				{
-					//fprintf(stdout, "sdl event: %i\n", event.type);
+					fprintf(stdout, "sdl event: %i\n", event.type);
 				} break;
 			}
 		}
@@ -139,8 +147,8 @@ int main(int argc, char **argv)
 		}
 		Uint32 *pixels;
 		pixels = (Uint32 *)screen->pixels;
-		for (int _x=0; _x<WIDTH; _x++){
-			for (int _y=0; _y<HEIGHT; _y++){
+		for (int _x=0; _x<width; _x++){
+			for (int _y=0; _y<height; _y++){
 				putpixel(screen, _x, _y, 0x00, ((_x + x) & 0xff), ((_y + y) & 0xff));
 			}
 		}
