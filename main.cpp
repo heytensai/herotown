@@ -24,7 +24,13 @@ static void video_init()
 
 static void create_window()
 {
-	screen = SDL_SetVideoMode(width, height, COLORDEPTH, SDL_HWSURFACE|SDL_RESIZABLE);
+	if (screen){
+		SDL_FreeSurface(screen);
+		screen = NULL;
+	}
+
+	//TODO: re-enable resizable
+	screen = SDL_SetVideoMode(width, height, COLORDEPTH, SDL_HWSURFACE); //|SDL_RESIZABLE);
 	if (screen == NULL){
 		fprintf(stderr, "E: video init: %s\n", SDL_GetError());
 		exit(1);
