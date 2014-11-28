@@ -1,12 +1,15 @@
-#include "SDL.h"
+#include "SDL2/SDL.h"
 
+#define APPNAME "sdlapp"
 #define WIDTH 640
 #define HEIGHT 480
 #define COLORDEPTH 32
+#define BPP (COLORDEPTH / 4)
 
-static void putpixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b);
-
-static SDL_Surface *screen = NULL;
+static SDL_Window *window = NULL;
+static SDL_Renderer *renderer = NULL;
+static SDL_Texture *texture = NULL;
+static Uint32 *pixels = NULL;
 static int global_running = 1;
 static int x = 0;
 static int y = 0;
@@ -19,24 +22,61 @@ static void video_init()
 		fprintf(stderr, "E: video init: %s\n", SDL_GetError());
 		exit(1);
 	}
-	atexit(SDL_Quit);
+}
+
+static void destroy_window()
+{
+	if (renderer){
+		SDL_DestroyRenderer(renderer);
+		renderer = NULL;
+	}
+	if (window){
+		SDL_DestroyWindow(window);
+		window = NULL;
+	}
 }
 
 static void create_window()
 {
-	if (screen){
-		SDL_FreeSurface(screen);
-		screen = NULL;
-	}
+	destroy_window();
 
-	//TODO: re-enable resizable
-	screen = SDL_SetVideoMode(width, height, COLORDEPTH, SDL_HWSURFACE); //|SDL_RESIZABLE);
-	if (screen == NULL){
+	window = SDL_CreateWindow(APPNAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
+	if (window == NULL){
 		fprintf(stderr, "E: video init: %s\n", SDL_GetError());
 		exit(1);
 	}
 
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
 	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
+}
+
+static void create_pixels()
+{
+	if (texture){
+		SDL_DestroyTexture(texture);
+		texture = NULL;
+	}
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height);
+
+	if (pixels){
+		free(pixels);
+		pixels = NULL;
+	}
+	pixels = (Uint32 *)malloc(width * height * BPP);
+}
+
+static void quit()
+{
+	destroy_window();
+	SDL_Quit();
+}
+
+static Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+{
+	Uint32 p = 0;
+	p = ((r << 0) & 0xff) + ((g << 8) & 0xff) + ((b << 16) & 0xff) + ((a << 24) & 0xff);
+	return p;
 }
 
 typedef struct {
@@ -49,6 +89,7 @@ int main(int argc, char **argv)
 {
 	video_init();
 	create_window();
+	create_pixels();
 
 	SDL_Event event;
 
@@ -115,12 +156,6 @@ int main(int argc, char **argv)
 						} break;
 					}
 				} break;
-				case SDL_VIDEORESIZE:
-				{
-					fprintf(stdout, "new window size: %i, %i\n", event.resize.w, event.resize.h);
-					//width = event.resize.w;
-					//height = event.resize.h;
-				} break;
 				default:
 				{
 					fprintf(stdout, "sdl event: %i\n", event.type);
@@ -147,34 +182,21 @@ int main(int argc, char **argv)
 			}
 		}
 
-		// draw video
-		if (SDL_MUSTLOCK(screen)){
-			SDL_LockSurface(screen);
-		}
-		Uint32 *pixels;
-		pixels = (Uint32 *)screen->pixels;
+		// update texture
 		for (int _x=0; _x<width; _x++){
 			for (int _y=0; _y<height; _y++){
-				putpixel(screen, _x, _y, 0x00, ((_x + x) & 0xff), ((_y + y) & 0xff));
+				int pitch = width;
+				int offset = _x + (_y * pitch);
+				pixels[offset] = map_rgba(((_x + x) & 0xff), ((_y + y) & 0xff), 0, 0);
 			}
 		}
-		if (SDL_MUSTLOCK(screen)){
-			SDL_UnlockSurface(screen);
-		}
-		SDL_Flip(screen);
+
+		// blit pixels
+		SDL_UpdateTexture(texture, NULL, pixels, width * BPP);
+		SDL_RenderClear(renderer);
+		SDL_RenderCopy(renderer, texture, NULL, NULL);
+		SDL_RenderPresent(renderer);
 	}
-}
 
-/*
- * Set the pixel at (x, y) to the given value
- * NOTE: The surface must be locked before calling this!
- */
-static void putpixel(SDL_Surface *surface, int x, int y, Uint8 r, Uint8 g, Uint8 b)
-{
-	int bpp = surface->format->BytesPerPixel;
-	/* Here p is the address to the pixel we want to set */
-	Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
-
-	Uint32 pixel = SDL_MapRGB(surface->format, r, g, b);
-	*(Uint32 *)p = pixel;
+	quit();
 }
