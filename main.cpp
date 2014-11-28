@@ -75,7 +75,7 @@ static void quit()
 static Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
 	Uint32 p = 0;
-	p = ((r << 0) & 0xff) + ((g << 8) & 0xff) + ((b << 16) & 0xff) + ((a << 24) & 0xff);
+	p = ((r << 0) & 0xff) + ((g & 0xff) << 8) + ((b & 0xff) << 16) + ((a & 0xff) << 24);
 	return p;
 }
 
@@ -156,6 +156,25 @@ int main(int argc, char **argv)
 						} break;
 					}
 				} break;
+				case SDL_WINDOWEVENT:
+				{
+					switch (event.window.event){
+						case SDL_WINDOWEVENT_RESIZED:
+						{
+							//TODO: this doesn't really work yet
+							/*
+							width = event.window.data1;
+							height = event.window.data2;
+							create_pixels();
+							*/
+							//fprintf(stdout, "window resized to %i, %i\n", event.window.data1, event.window.data2);
+						} break;
+						default:
+						{
+							//fprintf(stdout, "sdl window event: %i\n", event.window.event);
+						} break;
+					}
+				} break;
 				default:
 				{
 					fprintf(stdout, "sdl event: %i\n", event.type);
@@ -184,8 +203,8 @@ int main(int argc, char **argv)
 
 		// update texture
 		for (int _x=0; _x<width; _x++){
-			for (int _y=0; _y<height; _y++){
-				int pitch = width;
+			for (int _y=0; _y<480; _y++){
+				int pitch = width * 2;
 				int offset = _x + (_y * pitch);
 				pixels[offset] = map_rgba(((_x + x) & 0xff), ((_y + y) & 0xff), 0, 0);
 			}
