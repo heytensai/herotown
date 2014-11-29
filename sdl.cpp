@@ -12,6 +12,13 @@ void SDL::destroy_window()
 	}
 }
 
+Uint32 SDL::map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+{
+	Uint32 p = 0;
+	p = ((r << 0) & 0xff) + ((g & 0xff) << 8) + ((b & 0xff) << 16) + ((a & 0xff) << 24);
+	return p;
+}
+
 void SDL::create_window()
 {
 	destroy_window();

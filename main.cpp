@@ -8,13 +8,6 @@ static movement_t vertical;
 static movement_t horizontal;
 static Sprite sprite;
 
-static Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-{
-	Uint32 p = 0;
-	p = ((r << 0) & 0xff) + ((g & 0xff) << 8) + ((b & 0xff) << 16) + ((a & 0xff) << 24);
-	return p;
-}
-
 static inline int pitch_offset(int x, int y)
 {
 	return (x + (y * pitch));
@@ -34,7 +27,7 @@ void draw_background()
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
 			int offset = pitch_offset(x, y);
-			sdl.pixels[offset] = map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
+			sdl.pixels[offset] = sdl.map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
 		}
 	}
 }
@@ -57,7 +50,7 @@ void draw_sprite()
 	for (int x=-Sprite::size; x<Sprite::size; x++){
 		for (int y=-Sprite::size; y<Sprite::size; y++){
 			offset = pitch_offset(sprite.location.x + x, sprite.location.y + y);
-			sdl.pixels[offset] = map_rgba(0xff, 0xff, 0xff, 0);
+			sdl.pixels[offset] = sdl.map_rgba(0xff, 0xff, 0xff, 0);
 		}
 	}
 }
