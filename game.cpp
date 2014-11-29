@@ -6,6 +6,27 @@ Game::Game(int width, int height)
 	this->height = height;
 	running = 1;
 	video = new Video(width, height);
+
+	vertical.active = 0;
+	vertical.movement.x = 0;
+	vertical.movement.y = 0;
+
+	horizontal.active = 1;
+	horizontal.movement.x = 1;
+	horizontal.movement.y = 0;
+
+	sprite.location.x = 100;
+	sprite.location.y = 100;
+
+	sprite.motion.active = 0;
+	sprite.motion.movement.x = 0;
+	sprite.motion.movement.y = 0;
+
+	video->init();
+	video->create_window();
+	video->create_pixels();
+
+	sound.init();
 }
 
 void Game::process_events()

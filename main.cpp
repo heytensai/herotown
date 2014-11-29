@@ -53,34 +53,9 @@ void draw_sprite()
 	}
 }
 
-void graphics_init()
-{
-	game->vertical.active = 0;
-	game->vertical.movement.x = 0;
-	game->vertical.movement.y = 0;
-
-	game->horizontal.active = 1;
-	game->horizontal.movement.x = 1;
-	game->horizontal.movement.y = 0;
-
-	game->sprite.location.x = 100;
-	game->sprite.location.y = 100;
-
-	game->sprite.motion.active = 0;
-	game->sprite.motion.movement.x = 0;
-	game->sprite.motion.movement.y = 0;
-}
-
 int main(int argc, char **argv)
 {
 	game = new Game(WIDTH, HEIGHT);
-	game->video->init();
-	game->video->create_window();
-	game->video->create_pixels();
-
-	game->sound.init();
-
-	graphics_init();
 
 	while (game->running){
 
