@@ -1,4 +1,4 @@
-#include "sprite.h"
+#include "game.h"
 
 bool Sprite::moving()
 {

@@ -7,24 +7,24 @@
 #define COLORDEPTH 32
 #define BPP (COLORDEPTH / 4)
 
-static int global_running = 1;
-static int width = WIDTH;
-static int height = HEIGHT;
-static int pitch = width * 2;
+#include "point.h"
+#include "sdl.h"
+#include "sprite.h"
+
+extern int global_running;
+extern int width;
+extern int height;
+extern int pitch;
+
+extern SDL sdl;
+extern point_t grid_base;
+extern movement_t vertical;
+extern movement_t horizontal;
+extern Sprite sprite;
 
 static inline int pitch_offset(int x, int y)
 {
 	return (x + (y * pitch));
 }
-
-typedef struct {
-	int x;
-	int y;
-} point_t;
-
-typedef struct {
-	int active;
-	point_t movement;
-} movement_t;
 
 #endif /* GAME_H */
