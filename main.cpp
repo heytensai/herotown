@@ -81,6 +81,30 @@ static Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	return p;
 }
 
+void draw_background()
+{
+	// move grid
+	if (vertical.active){
+		grid_base.y += vertical.movement.y;
+	}
+	if (horizontal.active){
+		grid_base.x += horizontal.movement.x;
+	}
+
+	// update texture
+	for (int x=0; x<width; x++){
+		for (int y=0; y<height; y++){
+			int pitch = width * 2;
+			int offset = x + (y * pitch);
+			pixels[offset] = map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
+		}
+	}
+}
+
+void draw_sprite()
+{
+}
+
 void process_events()
 {
 	SDL_Event event;
@@ -263,22 +287,7 @@ int main(int argc, char **argv)
 		process_events();
 >>>>>>> move event loop into function
 
-		// game loop
-		if (vertical.active){
-			grid_base.y += vertical.movement.y;
-		}
-		if (horizontal.active){
-			grid_base.x += horizontal.movement.x;
-		}
-
-		// update texture
-		for (int x=0; x<width; x++){
-			for (int y=0; y<height; y++){
-				int pitch = width * 2;
-				int offset = x + (y * pitch);
-				pixels[offset] = map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
-			}
-		}
+		draw_background();
 
 		// blit pixels
 		SDL_UpdateTexture(texture, NULL, pixels, width * BPP);
