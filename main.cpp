@@ -1,13 +1,12 @@
 #include "SDL2/SDL.h"
 #include "game.h"
+#include "sprite.h"
 
 #define APPNAME "sdlapp"
 #define WIDTH 800
 #define HEIGHT 600
 #define COLORDEPTH 32
 #define BPP (COLORDEPTH / 4)
-#define SPRITE_SIZE 5
-#define SPRITE_STEP 1
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -20,8 +19,7 @@ static int height = HEIGHT;
 static int pitch = width * 2;
 static movement_t vertical;
 static movement_t horizontal;
-static point_t sprite;
-static movement_t sprite_motion;
+static Sprite sprite;
 
 static void video_init()
 {
@@ -115,19 +113,19 @@ bool sprite_can_move(char direction)
 	switch (direction){
 		case 'x':
 		{
-			if ((sprite.x <= (0 + SPRITE_SIZE)) && (sprite_motion.movement.x < 0)){
+			if ((sprite.location.x <= (0 + Sprite::size)) && (sprite.motion.movement.x < 0)){
 				return false;
 			}
-			if ((sprite.x >= (WIDTH - SPRITE_SIZE)) && (sprite_motion.movement.x > 0)){
+			if ((sprite.location.x >= (WIDTH - Sprite::size)) && (sprite.motion.movement.x > 0)){
 				return false;
 			}
 		} break;
 		case 'y':
 		{
-			if ((sprite.y <= (0 + SPRITE_SIZE)) && (sprite_motion.movement.y < 0)){
+			if ((sprite.location.y <= (0 + Sprite::size)) && (sprite.motion.movement.y < 0)){
 				return false;
 			}
-			if ((sprite.y >= (HEIGHT - SPRITE_SIZE)) && (sprite_motion.movement.y > 0)){
+			if ((sprite.location.y >= (HEIGHT - Sprite::size)) && (sprite.motion.movement.y > 0)){
 				return false;
 			}
 		} break;
@@ -138,21 +136,21 @@ bool sprite_can_move(char direction)
 void draw_sprite()
 {
 	// move sprite (if sprite is in bounds)
-	if (sprite_motion.active){
+	if (sprite.motion.active){
 		if (sprite_can_move('x')){
-			sprite.x += sprite_motion.movement.x;
+			sprite.location.x += sprite.motion.movement.x;
 		}
 
 		if (sprite_can_move('y')){
-			sprite.y += sprite_motion.movement.y;
+			sprite.location.y += sprite.motion.movement.y;
 		}
 	}
 
 	// draw sprite
 	int offset;
-	for (int x=-SPRITE_SIZE; x<SPRITE_SIZE; x++){
-		for (int y=-SPRITE_SIZE; y<SPRITE_SIZE; y++){
-			offset = pitch_offset(sprite.x + x, sprite.y + y);
+	for (int x=-Sprite::size; x<Sprite::size; x++){
+		for (int y=-Sprite::size; y<Sprite::size; y++){
+			offset = pitch_offset(sprite.location.x + x, sprite.location.y + y);
 			pixels[offset] = map_rgba(0xff, 0xff, 0xff, 0);
 		}
 	}
@@ -176,23 +174,23 @@ void process_events()
 				switch (event.key.keysym.sym){
 					case SDLK_w:
 					{
-						sprite_motion.active = 1;
-						sprite_motion.movement.y = -SPRITE_STEP;
+						sprite.motion.active = 1;
+						sprite.motion.movement.y = -Sprite::step;
 					} break;
 					case SDLK_s:
 					{
-						sprite_motion.active = 1;
-						sprite_motion.movement.y = SPRITE_STEP;
+						sprite.motion.active = 1;
+						sprite.motion.movement.y = Sprite::step;
 					} break;
 					case SDLK_a:
 					{
-						sprite_motion.active = 1;
-						sprite_motion.movement.x = -SPRITE_STEP;
+						sprite.motion.active = 1;
+						sprite.motion.movement.x = -Sprite::step;
 					} break;
 					case SDLK_d:
 					{
-						sprite_motion.active = 1;
-						sprite_motion.movement.x = SPRITE_STEP;
+						sprite.motion.active = 1;
+						sprite.motion.movement.x = Sprite::step;
 					} break;
 					case SDLK_LEFT:
 					{
@@ -233,18 +231,18 @@ void process_events()
 					case SDLK_w:
 					case SDLK_s:
 					{
-						sprite_motion.active = 1;
-						sprite_motion.movement.y = 0;
-						if (!sprite_motion.movement.x && !sprite_motion.movement.y){
-							sprite_motion.active = 0;
+						sprite.motion.active = 1;
+						sprite.motion.movement.y = 0;
+						if (!sprite.motion.movement.x && !sprite.motion.movement.y){
+							sprite.motion.active = 0;
 						}
 					} break;
 					case SDLK_a:
 					case SDLK_d:
 					{
-						sprite_motion.movement.x = 0;
-						if (!sprite_motion.movement.x && !sprite_motion.movement.y){
-							sprite_motion.active = 0;
+						sprite.motion.movement.x = 0;
+						if (!sprite.motion.movement.x && !sprite.motion.movement.y){
+							sprite.motion.active = 0;
 						}
 					} break;
 					case SDLK_UP:
@@ -295,12 +293,12 @@ void graphics_init()
 	horizontal.movement.x = 1;
 	horizontal.movement.y = 0;
 
-	sprite.x = 100;
-	sprite.y = 100;
+	sprite.location.x = 100;
+	sprite.location.y = 100;
 
-	sprite_motion.active = 0;
-	sprite_motion.movement.x = 0;
-	sprite_motion.movement.y = 0;
+	sprite.motion.active = 0;
+	sprite.motion.movement.x = 0;
+	sprite.motion.movement.y = 0;
 }
 
 int main(int argc, char **argv)

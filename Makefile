@@ -1,5 +1,7 @@
-sdlapp: main.cpp
-	g++ -g -o sdlapp main.cpp `sdl2-config --cflags --libs`
+SRC=main.cpp sprite.cpp
+
+sdlapp: ${SRC}
+	g++ -g -o sdlapp ${SRC} `sdl2-config --cflags --libs`
 
 clean:
 	rm -f sdlapp
