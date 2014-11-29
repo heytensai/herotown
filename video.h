@@ -5,14 +5,20 @@
 
 class Video
 {
+private:
+	int width;
+	int height;
+
 public:
 	SDL_Window *window;
 	SDL_Renderer *renderer = NULL;
 	SDL_Texture *texture = NULL;
 	Uint32 *pixels = NULL;
 
+	Video(int width, int height);
 	void init();
 	void blit();
+	void set_dimensions(int width, int height);
 	void destroy_window();
 	void create_window();
 	void create_pixels();

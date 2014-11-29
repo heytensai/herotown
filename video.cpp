@@ -1,5 +1,18 @@
 #include "game.h"
 
+Video::Video(int width, int height)
+{
+	set_dimensions(width, height);
+}
+
+void Video::set_dimensions(int width, int height)
+{
+	this->width = width;
+	this->height = height;
+
+	//TODO: resize
+}
+
 void Video::destroy_window()
 {
 	if (renderer){

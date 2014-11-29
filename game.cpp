@@ -1,8 +1,11 @@
 #include "game.h"
 
-Game::Game()
+Game::Game(int width, int height)
 {
+	this->width = width;
+	this->height = height;
 	running = 1;
+	video = new Video(width, height);
 }
 
 void Game::process_events()
