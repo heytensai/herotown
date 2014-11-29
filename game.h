@@ -12,13 +12,10 @@
 #include "sprite.h"
 #include "sound.h"
 
-extern int global_running;
 extern int width;
 extern int height;
 extern int pitch;
 
-extern Video video;
-extern Sound sound;
 extern point_t grid_base;
 extern movement_t vertical;
 extern movement_t horizontal;
@@ -28,5 +25,18 @@ static inline int pitch_offset(int x, int y)
 {
 	return (x + (y * pitch));
 }
+
+class Game
+{
+private:
+
+public:
+	int running;
+	Video video;
+	Sound sound;
+
+	Game();
+	void process_events();
+};
 
 #endif /* GAME_H */

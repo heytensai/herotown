@@ -1,12 +1,10 @@
 #include "game.h"
 
-int global_running = 1;
 int width = WIDTH;
 int height = HEIGHT;
 int pitch = width * 2;
 
-Video video;
-Sound sound;
+Game game;
 point_t grid_base;
 movement_t vertical;
 movement_t horizontal;
@@ -26,7 +24,7 @@ void draw_background()
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
 			int offset = pitch_offset(x, y);
-			video.pixels[offset] = video.map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
+			game.video.pixels[offset] = game.video.map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
 		}
 	}
 }
@@ -49,7 +47,7 @@ void draw_sprite()
 	for (int x=-Sprite::size; x<Sprite::size; x++){
 		for (int y=-Sprite::size; y<Sprite::size; y++){
 			offset = pitch_offset(sprite.location.x + x, sprite.location.y + y);
-			video.pixels[offset] = video.map_rgba(0xff, 0xff, 0xff, 0);
+			game.video.pixels[offset] = game.video.map_rgba(0xff, 0xff, 0xff, 0);
 		}
 	}
 }
@@ -74,27 +72,27 @@ void graphics_init()
 
 int main(int argc, char **argv)
 {
-	video.init();
-	video.create_window();
-	video.create_pixels();
+	game.video.init();
+	game.video.create_window();
+	game.video.create_pixels();
 
-	sound.init();
+	game.sound.init();
 
 	graphics_init();
 
-	while (global_running){
+	while (game.running){
 
 		// process events
-		video.process_events();
+		game.process_events();
 
 		draw_background();
 
 		draw_sprite();
 
 		// blit pixels
-		video.blit();
+		game.video.blit();
 	}
 
-	sound.destroy();
-	video.quit();
+	game.sound.destroy();
+	game.video.quit();
 }

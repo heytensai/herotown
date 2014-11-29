@@ -18,7 +18,6 @@ public:
 	void create_pixels();
 	void quit();
 	Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
-	void process_events();
 
 };
 
