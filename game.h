@@ -16,10 +16,6 @@ extern int width;
 extern int height;
 extern int pitch;
 
-extern point_t grid_base;
-extern movement_t vertical;
-extern movement_t horizontal;
-
 static inline int pitch_offset(int x, int y)
 {
 	return (x + (y * pitch));
@@ -34,6 +30,9 @@ public:
 	int running;
 	Video video;
 	Sound sound;
+	point_t grid_base;
+	movement_t vertical;
+	movement_t horizontal;
 
 	Game();
 	void process_events();
