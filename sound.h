@@ -5,9 +5,23 @@
 
 class Sound
 {
+private:
+	static const int SOUND_MAX = 16;
+	Mix_Chunk *sounds[SOUND_MAX];
+	int sound_count;
+
 public:
+	typedef enum
+	{
+		SOUND_BEEP,
+	} sound_t;
+
+	Sound();
+	void destroy();
 	void init();
-	void play(int);
+	void play(int soundId);
+	void load(int soundId, const char *file);
+	void unload(int soundId);
 };
 
 #endif /* SOUND_H */

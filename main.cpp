@@ -95,5 +95,6 @@ int main(int argc, char **argv)
 		video.blit();
 	}
 
+	sound.destroy();
 	video.quit();
 }

@@ -16,6 +16,10 @@ void Video::process_events()
 					break;
 				}
 				switch (event.key.keysym.sym){
+					case SDLK_b:
+					{
+						sound.play(Sound::SOUND_BEEP);
+					} break;
 					case SDLK_w:
 					{
 						sprite.motion.active = 1;
@@ -188,7 +192,7 @@ void Video::blit()
 
 void Video::init()
 {
-	if (SDL_Init(SDL_INIT_VIDEO) != 0){
+	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO) != 0){
 		fprintf(stderr, "E: video init: %s\n", SDL_GetError());
 		exit(1);
 	}
