@@ -102,40 +102,15 @@ void draw_background()
 	}
 }
 
-bool sprite_can_move(char direction)
-{
-	switch (direction){
-		case 'x':
-		{
-			if ((sprite.location.x <= (0 + Sprite::size)) && (sprite.motion.movement.x < 0)){
-				return false;
-			}
-			if ((sprite.location.x >= (WIDTH - Sprite::size)) && (sprite.motion.movement.x > 0)){
-				return false;
-			}
-		} break;
-		case 'y':
-		{
-			if ((sprite.location.y <= (0 + Sprite::size)) && (sprite.motion.movement.y < 0)){
-				return false;
-			}
-			if ((sprite.location.y >= (HEIGHT - Sprite::size)) && (sprite.motion.movement.y > 0)){
-				return false;
-			}
-		} break;
-	}
-	return true;
-}
-
 void draw_sprite()
 {
 	// move sprite (if sprite is in bounds)
 	if (sprite.motion.active){
-		if (sprite_can_move('x')){
+		if (sprite.can_move('x')){
 			sprite.location.x += sprite.motion.movement.x;
 		}
 
-		if (sprite_can_move('y')){
+		if (sprite:can_move('y')){
 			sprite.location.y += sprite.motion.movement.y;
 		}
 	}

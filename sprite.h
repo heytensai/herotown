@@ -12,6 +12,7 @@ public:
 	static const int step = 1;
 
 	bool moving();
+	bool can_move(char direction);
 
 };
 
