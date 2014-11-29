@@ -7,7 +7,7 @@
 #define COLORDEPTH 32
 #define BPP (COLORDEPTH / 4)
 #define SPRITE_SIZE 5
-#define SPRITE_STEP 2
+#define SPRITE_STEP 1
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -115,19 +115,19 @@ bool sprite_can_move(char direction)
 	switch (direction){
 		case 'x':
 		{
-			if ((sprite.x <= (1 + SPRITE_STEP)) && (sprite_motion.movement.x < 0)){
+			if ((sprite.x <= (0 + SPRITE_SIZE)) && (sprite_motion.movement.x < 0)){
 				return false;
 			}
-			if ((sprite.x >= (WIDTH - SPRITE_STEP - 1)) && (sprite_motion.movement.x > 0)){
+			if ((sprite.x >= (WIDTH - SPRITE_SIZE)) && (sprite_motion.movement.x > 0)){
 				return false;
 			}
 		} break;
 		case 'y':
 		{
-			if ((sprite.y <= (1 + SPRITE_STEP)) && (sprite_motion.movement.y < 0)){
+			if ((sprite.y <= (0 + SPRITE_SIZE)) && (sprite_motion.movement.y < 0)){
 				return false;
 			}
-			if ((sprite.y >= (HEIGHT - SPRITE_STEP - 1)) && (sprite_motion.movement.y > 0)){
+			if ((sprite.y >= (HEIGHT - SPRITE_SIZE)) && (sprite_motion.movement.y > 0)){
 				return false;
 			}
 		} break;
