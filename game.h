@@ -10,6 +10,7 @@
 #include "point.h"
 #include "video.h"
 #include "sprite.h"
+#include "sound.h"
 
 extern int global_running;
 extern int width;
@@ -17,6 +18,7 @@ extern int height;
 extern int pitch;
 
 extern Video video;
+extern Sound sound;
 extern point_t grid_base;
 extern movement_t vertical;
 extern movement_t horizontal;

@@ -6,6 +6,7 @@ int height = HEIGHT;
 int pitch = width * 2;
 
 Video video;
+Sound sound;
 point_t grid_base;
 movement_t vertical;
 movement_t horizontal;
@@ -76,6 +77,8 @@ int main(int argc, char **argv)
 	video.init();
 	video.create_window();
 	video.create_pixels();
+
+	sound.init();
 
 	graphics_init();
 
