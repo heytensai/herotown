@@ -110,7 +110,7 @@ void draw_sprite()
 			sprite.location.x += sprite.motion.movement.x;
 		}
 
-		if (sprite:can_move('y')){
+		if (sprite.can_move('y')){
 			sprite.location.y += sprite.motion.movement.y;
 		}
 	}
