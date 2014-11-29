@@ -6,6 +6,8 @@
 #define HEIGHT 600
 #define COLORDEPTH 32
 #define BPP (COLORDEPTH / 4)
+#define SPRITE_SIZE 5
+#define SPRITE_STEP 2
 
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
@@ -109,14 +111,13 @@ void draw_background()
 
 void draw_sprite()
 {
-	int offset = pitch_offset(sprite.x, sprite.y);
-	pixels[offset] = map_rgba(0xff, 0xff, 0xff, 0);
-	pixels[offset+1] = map_rgba(0xff, 0xff, 0xff, 0);
-	pixels[offset+2] = map_rgba(0xff, 0xff, 0xff, 0);
-	pixels[offset+3] = map_rgba(0xff, 0xff, 0xff, 0);
-	pixels[offset-1] = map_rgba(0xff, 0xff, 0xff, 0);
-	pixels[offset-2] = map_rgba(0xff, 0xff, 0xff, 0);
-	pixels[offset-3] = map_rgba(0xff, 0xff, 0xff, 0);
+	int offset;
+	for (int x=-SPRITE_SIZE; x<SPRITE_SIZE; x++){
+		for (int y=-SPRITE_SIZE; y<SPRITE_SIZE; y++){
+			offset = pitch_offset(sprite.x + x, sprite.y + y);
+			pixels[offset] = map_rgba(0xff, 0xff, 0xff, 0);
+		}
+	}
 }
 
 void process_events()
@@ -132,6 +133,22 @@ void process_events()
 			case SDL_KEYDOWN:
 			{
 				switch (event.key.keysym.sym){
+					case SDLK_w:
+					{
+						sprite.y -= SPRITE_STEP;
+					} break;
+					case SDLK_s:
+					{
+						sprite.y += SPRITE_STEP;
+					} break;
+					case SDLK_a:
+					{
+						sprite.x -= SPRITE_STEP;
+					} break;
+					case SDLK_d:
+					{
+						sprite.x += SPRITE_STEP;
+					} break;
 					case SDLK_LEFT:
 					{
 						horizontal.movement.x++;
@@ -175,6 +192,10 @@ void process_events()
 					} break;
 				}
 			} break;
+			case SDL_TEXTINPUT:
+			{
+				//ignore
+			} break;
 			case SDL_WINDOWEVENT:
 			{
 				switch (event.window.event){
@@ -196,7 +217,7 @@ void process_events()
 			} break;
 			default:
 			{
-				fprintf(stdout, "sdl event: %i\n", event.type);
+				fprintf(stdout, "sdl event: %x\n", event.type);
 			} break;
 		}
 	}
