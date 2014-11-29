@@ -19,7 +19,6 @@ extern int pitch;
 extern point_t grid_base;
 extern movement_t vertical;
 extern movement_t horizontal;
-extern Sprite sprite;
 
 static inline int pitch_offset(int x, int y)
 {
@@ -31,6 +30,7 @@ class Game
 private:
 
 public:
+	Sprite sprite;
 	int running;
 	Video video;
 	Sound sound;
