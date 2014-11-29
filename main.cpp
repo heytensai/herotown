@@ -2,8 +2,8 @@
 #include "game.h"
 
 #define APPNAME "sdlapp"
-#define WIDTH 640
-#define HEIGHT 480
+#define WIDTH 800
+#define HEIGHT 600
 #define COLORDEPTH 32
 #define BPP (COLORDEPTH / 4)
 
