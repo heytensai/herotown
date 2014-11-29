@@ -110,12 +110,42 @@ void draw_background()
 	}
 }
 
+bool sprite_can_move(char direction)
+{
+	switch (direction){
+		case 'x':
+		{
+			if ((sprite.x <= (1 + SPRITE_STEP)) && (sprite_motion.movement.x < 0)){
+				return false;
+			}
+			if ((sprite.x >= (WIDTH - SPRITE_STEP - 1)) && (sprite_motion.movement.x > 0)){
+				return false;
+			}
+		} break;
+		case 'y':
+		{
+			if ((sprite.y <= (1 + SPRITE_STEP)) && (sprite_motion.movement.y < 0)){
+				return false;
+			}
+			if ((sprite.y >= (HEIGHT - SPRITE_STEP - 1)) && (sprite_motion.movement.y > 0)){
+				return false;
+			}
+		} break;
+	}
+	return true;
+}
+
 void draw_sprite()
 {
-	// move sprite
+	// move sprite (if sprite is in bounds)
 	if (sprite_motion.active){
-		sprite.x += sprite_motion.movement.x;
-		sprite.y += sprite_motion.movement.y;
+		if (sprite_can_move('x')){
+			sprite.x += sprite_motion.movement.x;
+		}
+
+		if (sprite_can_move('y')){
+			sprite.y += sprite_motion.movement.y;
+		}
 	}
 
 	// draw sprite
@@ -140,6 +170,9 @@ void process_events()
 			} break;
 			case SDL_KEYDOWN:
 			{
+				if (event.key.repeat){
+					break;
+				}
 				switch (event.key.keysym.sym){
 					case SDLK_w:
 					{
@@ -197,6 +230,23 @@ void process_events()
 			case SDL_KEYUP:
 			{
 				switch (event.key.keysym.sym){
+					case SDLK_w:
+					case SDLK_s:
+					{
+						sprite_motion.active = 1;
+						sprite_motion.movement.y = 0;
+						if (!sprite_motion.movement.x && !sprite_motion.movement.y){
+							sprite_motion.active = 0;
+						}
+					} break;
+					case SDLK_a:
+					case SDLK_d:
+					{
+						sprite_motion.movement.x = 0;
+						if (!sprite_motion.movement.x && !sprite_motion.movement.y){
+							sprite_motion.active = 0;
+						}
+					} break;
 					case SDLK_UP:
 					case SDLK_DOWN:
 					{
