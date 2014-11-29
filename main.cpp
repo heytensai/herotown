@@ -1,11 +1,8 @@
-#include "SDL2/SDL.h"
 #include "game.h"
 #include "sprite.h"
+#include "sdl.h"
 
-static SDL_Window *window = NULL;
-static SDL_Renderer *renderer = NULL;
-static SDL_Texture *texture = NULL;
-static Uint32 *pixels = NULL;
+static SDL sdl;
 static int global_running = 1;
 static point_t grid_base;
 static int width = WIDTH;
@@ -14,62 +11,6 @@ static int pitch = width * 2;
 static movement_t vertical;
 static movement_t horizontal;
 static Sprite sprite;
-
-static void video_init()
-{
-	if (SDL_Init(SDL_INIT_VIDEO) != 0){
-		fprintf(stderr, "E: video init: %s\n", SDL_GetError());
-		exit(1);
-	}
-}
-
-static void destroy_window()
-{
-	if (renderer){
-		SDL_DestroyRenderer(renderer);
-		renderer = NULL;
-	}
-	if (window){
-		SDL_DestroyWindow(window);
-		window = NULL;
-	}
-}
-
-static void create_window()
-{
-	destroy_window();
-
-	window = SDL_CreateWindow(APPNAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_RESIZABLE);
-	if (window == NULL){
-		fprintf(stderr, "E: video init: %s\n", SDL_GetError());
-		exit(1);
-	}
-
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-
-	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
-}
-
-static void create_pixels()
-{
-	if (texture){
-		SDL_DestroyTexture(texture);
-		texture = NULL;
-	}
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height);
-
-	if (pixels){
-		free(pixels);
-		pixels = NULL;
-	}
-	pixels = (Uint32 *)malloc(width * height * BPP);
-}
-
-static void quit()
-{
-	destroy_window();
-	SDL_Quit();
-}
 
 static Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
@@ -97,7 +38,7 @@ void draw_background()
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
 			int offset = pitch_offset(x, y);
-			pixels[offset] = map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
+			sdl.pixels[offset] = map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
 		}
 	}
 }
@@ -120,7 +61,7 @@ void draw_sprite()
 	for (int x=-Sprite::size; x<Sprite::size; x++){
 		for (int y=-Sprite::size; y<Sprite::size; y++){
 			offset = pitch_offset(sprite.location.x + x, sprite.location.y + y);
-			pixels[offset] = map_rgba(0xff, 0xff, 0xff, 0);
+			sdl.pixels[offset] = map_rgba(0xff, 0xff, 0xff, 0);
 		}
 	}
 }
@@ -272,9 +213,9 @@ void graphics_init()
 
 int main(int argc, char **argv)
 {
-	video_init();
-	create_window();
-	create_pixels();
+	sdl.init();
+	sdl.create_window();
+	sdl.create_pixels();
 
 	graphics_init();
 
@@ -288,11 +229,8 @@ int main(int argc, char **argv)
 		draw_sprite();
 
 		// blit pixels
-		SDL_UpdateTexture(texture, NULL, pixels, width * BPP);
-		SDL_RenderClear(renderer);
-		SDL_RenderCopy(renderer, texture, NULL, NULL);
-		SDL_RenderPresent(renderer);
+		sdl.blit();
 	}
 
-	quit();
+	sdl.quit();
 }
