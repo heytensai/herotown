@@ -12,8 +12,6 @@
 #include "sprite.h"
 #include "sound.h"
 
-extern int pitch;
-
 class Game
 {
 private:
