@@ -8,7 +8,7 @@
 #define BPP (COLORDEPTH / 4)
 
 #include "point.h"
-#include "sdl.h"
+#include "video.h"
 #include "sprite.h"
 
 extern int global_running;
@@ -16,7 +16,7 @@ extern int width;
 extern int height;
 extern int pitch;
 
-extern SDL sdl;
+extern Video video;
 extern point_t grid_base;
 extern movement_t vertical;
 extern movement_t horizontal;

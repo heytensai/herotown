@@ -1,6 +1,6 @@
 #include "game.h"
 
-void SDL::process_events()
+void Video::process_events()
 {
 	SDL_Event event;
 
@@ -123,7 +123,7 @@ void SDL::process_events()
 	}
 }
 
-void SDL::destroy_window()
+void Video::destroy_window()
 {
 	if (renderer){
 		SDL_DestroyRenderer(renderer);
@@ -135,14 +135,14 @@ void SDL::destroy_window()
 	}
 }
 
-Uint32 SDL::map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+Uint32 Video::map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
 	Uint32 p = 0;
 	p = ((r << 0) & 0xff) + ((g & 0xff) << 8) + ((b & 0xff) << 16) + ((a & 0xff) << 24);
 	return p;
 }
 
-void SDL::create_window()
+void Video::create_window()
 {
 	destroy_window();
 
@@ -157,7 +157,7 @@ void SDL::create_window()
 	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
 }
 
-void SDL::create_pixels()
+void Video::create_pixels()
 {
 	if (texture){
 		SDL_DestroyTexture(texture);
@@ -172,13 +172,13 @@ void SDL::create_pixels()
 	pixels = (Uint32 *)malloc(width * height * BPP);
 }
 
-void SDL::quit()
+void Video::quit()
 {
 	destroy_window();
 	SDL_Quit();
 }
 
-void SDL::blit()
+void Video::blit()
 {
 	SDL_UpdateTexture(texture, NULL, pixels, width * BPP);
 	SDL_RenderClear(renderer);
@@ -186,7 +186,7 @@ void SDL::blit()
 	SDL_RenderPresent(renderer);
 }
 
-void SDL::init()
+void Video::init()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0){
 		fprintf(stderr, "E: video init: %s\n", SDL_GetError());

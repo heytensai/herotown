@@ -1,9 +1,9 @@
-#ifndef SDL_H
-#define SDL_H
+#ifndef VIDEO_H
+#define VIDEO_H
 
 #include "SDL2/SDL.h"
 
-class SDL
+class Video
 {
 public:
 	SDL_Window *window;
@@ -22,4 +22,4 @@ public:
 
 };
 
-#endif /* SDL_H */
+#endif /* VIDEO_H */
