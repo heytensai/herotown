@@ -112,24 +112,24 @@ int main(int argc, char **argv)
 						case SDLK_LEFT:
 						{
 							horizontal.movement.x++;
-							fprintf(stdout, "horizontal step: %i\n", horizontal.movement.x);
+							//fprintf(stdout, "horizontal step: %i\n", horizontal.movement.x);
 						} break;
 						case SDLK_RIGHT:
 						{
 							horizontal.movement.x--;
-							fprintf(stdout, "horizontal step: %i\n", horizontal.movement.x);
+							//fprintf(stdout, "horizontal step: %i\n", horizontal.movement.x);
 						} break;
 						case SDLK_UP:
 						{
 							vertical.active = 1;
 							vertical.movement.y = -1;
-							fprintf(stdout, "vertical step: %i\n", vertical.movement.y);
+							//fprintf(stdout, "vertical step: %i\n", vertical.movement.y);
 						} break;
 						case SDLK_DOWN:
 						{
 							vertical.active = 1;
 							vertical.movement.y = 1;
-							fprintf(stdout, "vertical step: %i\n", vertical.movement.y);
+							//fprintf(stdout, "vertical step: %i\n", vertical.movement.y);
 						} break;
 						case SDLK_SPACE:
 						{
