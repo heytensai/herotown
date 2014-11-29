@@ -2,12 +2,6 @@
 #include "game.h"
 #include "sprite.h"
 
-#define APPNAME "sdlapp"
-#define WIDTH 800
-#define HEIGHT 600
-#define COLORDEPTH 32
-#define BPP (COLORDEPTH / 4)
-
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
