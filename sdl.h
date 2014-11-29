@@ -2,6 +2,7 @@
 #define SDL_H
 
 #include "SDL2/SDL.h"
+#include "game.h"
 
 class SDL
 {

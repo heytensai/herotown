@@ -3,11 +3,7 @@
 #include "sdl.h"
 
 static SDL sdl;
-static int global_running = 1;
 static point_t grid_base;
-static int width = WIDTH;
-static int height = HEIGHT;
-static int pitch = width * 2;
 static movement_t vertical;
 static movement_t horizontal;
 static Sprite sprite;

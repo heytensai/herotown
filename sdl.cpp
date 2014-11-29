@@ -1,4 +1,5 @@
- 
+#include "sdl.h"
+
 void SDL::destroy_window()
 {
 	if (renderer){
