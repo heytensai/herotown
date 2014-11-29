@@ -21,6 +21,7 @@ static int pitch = width * 2;
 static movement_t vertical;
 static movement_t horizontal;
 static point_t sprite;
+static movement_t sprite_motion;
 
 static void video_init()
 {
@@ -111,6 +112,13 @@ void draw_background()
 
 void draw_sprite()
 {
+	// move sprite
+	if (sprite_motion.active){
+		sprite.x += sprite_motion.movement.x;
+		sprite.y += sprite_motion.movement.y;
+	}
+
+	// draw sprite
 	int offset;
 	for (int x=-SPRITE_SIZE; x<SPRITE_SIZE; x++){
 		for (int y=-SPRITE_SIZE; y<SPRITE_SIZE; y++){
@@ -135,19 +143,23 @@ void process_events()
 				switch (event.key.keysym.sym){
 					case SDLK_w:
 					{
-						sprite.y -= SPRITE_STEP;
+						sprite_motion.active = 1;
+						sprite_motion.movement.y = -SPRITE_STEP;
 					} break;
 					case SDLK_s:
 					{
-						sprite.y += SPRITE_STEP;
+						sprite_motion.active = 1;
+						sprite_motion.movement.y = SPRITE_STEP;
 					} break;
 					case SDLK_a:
 					{
-						sprite.x -= SPRITE_STEP;
+						sprite_motion.active = 1;
+						sprite_motion.movement.x = -SPRITE_STEP;
 					} break;
 					case SDLK_d:
 					{
-						sprite.x += SPRITE_STEP;
+						sprite_motion.active = 1;
+						sprite_motion.movement.x = SPRITE_STEP;
 					} break;
 					case SDLK_LEFT:
 					{
@@ -223,12 +235,8 @@ void process_events()
 	}
 }
 
-int main(int argc, char **argv)
+void graphics_init()
 {
-	video_init();
-	create_window();
-	create_pixels();
-
 	vertical.active = 0;
 	vertical.movement.x = 0;
 	vertical.movement.y = 0;
@@ -239,6 +247,19 @@ int main(int argc, char **argv)
 
 	sprite.x = 100;
 	sprite.y = 100;
+
+	sprite_motion.active = 0;
+	sprite_motion.movement.x = 0;
+	sprite_motion.movement.y = 0;
+}
+
+int main(int argc, char **argv)
+{
+	video_init();
+	create_window();
+	create_pixels();
+
+	graphics_init();
 
 	while (global_running){
 
