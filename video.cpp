@@ -5,6 +5,22 @@ Video::Video(int width, int height)
 	set_dimensions(width, height);
 }
 
+Uint32 Video::pitch_offset(int x, int y)
+{
+	// why does pitch == width * 2?
+	return (x + (y * width * 2));
+}
+
+void Video::set_pixel(int x, int y, int r, int g, int b)
+{
+	if (pixels == NULL){
+		return;
+	}
+	int offset = pitch_offset(x, y);
+	Uint32 p = map_rgba(r, g, b, 0);
+	pixels[offset] = p;
+}
+
 void Video::set_dimensions(int width, int height)
 {
 	this->width = width;

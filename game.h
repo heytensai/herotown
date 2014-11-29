@@ -14,11 +14,6 @@
 
 extern int pitch;
 
-static inline int pitch_offset(int x, int y)
-{
-	return (x + (y * pitch));
-}
-
 class Game
 {
 private:

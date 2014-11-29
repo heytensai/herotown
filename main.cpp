@@ -1,7 +1,5 @@
 #include "game.h"
 
-int pitch = WIDTH * 2;
-
 Game *game;
 
 void draw_background()
@@ -17,8 +15,12 @@ void draw_background()
 	// update texture
 	for (int x=0; x<game->width; x++){
 		for (int y=0; y<game->height; y++){
-			int offset = pitch_offset(x, y);
-			game->video->pixels[offset] = game->video->map_rgba(((x + game->grid_base.x) & 0xff), ((y + game->grid_base.y) & 0xff), ((y + game->grid_base.y + x + game->grid_base.x) & 0xff), 0);
+			game->video->set_pixel(
+				x, y,
+				((x + game->grid_base.x) & 0xff),
+				((y + game->grid_base.y) & 0xff),
+				((y + game->grid_base.y + x + game->grid_base.x) & 0xff)
+			);
 		}
 	}
 }
@@ -40,8 +42,13 @@ void draw_sprite()
 	int offset;
 	for (int x=-Sprite::size; x<Sprite::size; x++){
 		for (int y=-Sprite::size; y<Sprite::size; y++){
-			offset = pitch_offset(game->sprite.location.x + x, game->sprite.location.y + y);
-			game->video->pixels[offset] = game->video->map_rgba(0xff, 0xff, 0xff, 0);
+			game->video->set_pixel(
+				game->sprite.location.x + x,
+				game->sprite.location.y + y,
+				0xff,
+				0xff,
+				0xff
+			);
 		}
 	}
 }

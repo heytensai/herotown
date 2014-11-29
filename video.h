@@ -8,6 +8,7 @@ class Video
 private:
 	int width;
 	int height;
+	Uint32 pitch_offset(int x, int y);
 
 public:
 	SDL_Window *window;
@@ -18,6 +19,7 @@ public:
 	Video(int width, int height);
 	void init();
 	void blit();
+	void set_pixel(int x, int y, int r, int g, int b);
 	void set_dimensions(int width, int height);
 	void destroy_window();
 	void create_window();
