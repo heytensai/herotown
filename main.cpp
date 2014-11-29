@@ -15,6 +15,8 @@ static int global_running = 1;
 static point_t grid_base;
 static int width = WIDTH;
 static int height = HEIGHT;
+static movement_t vertical;
+static movement_t horizontal;
 
 static void video_init()
 {
@@ -79,20 +81,99 @@ static Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	return p;
 }
 
+void process_events()
+{
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event)){
+		switch (event.type) {
+			case SDL_QUIT:
+			{
+				global_running = 0;
+			} break;
+			case SDL_KEYDOWN:
+			{
+				switch (event.key.keysym.sym){
+					case SDLK_LEFT:
+					{
+						horizontal.movement.x++;
+						fprintf(stdout, "horizontal step: %i\n", horizontal.movement.x);
+					} break;
+					case SDLK_RIGHT:
+					{
+						horizontal.movement.x--;
+						fprintf(stdout, "horizontal step: %i\n", horizontal.movement.x);
+					} break;
+					case SDLK_UP:
+					{
+						vertical.active = 1;
+						vertical.movement.y = -1;
+						fprintf(stdout, "vertical step: %i\n", vertical.movement.y);
+					} break;
+					case SDLK_DOWN:
+					{
+						vertical.active = 1;
+						vertical.movement.y = 1;
+						fprintf(stdout, "vertical step: %i\n", vertical.movement.y);
+					} break;
+					case SDLK_SPACE:
+					{
+						horizontal.active = !horizontal.active;
+					} break;
+					case SDLK_q:
+					case SDLK_ESCAPE:
+					{
+						global_running = 0;
+					} break;
+				}
+			} break;
+			case SDL_KEYUP:
+			{
+				switch (event.key.keysym.sym){
+					case SDLK_UP:
+					case SDLK_DOWN:
+					{
+						vertical.active = 0;
+					} break;
+				}
+			} break;
+			case SDL_WINDOWEVENT:
+			{
+				switch (event.window.event){
+					case SDL_WINDOWEVENT_RESIZED:
+					{
+						//TODO: this doesn't really work yet
+						/*
+						width = event.window.data1;
+						height = event.window.data2;
+						create_pixels();
+						*/
+						//fprintf(stdout, "window resized to %i, %i\n", event.window.data1, event.window.data2);
+					} break;
+					default:
+					{
+						//fprintf(stdout, "sdl window event: %i\n", event.window.event);
+					} break;
+				}
+			} break;
+			default:
+			{
+				fprintf(stdout, "sdl event: %i\n", event.type);
+			} break;
+		}
+	}
+}
+
 int main(int argc, char **argv)
 {
 	video_init();
 	create_window();
 	create_pixels();
 
-	SDL_Event event;
-
-	movement_t vertical;
 	vertical.active = 0;
 	vertical.movement.x = 0;
 	vertical.movement.y = 0;
 
-	movement_t horizontal;
 	horizontal.active = 1;
 	horizontal.movement.x = 1;
 	horizontal.movement.y = 0;
@@ -100,6 +181,7 @@ int main(int argc, char **argv)
 	while (global_running){
 
 		// process events
+<<<<<<< HEAD
 		while (SDL_PollEvent(&event)){
 			switch (event.type) {
 				case SDL_QUIT:
@@ -177,6 +259,9 @@ int main(int argc, char **argv)
 				} break;
 			}
 		}
+=======
+		process_events();
+>>>>>>> move event loop into function
 
 		// game loop
 		if (vertical.active){
