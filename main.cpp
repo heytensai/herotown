@@ -1,6 +1,4 @@
 #include "game.h"
-#include "sprite.h"
-#include "sdl.h"
 
 int global_running = 1;
 int width = WIDTH;
