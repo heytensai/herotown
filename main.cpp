@@ -5,26 +5,22 @@ int height = HEIGHT;
 int pitch = width * 2;
 
 Game game;
-point_t grid_base;
-movement_t vertical;
-movement_t horizontal;
-Sprite sprite;
 
 void draw_background()
 {
 	// move grid
-	if (vertical.active){
-		grid_base.y += vertical.movement.y;
+	if (game.vertical.active){
+		game.grid_base.y += game.vertical.movement.y;
 	}
-	if (horizontal.active){
-		grid_base.x += horizontal.movement.x;
+	if (game.horizontal.active){
+		game.grid_base.x += game.horizontal.movement.x;
 	}
 
 	// update texture
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
 			int offset = pitch_offset(x, y);
-			game.video.pixels[offset] = game.video.map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
+			game.video.pixels[offset] = game.video.map_rgba(((x + game.grid_base.x) & 0xff), ((y + game.grid_base.y) & 0xff), ((y + game.grid_base.y + x + game.grid_base.x) & 0xff), 0);
 		}
 	}
 }
@@ -32,13 +28,13 @@ void draw_background()
 void draw_sprite()
 {
 	// move sprite (if sprite is in bounds)
-	if (sprite.motion.active){
-		if (sprite.can_move('x')){
-			sprite.location.x += sprite.motion.movement.x;
+	if (game.sprite.motion.active){
+		if (game.sprite.can_move('x')){
+			game.sprite.location.x += game.sprite.motion.movement.x;
 		}
 
-		if (sprite.can_move('y')){
-			sprite.location.y += sprite.motion.movement.y;
+		if (game.sprite.can_move('y')){
+			game.sprite.location.y += game.sprite.motion.movement.y;
 		}
 	}
 
@@ -46,7 +42,7 @@ void draw_sprite()
 	int offset;
 	for (int x=-Sprite::size; x<Sprite::size; x++){
 		for (int y=-Sprite::size; y<Sprite::size; y++){
-			offset = pitch_offset(sprite.location.x + x, sprite.location.y + y);
+			offset = pitch_offset(game.sprite.location.x + x, game.sprite.location.y + y);
 			game.video.pixels[offset] = game.video.map_rgba(0xff, 0xff, 0xff, 0);
 		}
 	}
@@ -54,20 +50,20 @@ void draw_sprite()
 
 void graphics_init()
 {
-	vertical.active = 0;
-	vertical.movement.x = 0;
-	vertical.movement.y = 0;
+	game.vertical.active = 0;
+	game.vertical.movement.x = 0;
+	game.vertical.movement.y = 0;
 
-	horizontal.active = 1;
-	horizontal.movement.x = 1;
-	horizontal.movement.y = 0;
+	game.horizontal.active = 1;
+	game.horizontal.movement.x = 1;
+	game.horizontal.movement.y = 0;
 
-	sprite.location.x = 100;
-	sprite.location.y = 100;
+	game.sprite.location.x = 100;
+	game.sprite.location.y = 100;
 
-	sprite.motion.active = 0;
-	sprite.motion.movement.x = 0;
-	sprite.motion.movement.y = 0;
+	game.sprite.motion.active = 0;
+	game.sprite.motion.movement.x = 0;
+	game.sprite.motion.movement.y = 0;
 }
 
 int main(int argc, char **argv)
