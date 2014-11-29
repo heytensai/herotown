@@ -8,11 +8,6 @@ static movement_t vertical;
 static movement_t horizontal;
 static Sprite sprite;
 
-static inline int pitch_offset(int x, int y)
-{
-	return (x + (y * pitch));
-}
-
 void draw_background()
 {
 	// move grid

@@ -12,6 +12,11 @@ static int width = WIDTH;
 static int height = HEIGHT;
 static int pitch = width * 2;
 
+static inline int pitch_offset(int x, int y)
+{
+	return (x + (y * pitch));
+}
+
 typedef struct {
 	int x;
 	int y;
