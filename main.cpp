@@ -15,8 +15,10 @@ static int global_running = 1;
 static point_t grid_base;
 static int width = WIDTH;
 static int height = HEIGHT;
+static int pitch = width * 2;
 static movement_t vertical;
 static movement_t horizontal;
+static point_t sprite;
 
 static void video_init()
 {
@@ -81,6 +83,11 @@ static Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	return p;
 }
 
+static inline int pitch_offset(int x, int y)
+{
+	return (x + (y * pitch));
+}
+
 void draw_background()
 {
 	// move grid
@@ -94,8 +101,7 @@ void draw_background()
 	// update texture
 	for (int x=0; x<width; x++){
 		for (int y=0; y<height; y++){
-			int pitch = width * 2;
-			int offset = x + (y * pitch);
+			int offset = pitch_offset(x, y);
 			pixels[offset] = map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
 		}
 	}
@@ -103,6 +109,14 @@ void draw_background()
 
 void draw_sprite()
 {
+	int offset = pitch_offset(sprite.x, sprite.y);
+	pixels[offset] = map_rgba(0xff, 0xff, 0xff, 0);
+	pixels[offset+1] = map_rgba(0xff, 0xff, 0xff, 0);
+	pixels[offset+2] = map_rgba(0xff, 0xff, 0xff, 0);
+	pixels[offset+3] = map_rgba(0xff, 0xff, 0xff, 0);
+	pixels[offset-1] = map_rgba(0xff, 0xff, 0xff, 0);
+	pixels[offset-2] = map_rgba(0xff, 0xff, 0xff, 0);
+	pixels[offset-3] = map_rgba(0xff, 0xff, 0xff, 0);
 }
 
 void process_events()
@@ -202,6 +216,9 @@ int main(int argc, char **argv)
 	horizontal.movement.x = 1;
 	horizontal.movement.y = 0;
 
+	sprite.x = 100;
+	sprite.y = 100;
+
 	while (global_running){
 
 		// process events
@@ -288,6 +305,8 @@ int main(int argc, char **argv)
 >>>>>>> move event loop into function
 
 		draw_background();
+
+		draw_sprite();
 
 		// blit pixels
 		SDL_UpdateTexture(texture, NULL, pixels, width * BPP);
