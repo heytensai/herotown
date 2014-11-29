@@ -1,4 +1,5 @@
 #include "SDL2/SDL.h"
+#include "game.h"
 
 #define APPNAME "sdlapp"
 #define WIDTH 640
@@ -11,8 +12,7 @@ static SDL_Renderer *renderer = NULL;
 static SDL_Texture *texture = NULL;
 static Uint32 *pixels = NULL;
 static int global_running = 1;
-static int x = 0;
-static int y = 0;
+static point_t grid_base;
 static int width = WIDTH;
 static int height = HEIGHT;
 
@@ -79,12 +79,6 @@ static Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 	return p;
 }
 
-typedef struct {
-	int active;
-	int direction;
-	int step;
-} movement_t;
-
 int main(int argc, char **argv)
 {
 	video_init();
@@ -95,13 +89,13 @@ int main(int argc, char **argv)
 
 	movement_t vertical;
 	vertical.active = 0;
-	vertical.direction = 0;
-	vertical.step = 1;
+	vertical.movement.x = 0;
+	vertical.movement.y = 0;
 
 	movement_t horizontal;
 	horizontal.active = 1;
-	horizontal.direction = 1;
-	horizontal.step = 1;
+	horizontal.movement.x = 1;
+	horizontal.movement.y = 0;
 
 	while (global_running){
 
@@ -117,23 +111,25 @@ int main(int argc, char **argv)
 					switch (event.key.keysym.sym){
 						case SDLK_LEFT:
 						{
-							horizontal.step++;
-							fprintf(stdout, "horizontal step: %i\n", horizontal.step);
+							horizontal.movement.x++;
+							fprintf(stdout, "horizontal step: %i\n", horizontal.movement.x);
 						} break;
 						case SDLK_RIGHT:
 						{
-							horizontal.step--;
-							fprintf(stdout, "horizontal step: %i\n", horizontal.step);
+							horizontal.movement.x--;
+							fprintf(stdout, "horizontal step: %i\n", horizontal.movement.x);
 						} break;
 						case SDLK_UP:
 						{
 							vertical.active = 1;
-							vertical.direction = 0;
+							vertical.movement.y = -1;
+							fprintf(stdout, "vertical step: %i\n", vertical.movement.y);
 						} break;
 						case SDLK_DOWN:
 						{
 							vertical.active = 1;
-							vertical.direction = 1;
+							vertical.movement.y = 1;
+							fprintf(stdout, "vertical step: %i\n", vertical.movement.y);
 						} break;
 						case SDLK_SPACE:
 						{
@@ -184,29 +180,18 @@ int main(int argc, char **argv)
 
 		// game loop
 		if (vertical.active){
-			if (vertical.direction){
-				y += vertical.step;
-			}
-			else{
-				y -= vertical.step;
-			}
+			grid_base.y += vertical.movement.y;
 		}
-
 		if (horizontal.active){
-			if (horizontal.direction){
-				x += horizontal.step;
-			}
-			else{
-				x -= horizontal.step;
-			}
+			grid_base.x += horizontal.movement.x;
 		}
 
 		// update texture
-		for (int _x=0; _x<width; _x++){
-			for (int _y=0; _y<480; _y++){
+		for (int x=0; x<width; x++){
+			for (int y=0; y<height; y++){
 				int pitch = width * 2;
-				int offset = _x + (_y * pitch);
-				pixels[offset] = map_rgba(((_x + x) & 0xff), ((_y + y) & 0xff), 0, 0);
+				int offset = x + (y * pitch);
+				pixels[offset] = map_rgba(((x + grid_base.x) & 0xff), ((y + grid_base.y) & 0xff), ((y + grid_base.y + x + grid_base.x) & 0xff), 0);
 			}
 		}
 
