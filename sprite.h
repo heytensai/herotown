@@ -7,6 +7,13 @@ class Sprite
 {
 private:
 	SDL_Texture *_load_image(SDL_Renderer *renderer, const char *file);
+	SDL_Texture **animation;
+	int animated;
+	int animation_index;
+	int current_animation;
+	Uint32 last_animation_tick;
+	void render_animation(SDL_Renderer *renderer);
+	void render_static(SDL_Renderer *renderer);
 
 public:
 	point_t location;
@@ -22,7 +29,10 @@ public:
 	bool moving();
 	bool can_move(char direction);
 	void load_image(SDL_Renderer *renderer, const char *file);
+	void load_animation(SDL_Renderer *renderer, const char *file);
 	void render(SDL_Renderer *renderer);
+	void enable_animation(int frames);
+	bool is_animated();
 
 };
 

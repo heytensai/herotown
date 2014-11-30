@@ -23,6 +23,16 @@ Game::Game(int width, int height)
 	hero->motion.movement.x = 0;
 	hero->motion.movement.y = 0;
 
+	hero->enable_animation(8);
+	hero->load_animation(video->renderer, "resources/yoshi0.png");
+	hero->load_animation(video->renderer, "resources/yoshi1.png");
+	hero->load_animation(video->renderer, "resources/yoshi2.png");
+	hero->load_animation(video->renderer, "resources/yoshi3.png");
+	hero->load_animation(video->renderer, "resources/yoshi4.png");
+	hero->load_animation(video->renderer, "resources/yoshi5.png");
+	hero->load_animation(video->renderer, "resources/yoshi6.png");
+	hero->load_animation(video->renderer, "resources/yoshi7.png");
+
 	// this must happen after video is created
 	hero->load_image(video->renderer, "resources/yoshi.png");
 
