@@ -4,6 +4,39 @@ Game *game;
 
 void draw_background()
 {
+	if (game->sprite.moving()){
+		if (!game->sprite.can_move('x')){
+			if (game->sprite.motion.movement.x < 0){
+				game->sprite.location.x -= game->sprite.motion.movement.x;
+				game->background.movement.x = -1;
+				game->background.active = 1;
+			}
+			else if (game->sprite.motion.movement.x > 0){
+				game->sprite.location.x -= game->sprite.motion.movement.x;
+				game->background.movement.x = 1;
+				game->background.active = 1;
+			}
+		}
+
+		if (!game->sprite.can_move('y')){
+			if (game->sprite.motion.movement.y < 0){
+				game->sprite.location.y -= game->sprite.motion.movement.y;
+				game->background.movement.y = -1;
+				game->background.active = 1;
+			}
+			else if (game->sprite.motion.movement.y > 0){
+				game->sprite.location.y -= game->sprite.motion.movement.y;
+				game->background.movement.y = 1;
+				game->background.active = 1;
+			}
+		}
+	}
+	else{
+		game->background.movement.x = 0;
+		game->background.movement.y = 0;
+		game->background.active = 0;
+	}
+
 	// move grid
 	if (game->background.active){
 		game->grid_base.y += game->background.movement.y;
