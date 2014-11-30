@@ -15,15 +15,15 @@ Game::Game(int width, int height)
 	background.movement.x = 0;
 	background.movement.y = 0;
 
-	sprite.location.x = 100;
-	sprite.location.y = 100;
+	hero.location.x = 100;
+	hero.location.y = 100;
 
-	sprite.motion.active = 0;
-	sprite.motion.movement.x = 0;
-	sprite.motion.movement.y = 0;
+	hero.motion.active = 0;
+	hero.motion.movement.x = 0;
+	hero.motion.movement.y = 0;
 
 	// this must happen after video is created
-	sprite.load_image(video->renderer, "resources/yoshi.png");
+	hero.load_image(video->renderer, "resources/yoshi.png");
 
 	sound.init();
 }
@@ -32,48 +32,48 @@ void Game::render()
 {
 	video->start_render();
 	video->blit_background();
-	sprite.render(video->renderer);
+	hero.render(video->renderer);
 	video->finish_render();
 }
 
-void Game::move_sprite()
+void Game::move_hero()
 {
-	// move sprite (if sprite is in bounds)
-	if (sprite.motion.active){
-		if (sprite.can_move('x')){
-			sprite.location.x += sprite.motion.movement.x;
+	// move hero (if hero is in bounds)
+	if (hero.motion.active){
+		if (hero.can_move('x')){
+			hero.location.x += hero.motion.movement.x;
 		}
 
-		if (sprite.can_move('y')){
-			sprite.location.y += sprite.motion.movement.y;
+		if (hero.can_move('y')){
+			hero.location.y += hero.motion.movement.y;
 		}
 	}
 }
 
 void Game::move_background()
 {
-	if (sprite.moving()){
-		if (!sprite.can_move('x')){
-			if (sprite.motion.movement.x < 0){
-				sprite.location.x -= sprite.motion.movement.x;
+	if (hero.moving()){
+		if (!hero.can_move('x')){
+			if (hero.motion.movement.x < 0){
+				hero.location.x -= hero.motion.movement.x;
 				background.movement.x = -Sprite::step;
 				background.active = 1;
 			}
-			else if (sprite.motion.movement.x > 0){
-				sprite.location.x -= sprite.motion.movement.x;
+			else if (hero.motion.movement.x > 0){
+				hero.location.x -= hero.motion.movement.x;
 				background.movement.x = Sprite::step;
 				background.active = 1;
 			}
 		}
 
-		if (!sprite.can_move('y')){
-			if (sprite.motion.movement.y < 0){
-				sprite.location.y -= sprite.motion.movement.y;
+		if (!hero.can_move('y')){
+			if (hero.motion.movement.y < 0){
+				hero.location.y -= hero.motion.movement.y;
 				background.movement.y = -Sprite::step;
 				background.active = 1;
 			}
-			else if (sprite.motion.movement.y > 0){
-				sprite.location.y -= sprite.motion.movement.y;
+			else if (hero.motion.movement.y > 0){
+				hero.location.y -= hero.motion.movement.y;
 				background.movement.y = Sprite::step;
 				background.active = 1;
 			}
@@ -114,23 +114,23 @@ void Game::process_events()
 					} break;
 					case SDLK_w:
 					{
-						sprite.motion.active = 1;
-						sprite.motion.movement.y = -Sprite::step;
+						hero.motion.active = 1;
+						hero.motion.movement.y = -Sprite::step;
 					} break;
 					case SDLK_s:
 					{
-						sprite.motion.active = 1;
-						sprite.motion.movement.y = Sprite::step;
+						hero.motion.active = 1;
+						hero.motion.movement.y = Sprite::step;
 					} break;
 					case SDLK_a:
 					{
-						sprite.motion.active = 1;
-						sprite.motion.movement.x = -Sprite::step;
+						hero.motion.active = 1;
+						hero.motion.movement.x = -Sprite::step;
 					} break;
 					case SDLK_d:
 					{
-						sprite.motion.active = 1;
-						sprite.motion.movement.x = Sprite::step;
+						hero.motion.active = 1;
+						hero.motion.movement.x = Sprite::step;
 					} break;
 					case SDLK_LEFT:
 					{
@@ -169,18 +169,18 @@ void Game::process_events()
 					case SDLK_w:
 					case SDLK_s:
 					{
-						sprite.motion.active = 1;
-						sprite.motion.movement.y = 0;
-						if (!sprite.motion.movement.x && !sprite.motion.movement.y){
-							sprite.motion.active = 0;
+						hero.motion.active = 1;
+						hero.motion.movement.y = 0;
+						if (!hero.motion.movement.x && !hero.motion.movement.y){
+							hero.motion.active = 0;
 						}
 					} break;
 					case SDLK_a:
 					case SDLK_d:
 					{
-						sprite.motion.movement.x = 0;
-						if (!sprite.motion.movement.x && !sprite.motion.movement.y){
-							sprite.motion.active = 0;
+						hero.motion.movement.x = 0;
+						if (!hero.motion.movement.x && !hero.motion.movement.y){
+							hero.motion.active = 0;
 						}
 					} break;
 					case SDLK_RIGHT:

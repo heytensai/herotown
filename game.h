@@ -19,7 +19,7 @@ private:
 public:
 	int width;
 	int height;
-	Sprite sprite;
+	Sprite hero;
 	int running;
 	Video *video;
 	Sound sound;
@@ -29,7 +29,7 @@ public:
 	Game(int width, int height);
 	void process_events();
 	void move_background();
-	void move_sprite();
+	void move_hero();
 	void render();
 };
 

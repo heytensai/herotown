@@ -10,7 +10,7 @@ int main(int argc, char **argv)
 		// process events
 		game->process_events();
 
-		game->move_sprite();
+		game->move_hero();
 		game->render();
 	}
 
