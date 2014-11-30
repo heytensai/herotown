@@ -5,11 +5,9 @@ Game *game;
 void draw_background()
 {
 	// move grid
-	if (game->vertical.active){
-		game->grid_base.y += game->vertical.movement.y;
-	}
-	if (game->horizontal.active){
-		game->grid_base.x += game->horizontal.movement.x;
+	if (game->background.active){
+		game->grid_base.y += game->background.movement.y;
+		game->grid_base.x += game->background.movement.x;
 	}
 
 	// update texture

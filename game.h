@@ -24,8 +24,7 @@ public:
 	Video *video;
 	Sound sound;
 	point_t grid_base;
-	movement_t vertical;
-	movement_t horizontal;
+	movement_t background;
 
 	Game(int width, int height);
 	void process_events();

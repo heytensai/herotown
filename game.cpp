@@ -7,13 +7,9 @@ Game::Game(int width, int height)
 	running = 1;
 	video = new Video(width, height);
 
-	vertical.active = 0;
-	vertical.movement.x = 0;
-	vertical.movement.y = 0;
-
-	horizontal.active = 1;
-	horizontal.movement.x = 1;
-	horizontal.movement.y = 0;
+	background.active = 0;
+	background.movement.x = 0;
+	background.movement.y = 0;
 
 	sprite.location.x = 100;
 	sprite.location.y = 100;
@@ -71,25 +67,27 @@ void Game::process_events()
 					} break;
 					case SDLK_LEFT:
 					{
-						horizontal.movement.x++;
+						background.active = 1;
+						background.movement.x = 1;
 					} break;
 					case SDLK_RIGHT:
 					{
-						horizontal.movement.x--;
+						background.active = 1;
+						background.movement.x = -1;
 					} break;
 					case SDLK_UP:
 					{
-						vertical.active = 1;
-						vertical.movement.y = -1;
+						background.active = 1;
+						background.movement.y = -1;
 					} break;
 					case SDLK_DOWN:
 					{
-						vertical.active = 1;
-						vertical.movement.y = 1;
+						background.active = 1;
+						background.movement.y = 1;
 					} break;
 					case SDLK_SPACE:
 					{
-						horizontal.active = !horizontal.active;
+						background.active = !background.active;
 					} break;
 					case SDLK_q:
 					case SDLK_ESCAPE:
@@ -118,10 +116,17 @@ void Game::process_events()
 							sprite.motion.active = 0;
 						}
 					} break;
+					case SDLK_RIGHT:
+					case SDLK_LEFT:
+					{
+						background.active = 0;
+						background.movement.x = 0;
+					} break;
 					case SDLK_UP:
 					case SDLK_DOWN:
 					{
-						vertical.active = 0;
+						background.active = 0;
+						background.movement.y = 0;
 					} break;
 				}
 			} break;
