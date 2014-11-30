@@ -25,13 +25,41 @@ Game::Game(int width, int height)
 	// this must happen after video is created
 	hero.load_image(video->renderer, "resources/yoshi.png");
 
+	init_blocks();
+
 	sound.init();
+}
+
+void Game::init_blocks()
+{
+	blocks[0] = new Sprite();
+	blocks[0]->motion.active = 0;
+	blocks[0]->location.x = 400;
+	blocks[0]->location.y = 500;
+	blocks[0]->load_image(video->renderer, "resources/block.png");
+
+	blocks[1] = new Sprite();
+	blocks[1]->motion.active = 0;
+	blocks[1]->location.x = 500;
+	blocks[1]->location.y = 500;
+	blocks[1]->load_image(video->renderer, "resources/block.png");
+
+	blocks[2] = new Sprite();
+	blocks[2]->motion.active = 0;
+	blocks[2]->location.x = 600;
+	blocks[2]->location.y = 500;
+	blocks[2]->load_image(video->renderer, "resources/block.png");
 }
 
 void Game::render()
 {
 	video->start_render();
 	video->blit_background();
+	for (int i=0; i<BLOCKS; i++){
+		if (blocks[i] != NULL){
+			blocks[i]->render(video->renderer);
+		}
+	}
 	hero.render(video->renderer);
 	video->finish_render();
 }
