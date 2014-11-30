@@ -12,9 +12,6 @@ int main(int argc, char **argv)
 
 		game->move_sprite();
 		game->render();
-
-		// blit pixels
-		game->video->blit(&game->sprite);
 	}
 
 	game->sound.destroy();
