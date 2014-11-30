@@ -6,6 +6,7 @@
 class Sprite
 {
 private:
+	SDL_Texture *_load_image(SDL_Renderer *renderer, const char *file);
 
 public:
 	point_t location;
