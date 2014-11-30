@@ -11,11 +11,12 @@ public:
 	point_t location;
 	movement_t motion;
 	SDL_Texture *texture;
-	static const int size = 5;
+	int width;
+	int height;
 	static const int step = 4;
 	static const int edge_size = 80;
 
-	Sprite();
+	Sprite(int width, int height);
 	~Sprite();
 	bool moving();
 	bool can_move(char direction);

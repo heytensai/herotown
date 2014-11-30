@@ -15,15 +15,16 @@ Game::Game(int width, int height)
 	background.movement.x = 0;
 	background.movement.y = 0;
 
-	hero.location.x = 100;
-	hero.location.y = 100;
+	hero = new Sprite(64, 64);
+	hero->location.x = 80;
+	hero->location.y = 520;
 
-	hero.motion.active = 0;
-	hero.motion.movement.x = 0;
-	hero.motion.movement.y = 0;
+	hero->motion.active = 0;
+	hero->motion.movement.x = 0;
+	hero->motion.movement.y = 0;
 
 	// this must happen after video is created
-	hero.load_image(video->renderer, "resources/yoshi.png");
+	hero->load_image(video->renderer, "resources/yoshi.png");
 
 	init_blocks();
 
@@ -32,23 +33,13 @@ Game::Game(int width, int height)
 
 void Game::init_blocks()
 {
-	blocks[0] = new Sprite();
-	blocks[0]->motion.active = 0;
-	blocks[0]->location.x = 400;
-	blocks[0]->location.y = 500;
-	blocks[0]->load_image(video->renderer, "resources/block.png");
-
-	blocks[1] = new Sprite();
-	blocks[1]->motion.active = 0;
-	blocks[1]->location.x = 500;
-	blocks[1]->location.y = 500;
-	blocks[1]->load_image(video->renderer, "resources/block.png");
-
-	blocks[2] = new Sprite();
-	blocks[2]->motion.active = 0;
-	blocks[2]->location.x = 600;
-	blocks[2]->location.y = 500;
-	blocks[2]->load_image(video->renderer, "resources/block.png");
+	for (int i=0; (i*32)<=width; i++){
+		blocks[i] = new Sprite(32, 16);
+		blocks[i]->motion.active = 0;
+		blocks[i]->location.x = i * 32;
+		blocks[i]->location.y = 550;
+		blocks[i]->load_image(video->renderer, "resources/block.png");
+	}
 }
 
 void Game::render()
@@ -60,48 +51,48 @@ void Game::render()
 			blocks[i]->render(video->renderer);
 		}
 	}
-	hero.render(video->renderer);
+	hero->render(video->renderer);
 	video->finish_render();
 }
 
 void Game::move_hero()
 {
 	// move hero (if hero is in bounds)
-	if (hero.motion.active){
-		if (hero.can_move('x')){
-			hero.location.x += hero.motion.movement.x;
+	if (hero->motion.active){
+		if (hero->can_move('x')){
+			hero->location.x += hero->motion.movement.x;
 		}
 
-		if (hero.can_move('y')){
-			hero.location.y += hero.motion.movement.y;
+		if (hero->can_move('y')){
+			hero->location.y += hero->motion.movement.y;
 		}
 	}
 }
 
 void Game::move_background()
 {
-	if (hero.moving()){
-		if (!hero.can_move('x')){
-			if (hero.motion.movement.x < 0){
-				hero.location.x -= hero.motion.movement.x;
+	if (hero->moving()){
+		if (!hero->can_move('x')){
+			if (hero->motion.movement.x < 0){
+				hero->location.x -= hero->motion.movement.x;
 				background.movement.x = -Sprite::step;
 				background.active = 1;
 			}
-			else if (hero.motion.movement.x > 0){
-				hero.location.x -= hero.motion.movement.x;
+			else if (hero->motion.movement.x > 0){
+				hero->location.x -= hero->motion.movement.x;
 				background.movement.x = Sprite::step;
 				background.active = 1;
 			}
 		}
 
-		if (!hero.can_move('y')){
-			if (hero.motion.movement.y < 0){
-				hero.location.y -= hero.motion.movement.y;
+		if (!hero->can_move('y')){
+			if (hero->motion.movement.y < 0){
+				hero->location.y -= hero->motion.movement.y;
 				background.movement.y = -Sprite::step;
 				background.active = 1;
 			}
-			else if (hero.motion.movement.y > 0){
-				hero.location.y -= hero.motion.movement.y;
+			else if (hero->motion.movement.y > 0){
+				hero->location.y -= hero->motion.movement.y;
 				background.movement.y = Sprite::step;
 				background.active = 1;
 			}
@@ -142,23 +133,23 @@ void Game::process_events()
 					} break;
 					case SDLK_w:
 					{
-						hero.motion.active = 1;
-						hero.motion.movement.y = -Sprite::step;
+						hero->motion.active = 1;
+						hero->motion.movement.y = -Sprite::step;
 					} break;
 					case SDLK_s:
 					{
-						hero.motion.active = 1;
-						hero.motion.movement.y = Sprite::step;
+						hero->motion.active = 1;
+						hero->motion.movement.y = Sprite::step;
 					} break;
 					case SDLK_a:
 					{
-						hero.motion.active = 1;
-						hero.motion.movement.x = -Sprite::step;
+						hero->motion.active = 1;
+						hero->motion.movement.x = -Sprite::step;
 					} break;
 					case SDLK_d:
 					{
-						hero.motion.active = 1;
-						hero.motion.movement.x = Sprite::step;
+						hero->motion.active = 1;
+						hero->motion.movement.x = Sprite::step;
 					} break;
 					case SDLK_LEFT:
 					{
@@ -197,18 +188,18 @@ void Game::process_events()
 					case SDLK_w:
 					case SDLK_s:
 					{
-						hero.motion.active = 1;
-						hero.motion.movement.y = 0;
-						if (!hero.motion.movement.x && !hero.motion.movement.y){
-							hero.motion.active = 0;
+						hero->motion.active = 1;
+						hero->motion.movement.y = 0;
+						if (!hero->motion.movement.x && !hero->motion.movement.y){
+							hero->motion.active = 0;
 						}
 					} break;
 					case SDLK_a:
 					case SDLK_d:
 					{
-						hero.motion.movement.x = 0;
-						if (!hero.motion.movement.x && !hero.motion.movement.y){
-							hero.motion.active = 0;
+						hero->motion.movement.x = 0;
+						if (!hero->motion.movement.x && !hero->motion.movement.y){
+							hero->motion.active = 0;
 						}
 					} break;
 					case SDLK_RIGHT:

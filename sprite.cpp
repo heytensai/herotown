@@ -1,7 +1,9 @@
 #include "game.h"
 
-Sprite::Sprite()
+Sprite::Sprite(int width, int height)
 {
+	this->width = width;
+	this->height = height;
 	texture = NULL;
 }
 
@@ -23,13 +25,13 @@ void Sprite::render(SDL_Renderer *renderer)
 	SDL_Rect src;
 	src.x = 0;
 	src.y = 0;
-	src.w = 64;
-	src.h = 64;
+	src.w = width;
+	src.h = height;
 	SDL_Rect dst;
-	dst.x = location.x - 32;
-	dst.y = location.y - 32;
-	dst.w = 64;
-	dst.h = 64;
+	dst.x = location.x - (width / 2);
+	dst.y = location.y - (height / 2);
+	dst.w = width;
+	dst.h = height;
 
 	SDL_RenderCopy(renderer, texture, &src, &dst);
 }
