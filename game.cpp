@@ -15,6 +15,14 @@ Game::Game(int width, int height)
 	background.movement.x = 0;
 	background.movement.y = 0;
 
+	init_hero();
+	init_blocks();
+
+	sound.init();
+}
+
+void Game::init_hero()
+{
 	hero = new Sprite(64, 64);
 	hero->location.x = 80;
 	hero->location.y = 520;
@@ -35,10 +43,6 @@ Game::Game(int width, int height)
 
 	// this must happen after video is created
 	hero->load_image(video->renderer, "resources/yoshi.png");
-
-	init_blocks();
-
-	sound.init();
 }
 
 void Game::init_blocks()

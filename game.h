@@ -16,6 +16,7 @@ class Game
 {
 private:
 	void init_blocks();
+	void init_hero();
 	static const int BLOCKS = 128;
 
 public:
