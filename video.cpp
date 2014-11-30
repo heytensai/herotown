@@ -58,7 +58,7 @@ void Video::create_window()
 		exit(1);
 	}
 
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
 
 	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
 }
@@ -69,7 +69,7 @@ void Video::create_pixels()
 		SDL_DestroyTexture(texture);
 		texture = NULL;
 	}
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height);
+	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STATIC, width, height);
 
 	if (pixels){
 		free(pixels);
@@ -84,12 +84,20 @@ void Video::quit()
 	SDL_Quit();
 }
 
-void Video::blit()
+void Video::start_render()
+{
+	SDL_RenderClear(renderer);
+}
+
+void Video::finish_render()
+{
+	SDL_RenderPresent(renderer);
+}
+
+void Video::blit(Sprite *s)
 {
 	SDL_UpdateTexture(texture, NULL, pixels, width * BPP);
-	SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, texture, NULL, NULL);
-	SDL_RenderPresent(renderer);
 }
 
 void Video::init()

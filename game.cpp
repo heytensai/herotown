@@ -5,7 +5,11 @@ Game::Game(int width, int height)
 	this->width = width;
 	this->height = height;
 	running = 1;
+
 	video = new Video(width, height);
+	video->init();
+	video->create_window();
+	video->create_pixels();
 
 	background.active = 0;
 	background.movement.x = 0;
@@ -18,14 +22,20 @@ Game::Game(int width, int height)
 	sprite.motion.movement.x = 0;
 	sprite.motion.movement.y = 0;
 
-	video->init();
-	video->create_window();
-	video->create_pixels();
+	// this must happen after video is created
+	sprite.load_image(video->renderer, "resources/yoshi.png");
 
 	sound.init();
 }
 
-void Game::draw_sprite()
+void Game::render()
+{
+	video->start_render();
+	sprite.render(video->renderer);
+	video->finish_render();
+}
+
+void Game::move_sprite()
 {
 	// move sprite (if sprite is in bounds)
 	if (sprite.motion.active){
@@ -37,23 +47,9 @@ void Game::draw_sprite()
 			sprite.location.y += sprite.motion.movement.y;
 		}
 	}
-
-	// draw sprite
-	int offset;
-	for (int x=-Sprite::size; x<Sprite::size; x++){
-		for (int y=-Sprite::size; y<Sprite::size; y++){
-			video->set_pixel(
-				sprite.location.x + x,
-				sprite.location.y + y,
-				0xff,
-				0xff,
-				0xff
-			);
-		}
-	}
 }
 
-void Game::draw_background()
+void Game::move_background()
 {
 	if (sprite.moving()){
 		if (!sprite.can_move('x')){
@@ -92,18 +88,6 @@ void Game::draw_background()
 	if (background.active){
 		grid_base.y += background.movement.y;
 		grid_base.x += background.movement.x;
-	}
-
-	// update texture
-	for (int x=0; x<width; x++){
-		for (int y=0; y<height; y++){
-			video->set_pixel(
-				x, y,
-				((x + grid_base.x) & 0xff),
-				((y + grid_base.y) & 0xff),
-				((y + grid_base.y + x + grid_base.x) & 0xff)
-			);
-		}
 	}
 }
 

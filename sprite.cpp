@@ -1,8 +1,53 @@
 #include "game.h"
 
+Sprite::Sprite()
+{
+	texture = NULL;
+}
+
+Sprite::~Sprite()
+{
+	if (texture != NULL){
+		SDL_DestroyTexture(texture);
+		texture = NULL;
+	}
+}
+
 bool Sprite::moving()
 {
 	return (motion.movement.x != 0) || (motion.movement.y != 0);
+}
+
+void Sprite::render(SDL_Renderer *renderer)
+{
+	SDL_Rect src;
+	src.x = 0;
+	src.y = 0;
+	src.w = 64;
+	src.h = 64;
+	SDL_Rect dst;
+	dst.x = location.x - 32;
+	dst.y = location.y - 32;
+	dst.w = 64;
+	dst.h = 64;
+
+	SDL_RenderCopy(renderer, texture, &src, &dst);
+}
+
+void Sprite::load_image(SDL_Renderer *renderer, const char *file)
+{
+	SDL_Surface *tmp = NULL;
+	tmp = IMG_Load(file);
+	if (tmp == NULL){
+		fprintf(stderr, "failed to load sprite image\n");
+		return;
+	}
+
+	texture = SDL_CreateTextureFromSurface(renderer, tmp);
+	if (texture == NULL){
+		fprintf(stderr, "failed to create sprite texture: %s\n", SDL_GetError());
+	}
+	SDL_FreeSurface(tmp);
 }
 
 bool Sprite::can_move(char direction)

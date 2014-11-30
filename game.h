@@ -28,8 +28,9 @@ public:
 
 	Game(int width, int height);
 	void process_events();
-	void draw_background();
-	void draw_sprite();
+	void move_background();
+	void move_sprite();
+	void render();
 };
 
 #endif /* GAME_H */

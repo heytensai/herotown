@@ -10,12 +10,11 @@ int main(int argc, char **argv)
 		// process events
 		game->process_events();
 
-		game->draw_background();
-
-		game->draw_sprite();
+		game->move_sprite();
+		game->render();
 
 		// blit pixels
-		game->video->blit();
+		game->video->blit(&game->sprite);
 	}
 
 	game->sound.destroy();
