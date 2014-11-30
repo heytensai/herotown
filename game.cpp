@@ -9,7 +9,7 @@ Game::Game(int width, int height)
 	video = new Video(width, height);
 	video->init();
 	video->create_window();
-	video->create_pixels();
+	video->load_background("resources/background.png");
 
 	background.active = 0;
 	background.movement.x = 0;
@@ -31,6 +31,7 @@ Game::Game(int width, int height)
 void Game::render()
 {
 	video->start_render();
+	video->blit_background();
 	sprite.render(video->renderer);
 	video->finish_render();
 }
