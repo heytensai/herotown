@@ -47,7 +47,7 @@ void Sprite::render_animation(SDL_Renderer *renderer)
 
 void Sprite::render(SDL_Renderer *renderer)
 {
-	if (is_animated()){
+	if (is_animated() && can_move('x')){
 		if (motion.active){
 			render_animation(renderer);
 			return;
