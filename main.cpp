@@ -8,12 +8,12 @@ void draw_background()
 		if (!game->sprite.can_move('x')){
 			if (game->sprite.motion.movement.x < 0){
 				game->sprite.location.x -= game->sprite.motion.movement.x;
-				game->background.movement.x = -1;
+				game->background.movement.x = -Sprite::step;
 				game->background.active = 1;
 			}
 			else if (game->sprite.motion.movement.x > 0){
 				game->sprite.location.x -= game->sprite.motion.movement.x;
-				game->background.movement.x = 1;
+				game->background.movement.x = Sprite::step;
 				game->background.active = 1;
 			}
 		}
@@ -21,12 +21,12 @@ void draw_background()
 		if (!game->sprite.can_move('y')){
 			if (game->sprite.motion.movement.y < 0){
 				game->sprite.location.y -= game->sprite.motion.movement.y;
-				game->background.movement.y = -1;
+				game->background.movement.y = -Sprite::step;
 				game->background.active = 1;
 			}
 			else if (game->sprite.motion.movement.y > 0){
 				game->sprite.location.y -= game->sprite.motion.movement.y;
-				game->background.movement.y = 1;
+				game->background.movement.y = Sprite::step;
 				game->background.active = 1;
 			}
 		}
