@@ -24,7 +24,6 @@ Game::Game(int width, int height)
 
 void Game::add_coin(int x, int y)
 {
-	fprintf(stdout, "add coin at (%i, %i)\n", x, y);
 	for (int i=0; i<COINS; i++){
 		if (coins[i] == NULL){
 			coins[i] = new Sprite(20, 25);
@@ -32,7 +31,6 @@ void Game::add_coin(int x, int y)
 			coins[i]->location.x = x;
 			coins[i]->location.y = y;
 			coins[i]->load_image(video->renderer, "resources/coin0.png");
-			fprintf(stdout, "added coin at (%i, %i)\n", x, y);
 			return;
 		}
 	}
@@ -114,7 +112,6 @@ void Game::move_hero()
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){
 			if (hero->intersects(coins[i])){
-				fprintf(stdout, "deleting coin %i\n", i);
 				delete coins[i];
 				coins[i] = NULL;
 			}
