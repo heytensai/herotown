@@ -47,7 +47,7 @@ void Game::init_coins()
 
 void Game::init_hero()
 {
-	hero = new Sprite(64, 64);
+	hero = new Sprite(48, 64);
 	hero->location.x = 80;
 	hero->location.y = 520;
 
@@ -66,7 +66,7 @@ void Game::init_hero()
 	hero->load_animation(video->renderer, "resources/yoshi7.png");
 
 	// this must happen after video is created
-	hero->load_image(video->renderer, "resources/yoshi.png");
+	hero->load_image(video->renderer, "resources/yoshi0.png");
 }
 
 void Game::init_blocks()
