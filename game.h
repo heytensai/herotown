@@ -16,14 +16,17 @@ class Game
 {
 private:
 	void init_blocks();
+	void init_coins();
 	void init_hero();
 	static const int BLOCKS = 128;
+	static const int COINS = 128;
 
 public:
 	int width;
 	int height;
 	Sprite *hero;
 	Sprite *blocks[BLOCKS];
+	Sprite *coins[COINS];
 	int running;
 	Video *video;
 	Sound sound;

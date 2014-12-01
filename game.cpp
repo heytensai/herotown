@@ -17,8 +17,20 @@ Game::Game(int width, int height)
 
 	init_hero();
 	init_blocks();
+	init_coins();
 
 	sound.init();
+}
+
+void Game::init_coins()
+{
+	for (int i=0; i<10; i++){
+		coins[i] = new Sprite(20, 25);
+		coins[i]->motion.active = 0;
+		coins[i]->location.x = i * 30 + 200;
+		coins[i]->location.y = 530;
+		coins[i]->load_image(video->renderer, "resources/coin0.png");
+	}
 }
 
 void Game::init_hero()
@@ -63,6 +75,11 @@ void Game::render()
 	for (int i=0; i<BLOCKS; i++){
 		if (blocks[i] != NULL){
 			blocks[i]->render(video->renderer);
+		}
+	}
+	for (int i=0; i<COINS; i++){
+		if (coins[i] != NULL){
+			coins[i]->render(video->renderer);
 		}
 	}
 	hero->render(video->renderer);
