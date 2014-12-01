@@ -22,14 +22,26 @@ Game::Game(int width, int height)
 	sound.init();
 }
 
+void Game::add_coin(int x, int y)
+{
+	fprintf(stdout, "add coin at (%i, %i)\n", x, y);
+	for (int i=0; i<COINS; i++){
+		if (coins[i] == NULL){
+			coins[i] = new Sprite(20, 25);
+			coins[i]->motion.active = 0;
+			coins[i]->location.x = x;
+			coins[i]->location.y = y;
+			coins[i]->load_image(video->renderer, "resources/coin0.png");
+			fprintf(stdout, "added coin at (%i, %i)\n", x, y);
+			return;
+		}
+	}
+}
+
 void Game::init_coins()
 {
-	for (int i=0; i<10; i++){
-		coins[i] = new Sprite(20, 25);
-		coins[i]->motion.active = 0;
-		coins[i]->location.x = i * 30 + 200;
-		coins[i]->location.y = 530;
-		coins[i]->load_image(video->renderer, "resources/coin0.png");
+	for (int i=0; i<1; i++){
+		add_coin(i * 30 + 200, 530);
 	}
 }
 
@@ -102,6 +114,7 @@ void Game::move_hero()
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){
 			if (hero->intersects(coins[i])){
+				fprintf(stdout, "deleting coin %i\n", i);
 				delete coins[i];
 				coins[i] = NULL;
 			}
@@ -213,7 +226,14 @@ void Game::process_events()
 					} break;
 					case SDLK_SPACE:
 					{
-						background.active = !background.active;
+						int new_x = hero->location.x;
+						if (hero->motion.movement.x < 0){
+							new_x += (hero->width / 2) + 10;
+						}
+						else{
+							new_x -= (hero->width / 2) + 10;
+						}
+						add_coin(new_x, hero->location.y + 15);
 					} break;
 					case SDLK_q:
 					case SDLK_ESCAPE:

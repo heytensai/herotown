@@ -20,6 +20,7 @@ private:
 	void init_hero();
 	static const int BLOCKS = 128;
 	static const int COINS = 128;
+	void add_coin(int x, int y);
 
 public:
 	int width;
