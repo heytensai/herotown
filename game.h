@@ -15,11 +15,15 @@
 class Game
 {
 private:
+	void init_blocks();
+	void init_hero();
+	static const int BLOCKS = 128;
 
 public:
 	int width;
 	int height;
-	Sprite sprite;
+	Sprite *hero;
+	Sprite *blocks[BLOCKS];
 	int running;
 	Video *video;
 	Sound sound;
@@ -28,8 +32,9 @@ public:
 
 	Game(int width, int height);
 	void process_events();
-	void draw_background();
-	void draw_sprite();
+	void move_background();
+	void move_hero();
+	void render();
 };
 
 #endif /* GAME_H */

@@ -13,12 +13,14 @@ Uint32 Video::pitch_offset(int x, int y)
 
 void Video::set_pixel(int x, int y, int r, int g, int b)
 {
+/*
 	if (pixels == NULL){
 		return;
 	}
 	int offset = pitch_offset(x, y);
 	Uint32 p = map_rgba(r, g, b, 0);
 	pixels[offset] = p;
+*/
 }
 
 void Video::set_dimensions(int width, int height)
@@ -63,19 +65,32 @@ void Video::create_window()
 	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
 }
 
-void Video::create_pixels()
+SDL_Texture *Video::make_texture_from_image(const char *file)
 {
-	if (texture){
-		SDL_DestroyTexture(texture);
-		texture = NULL;
-	}
-	texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, width, height);
+	SDL_Surface *tmp = NULL;
+	tmp = IMG_Load(file);
 
-	if (pixels){
-		free(pixels);
-		pixels = NULL;
+	if (tmp == NULL){
+		fprintf(stderr, "failed to load sprite image\n");
+		return NULL;
 	}
-	pixels = (Uint32 *)malloc(width * height * BPP);
+
+	SDL_Texture *t = SDL_CreateTextureFromSurface(renderer, tmp);
+	if (t == NULL){
+		fprintf(stderr, "failed to create sprite texture: %s\n", SDL_GetError());
+	}
+	SDL_FreeSurface(tmp);
+
+	return t;
+}
+
+void Video::load_background(const char *file)
+{
+	if (background){
+		SDL_DestroyTexture(background);
+		background = NULL;
+	}
+	background = make_texture_from_image(file);
 }
 
 void Video::quit()
@@ -84,12 +99,19 @@ void Video::quit()
 	SDL_Quit();
 }
 
-void Video::blit()
+void Video::start_render()
 {
-	SDL_UpdateTexture(texture, NULL, pixels, width * BPP);
 	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, texture, NULL, NULL);
+}
+
+void Video::finish_render()
+{
 	SDL_RenderPresent(renderer);
+}
+
+void Video::blit_background()
+{
+	SDL_RenderCopy(renderer, background, NULL, NULL);
 }
 
 void Video::init()
