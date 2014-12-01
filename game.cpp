@@ -98,6 +98,15 @@ void Game::move_hero()
 			hero->location.y += hero->motion.movement.y;
 		}
 	}
+
+	for (int i=0; i<COINS; i++){
+		if (coins[i] != NULL){
+			if (hero->intersects(coins[i])){
+				delete coins[i];
+				coins[i] = NULL;
+			}
+		}
+	}
 }
 
 void Game::move_background()

@@ -6,6 +6,7 @@ Sprite::Sprite(int width, int height)
 	this->height = height;
 	texture = NULL;
 	animated = 0;
+	hidden = false;
 }
 
 Sprite::~Sprite()
@@ -14,6 +15,44 @@ Sprite::~Sprite()
 		SDL_DestroyTexture(texture);
 		texture = NULL;
 	}
+}
+
+bounding_box_t Sprite::get_bounding_box()
+{
+	bounding_box_t b;
+	b.top_left.x = location.x - (width / 2);
+	b.bottom_right.x = location.x + (width / 2);
+	b.top_left.y = location.y - (height / 2);
+	b.bottom_right.y = location.y + (height / 2);
+	return b;
+}
+
+bool Sprite::intersects(Sprite *other)
+{
+	if (other == NULL){
+		return false;
+	}
+
+	bounding_box_t me = get_bounding_box();
+	bounding_box_t them = other->get_bounding_box();
+
+	if (me.top_left.x >= them.bottom_right.x){
+		return false;
+	}
+
+	if (me.bottom_right.x <= them.top_left.x){
+		return false;
+	}
+
+	if (me.bottom_right.y <= them.top_left.y){
+		return false;
+	}
+
+	if (me.top_left.y >= them.bottom_right.y){
+		return false;
+	}
+
+	return true;
 }
 
 bool Sprite::moving()
@@ -47,6 +86,10 @@ void Sprite::render_animation(SDL_Renderer *renderer)
 
 void Sprite::render(SDL_Renderer *renderer)
 {
+	if (hidden){
+		return;
+	}
+
 	if (is_animated() && can_move('x')){
 		if (motion.active){
 			render_animation(renderer);

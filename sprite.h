@@ -21,6 +21,7 @@ public:
 	SDL_Texture *texture;
 	int width;
 	int height;
+	bool hidden;
 	static const int step = 4;
 	static const int edge_size = 80;
 
@@ -33,6 +34,8 @@ public:
 	void render(SDL_Renderer *renderer);
 	void enable_animation(int frames);
 	bool is_animated();
+	bool intersects(Sprite *other);
+	bounding_box_t get_bounding_box();
 
 };
 

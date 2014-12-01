@@ -7,6 +7,11 @@ typedef struct {
 } point_t;
 
 typedef struct {
+	point_t top_left;
+	point_t bottom_right;
+} bounding_box_t;
+
+typedef struct {
 	int active;
 	point_t movement;
 } movement_t;
