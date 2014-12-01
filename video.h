@@ -11,11 +11,11 @@ private:
 	int width;
 	int height;
 	Uint32 pitch_offset(int x, int y);
+	SDL_Texture *background = NULL;
+	SDL_Window *window;
 
 public:
-	SDL_Window *window;
 	SDL_Renderer *renderer = NULL;
-	SDL_Texture *background = NULL;
 
 	Video(int width, int height);
 	void init();

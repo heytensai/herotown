@@ -15,24 +15,25 @@
 class Game
 {
 private:
-	void init_blocks();
-	void init_coins();
-	void init_hero();
 	static const int BLOCKS = 128;
 	static const int COINS = 128;
-	void add_coin(int x, int y);
-
-public:
 	int width;
 	int height;
 	Sprite *hero;
+	point_t grid_base;
+	movement_t background;
 	Sprite *blocks[BLOCKS];
 	Sprite *coins[COINS];
+
+	void init_blocks();
+	void init_coins();
+	void init_hero();
+	void add_coin(int x, int y);
+
+public:
 	int running;
 	Video *video;
 	Sound sound;
-	point_t grid_base;
-	movement_t background;
 
 	Game(int width, int height);
 	void process_events();

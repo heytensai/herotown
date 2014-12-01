@@ -6,19 +6,20 @@
 class Sprite
 {
 private:
-	SDL_Texture *_load_image(SDL_Renderer *renderer, const char *file);
 	SDL_Texture **animation;
+	SDL_Texture *texture;
 	int animated;
 	int animation_index;
 	int current_animation;
 	Uint32 last_animation_tick;
+
+	SDL_Texture *_load_image(SDL_Renderer *renderer, const char *file);
 	void render_animation(SDL_Renderer *renderer);
 	void render_static(SDL_Renderer *renderer);
 
 public:
 	point_t location;
 	movement_t motion;
-	SDL_Texture *texture;
 	int width;
 	int height;
 	bool hidden;
