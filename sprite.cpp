@@ -15,6 +15,15 @@ Sprite::~Sprite()
 		SDL_DestroyTexture(texture);
 		texture = NULL;
 	}
+	if (animated){
+		for (int i=0; i<animated; i++){
+			if (animation[i] != NULL){
+				SDL_DestroyTexture(animation[i]);
+				animation[i] = NULL;
+			}
+		}
+		delete[] animation;
+	}
 }
 
 bounding_box_t Sprite::get_bounding_box()

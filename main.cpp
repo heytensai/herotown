@@ -16,4 +16,6 @@ int main(int argc, char **argv)
 
 	game->sound.destroy();
 	game->video->quit();
+
+	delete game;
 }

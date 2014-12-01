@@ -18,6 +18,7 @@ public:
 	SDL_Renderer *renderer = NULL;
 
 	Video(int width, int height);
+	~Video();
 	void init();
 	void blit_background();
 	void set_pixel(int x, int y, int r, int g, int b);

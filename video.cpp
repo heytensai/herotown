@@ -2,7 +2,15 @@
 
 Video::Video(int width, int height)
 {
+	renderer = NULL;
+	window = NULL;
 	set_dimensions(width, height);
+}
+
+Video::~Video()
+{
+	destroy_window();
+	SDL_Quit();
 }
 
 Uint32 Video::pitch_offset(int x, int y)

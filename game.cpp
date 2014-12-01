@@ -22,6 +22,30 @@ Game::Game(int width, int height)
 	sound.init();
 }
 
+Game::~Game()
+{
+	if (hero != NULL){
+		delete hero;
+		hero = NULL;
+	}
+	for (int i=0; i<BLOCKS; i++){
+		if (blocks[i] != NULL){
+			delete blocks[i];
+			blocks[i] = NULL;
+		}
+	}
+	for (int i=0; i<COINS; i++){
+		if (coins[i] != NULL){
+			delete coins[i];
+			coins[i] = NULL;
+		}
+	}
+	if (video != NULL){
+		delete video;
+		video = NULL;
+	}
+}
+
 void Game::add_coin(int x, int y)
 {
 	for (int i=0; i<COINS; i++){
@@ -38,6 +62,9 @@ void Game::add_coin(int x, int y)
 
 void Game::init_coins()
 {
+	for (int i=0; i<COINS; i++){
+		coins[i] = NULL;
+	}
 	for (int i=0; i<1; i++){
 		add_coin(i * 30 + 200, 530);
 	}
@@ -69,6 +96,9 @@ void Game::init_hero()
 
 void Game::init_blocks()
 {
+	for (int i=0; i<BLOCKS; i++){
+		blocks[i] = NULL;
+	}
 	for (int i=0; (i*32)<=width; i++){
 		blocks[i] = new Sprite(32, 16);
 		blocks[i]->motion.active = 0;

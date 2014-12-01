@@ -36,6 +36,7 @@ public:
 	Sound sound;
 
 	Game(int width, int height);
+	~Game();
 	void process_events();
 	void move_background();
 	void move_hero();
