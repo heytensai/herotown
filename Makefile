@@ -1,4 +1,4 @@
-H=game.h video.h point.h sprite.h sound.h
+H=game.h video.h point.h sprite.h sound.h input.h
 SRC=main.cpp sprite.cpp video.cpp sound.cpp game.cpp
 APP=herotown
 
