@@ -5,6 +5,7 @@ Game::Game(int width, int height)
 	this->width = width;
 	this->height = height;
 	running = 1;
+	input_state = 0;
 
 	video = new Video(width, height);
 	video->init();
@@ -191,6 +192,63 @@ void Game::move_background()
 	}
 }
 
+void Game::process_inputs()
+{
+	int numkeys;
+	const Uint8 *state = SDL_GetKeyboardState(&numkeys);
+	last_input_state = input_state;
+	input_state = 0;
+	if (state[SDL_SCANCODE_W]){
+		input_state |= INPUT_STATE_MOVE_UP;
+	}
+	if (state[SDL_SCANCODE_A]){
+		input_state |= INPUT_STATE_MOVE_LEFT;
+	}
+	if (state[SDL_SCANCODE_S]){
+		input_state |= INPUT_STATE_MOVE_DOWN;
+	}
+	if (state[SDL_SCANCODE_D]){
+		input_state |= INPUT_STATE_MOVE_RIGHT;
+	}
+	if (state[SDL_SCANCODE_ESCAPE] || state[SDL_SCANCODE_Q]){
+		input_state |= INPUT_STATE_QUIT;
+	}
+
+	process_state();
+}
+
+void Game::process_state()
+{
+	if (input_state & INPUT_STATE_QUIT){
+		running = 0;
+	}
+
+	hero->motion.active = 0;
+	hero->motion.movement.y = 0;
+	hero->motion.movement.x = 0;
+
+	if (input_state & INPUT_STATE_MOVE_UP){
+		hero->motion.active = 1;
+		hero->motion.movement.y -= Sprite::step;
+	}
+
+	if (input_state & INPUT_STATE_MOVE_DOWN){
+		hero->motion.active = 1;
+		hero->motion.movement.y += Sprite::step;
+	}
+
+	if (input_state & INPUT_STATE_MOVE_LEFT){
+		hero->motion.active = 1;
+		hero->motion.movement.x -= Sprite::step;
+	}
+
+	if (input_state & INPUT_STATE_MOVE_RIGHT){
+		hero->motion.active = 1;
+		hero->motion.movement.x += Sprite::step;
+	}
+
+}
+
 void Game::process_events()
 {
 	SDL_Event event;
@@ -201,6 +259,41 @@ void Game::process_events()
 			{
 				running = 0;
 			} break;
+			case SDL_TEXTINPUT:
+			case SDL_KEYDOWN:
+			case SDL_KEYUP:
+			{
+				//ignore
+			} break;
+			case SDL_WINDOWEVENT:
+			{
+				switch (event.window.event){
+					case SDL_WINDOWEVENT_RESIZED:
+					{
+						//TODO: this doesn't really work yet
+						/*
+						width = event.window.data1;
+						height = event.window.data2;
+						create_pixels();
+						*/
+						//fprintf(stdout, "window resized to %i, %i\n", event.window.data1, event.window.data2);
+					} break;
+					default:
+					{
+						//fprintf(stdout, "sdl window event: %i\n", event.window.event);
+					} break;
+				}
+			} break;
+			default:
+			{
+				fprintf(stdout, "sdl event: %x\n", event.type);
+			} break;
+		}
+	}
+}
+
+
+/*
 			case SDL_KEYDOWN:
 			{
 				if (event.key.repeat){
@@ -303,34 +396,4 @@ void Game::process_events()
 					} break;
 				}
 			} break;
-			case SDL_TEXTINPUT:
-			{
-				//ignore
-			} break;
-			case SDL_WINDOWEVENT:
-			{
-				switch (event.window.event){
-					case SDL_WINDOWEVENT_RESIZED:
-					{
-						//TODO: this doesn't really work yet
-						/*
-						width = event.window.data1;
-						height = event.window.data2;
-						create_pixels();
-						*/
-						//fprintf(stdout, "window resized to %i, %i\n", event.window.data1, event.window.data2);
-					} break;
-					default:
-					{
-						//fprintf(stdout, "sdl window event: %i\n", event.window.event);
-					} break;
-				}
-			} break;
-			default:
-			{
-				fprintf(stdout, "sdl event: %x\n", event.type);
-			} break;
-		}
-	}
-}
-
+*/

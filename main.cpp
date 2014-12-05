@@ -8,6 +8,7 @@ int main(int argc, char **argv)
 	while (game->running){
 
 		// process events
+		game->process_inputs();
 		game->process_events();
 
 		game->move_hero();

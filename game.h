@@ -11,6 +11,7 @@
 #include "video.h"
 #include "sprite.h"
 #include "sound.h"
+#include "input.h"
 
 class Game
 {
@@ -24,11 +25,14 @@ private:
 	movement_t background;
 	Sprite *blocks[BLOCKS];
 	Sprite *coins[COINS];
+	input_state_t last_input_state;
+	input_state_t input_state;
 
 	void init_blocks();
 	void init_coins();
 	void init_hero();
 	void add_coin(int x, int y);
+	void process_state();
 
 public:
 	int running;
@@ -38,6 +42,7 @@ public:
 	Game(int width, int height);
 	~Game();
 	void process_events();
+	void process_inputs();
 	void move_background();
 	void move_hero();
 	void render();
