@@ -47,8 +47,15 @@ Game::~Game()
 	}
 }
 
-void Game::add_coin(int x, int y)
+void Game::add_coin(int x, int y, bool ignore_tick = false)
 {
+	if (!ignore_tick){
+		Uint32 cur_tick = SDL_GetTicks();
+		if (cur_tick - last_coin_added < COIN_TICKS){
+			return;
+		}
+		last_coin_added = cur_tick;
+	}
 	for (int i=0; i<COINS; i++){
 		if (coins[i] == NULL){
 			coins[i] = new Sprite(20, 25);
@@ -67,7 +74,7 @@ void Game::init_coins()
 		coins[i] = NULL;
 	}
 	for (int i=0; i<1; i++){
-		add_coin(i * 30 + 200, 530);
+		add_coin(i * 30 + 200, 530, true);
 	}
 }
 
@@ -210,6 +217,9 @@ void Game::process_inputs()
 	if (state[SDL_SCANCODE_D]){
 		input_state |= INPUT_STATE_MOVE_RIGHT;
 	}
+	if (state[SDL_SCANCODE_SPACE]){
+		input_state |= INPUT_STATE_DROP_COIN;
+	}
 	if (state[SDL_SCANCODE_ESCAPE] || state[SDL_SCANCODE_Q]){
 		input_state |= INPUT_STATE_QUIT;
 	}
@@ -247,6 +257,16 @@ void Game::process_state()
 		hero->motion.movement.x += Sprite::step;
 	}
 
+	if (input_state & INPUT_STATE_DROP_COIN){
+		int new_x = hero->location.x;
+		if (hero->motion.movement.x < 0){
+			new_x += (hero->width / 2) + 10;
+		}
+		else{
+			new_x -= (hero->width / 2) + 10;
+		}
+		add_coin(new_x, hero->location.y + 15);
+	}
 }
 
 void Game::process_events()

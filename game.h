@@ -18,6 +18,7 @@ class Game
 private:
 	static const int BLOCKS = 128;
 	static const int COINS = 128;
+	static const int COIN_TICKS = 200;
 	int width;
 	int height;
 	Sprite *hero;
@@ -27,11 +28,12 @@ private:
 	Sprite *coins[COINS];
 	input_state_t last_input_state;
 	input_state_t input_state;
+	Uint32 last_coin_added;
 
 	void init_blocks();
 	void init_coins();
 	void init_hero();
-	void add_coin(int x, int y);
+	void add_coin(int x, int y, bool ignore_tick);
 	void process_state();
 
 public:
