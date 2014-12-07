@@ -1,5 +1,5 @@
-H=game.h video.h point.h sprite.h sound.h input.h
-SRC=main.cpp sprite.cpp video.cpp sound.cpp game.cpp
+H=game.h video.h point.h sprite.h sound.h input.h hero.h
+SRC=main.cpp sprite.cpp video.cpp sound.cpp game.cpp hero.cpp
 APP=herotown
 
 ${APP}: ${SRC} ${H}

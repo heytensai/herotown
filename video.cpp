@@ -1,4 +1,4 @@
-#include "game.h"
+#include "video.h"
 
 Video::Video(int width, int height)
 {

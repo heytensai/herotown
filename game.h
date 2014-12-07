@@ -10,6 +10,7 @@
 #include "point.h"
 #include "video.h"
 #include "sprite.h"
+#include "hero.h"
 #include "sound.h"
 #include "input.h"
 
@@ -22,7 +23,8 @@ private:
 	static const int MAX_JOYDEV = 4;
 	int width;
 	int height;
-	Sprite *hero;
+	Hero *hero1;
+	Hero *hero2;
 	point_t grid_base;
 	movement_t background;
 	Sprite *blocks[BLOCKS];

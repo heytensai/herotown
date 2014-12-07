@@ -1,7 +1,10 @@
 #ifndef SPRITE_H
 #define SPRITE_H
 
-#include "game.h"
+#include "globals.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+#include "point.h"
 
 class Sprite
 {

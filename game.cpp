@@ -31,9 +31,9 @@ Game::Game(int width, int height)
 
 Game::~Game()
 {
-	if (hero != NULL){
-		delete hero;
-		hero = NULL;
+	if (hero1 != NULL){
+		delete hero1;
+		hero1 = NULL;
 	}
 	for (int i=0; i<BLOCKS; i++){
 		if (blocks[i] != NULL){
@@ -123,28 +123,50 @@ void Game::init_controller()
 	}
 }
 
+/*
+ * this must happen after video is created
+ */
 void Game::init_hero()
 {
-	hero = new Sprite(48, 64);
-	hero->location.x = 80;
-	hero->location.y = 520;
+	hero1 = new Hero(48, 64);
+	hero1->location.x = 80;
+	hero1->location.y = 520;
 
-	hero->motion.active = 0;
-	hero->motion.movement.x = 0;
-	hero->motion.movement.y = 0;
+	hero1->motion.active = 0;
+	hero1->motion.movement.x = 0;
+	hero1->motion.movement.y = 0;
 
-	hero->enable_animation(8);
-	hero->load_animation(video->renderer, "resources/yoshi0.png");
-	hero->load_animation(video->renderer, "resources/yoshi1.png");
-	hero->load_animation(video->renderer, "resources/yoshi2.png");
-	hero->load_animation(video->renderer, "resources/yoshi3.png");
-	hero->load_animation(video->renderer, "resources/yoshi4.png");
-	hero->load_animation(video->renderer, "resources/yoshi5.png");
-	hero->load_animation(video->renderer, "resources/yoshi6.png");
-	hero->load_animation(video->renderer, "resources/yoshi7.png");
+	hero1->enable_animation(8);
+	hero1->load_animation(video->renderer, "resources/yoshi0.png");
+	hero1->load_animation(video->renderer, "resources/yoshi1.png");
+	hero1->load_animation(video->renderer, "resources/yoshi2.png");
+	hero1->load_animation(video->renderer, "resources/yoshi3.png");
+	hero1->load_animation(video->renderer, "resources/yoshi4.png");
+	hero1->load_animation(video->renderer, "resources/yoshi5.png");
+	hero1->load_animation(video->renderer, "resources/yoshi6.png");
+	hero1->load_animation(video->renderer, "resources/yoshi7.png");
 
-	// this must happen after video is created
-	hero->load_image(video->renderer, "resources/yoshi0.png");
+	hero1->load_image(video->renderer, "resources/yoshi0.png");
+
+	hero2 = new Hero(48, 64);
+	hero2->location.x = 720;
+	hero2->location.y = 520;
+
+	hero2->motion.active = 0;
+	hero2->motion.movement.x = 0;
+	hero2->motion.movement.y = 0;
+
+	hero2->enable_animation(8);
+	hero2->load_animation(video->renderer, "resources/yoshi0.png");
+	hero2->load_animation(video->renderer, "resources/yoshi1.png");
+	hero2->load_animation(video->renderer, "resources/yoshi2.png");
+	hero2->load_animation(video->renderer, "resources/yoshi3.png");
+	hero2->load_animation(video->renderer, "resources/yoshi4.png");
+	hero2->load_animation(video->renderer, "resources/yoshi5.png");
+	hero2->load_animation(video->renderer, "resources/yoshi6.png");
+	hero2->load_animation(video->renderer, "resources/yoshi7.png");
+
+	hero2->load_image(video->renderer, "resources/yoshi0.png");
 }
 
 void Game::init_blocks()
@@ -175,26 +197,42 @@ void Game::render()
 			coins[i]->render(video->renderer);
 		}
 	}
-	hero->render(video->renderer);
+	hero1->render(video->renderer);
+	hero2->render(video->renderer);
 	video->finish_render();
 }
 
 void Game::move_hero()
 {
-	// move hero (if hero is in bounds)
-	if (hero->motion.active){
-		if (hero->can_move('x')){
-			hero->location.x += hero->motion.movement.x;
+	// move hero1 (if hero1 is in bounds)
+	if (hero1->motion.active){
+		if (hero1->can_move('x')){
+			hero1->location.x += hero1->motion.movement.x;
 		}
 
-		if (hero->can_move('y')){
-			hero->location.y += hero->motion.movement.y;
+		if (hero1->can_move('y')){
+			hero1->location.y += hero1->motion.movement.y;
+		}
+	}
+
+	// move hero2 (if hero2 is in bounds)
+	if (hero2->motion.active){
+		if (hero2->can_move('x')){
+			hero2->location.x += hero2->motion.movement.x;
+		}
+
+		if (hero2->can_move('y')){
+			hero2->location.y += hero2->motion.movement.y;
 		}
 	}
 
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){
-			if (hero->intersects(coins[i])){
+			if (hero1->intersects(coins[i])){
+				delete coins[i];
+				coins[i] = NULL;
+			}
+			if (hero2->intersects(coins[i])){
 				delete coins[i];
 				coins[i] = NULL;
 			}
@@ -204,28 +242,28 @@ void Game::move_hero()
 
 void Game::move_background()
 {
-	if (hero->moving()){
-		if (!hero->can_move('x')){
-			if (hero->motion.movement.x < 0){
-				hero->location.x -= hero->motion.movement.x;
+	if (hero1->moving()){
+		if (!hero1->can_move('x')){
+			if (hero1->motion.movement.x < 0){
+				hero1->location.x -= hero1->motion.movement.x;
 				background.movement.x = -Sprite::step;
 				background.active = 1;
 			}
-			else if (hero->motion.movement.x > 0){
-				hero->location.x -= hero->motion.movement.x;
+			else if (hero1->motion.movement.x > 0){
+				hero1->location.x -= hero1->motion.movement.x;
 				background.movement.x = Sprite::step;
 				background.active = 1;
 			}
 		}
 
-		if (!hero->can_move('y')){
-			if (hero->motion.movement.y < 0){
-				hero->location.y -= hero->motion.movement.y;
+		if (!hero1->can_move('y')){
+			if (hero1->motion.movement.y < 0){
+				hero1->location.y -= hero1->motion.movement.y;
 				background.movement.y = -Sprite::step;
 				background.active = 1;
 			}
-			else if (hero->motion.movement.y > 0){
-				hero->location.y -= hero->motion.movement.y;
+			else if (hero1->motion.movement.y > 0){
+				hero1->location.y -= hero1->motion.movement.y;
 				background.movement.y = Sprite::step;
 				background.active = 1;
 			}
@@ -250,34 +288,56 @@ void Game::process_inputs()
 	const Uint8 *state = SDL_GetKeyboardState(&numkeys);
 	last_input_state = input_state;
 	input_state = 0;
+
+	//hero1
 	if (state[SDL_SCANCODE_W]){
-		input_state |= INPUT_STATE_MOVE_UP;
+		input_state |= INPUT_STATE_HERO1_MOVE_UP;
 	}
 	if (state[SDL_SCANCODE_A]){
-		input_state |= INPUT_STATE_MOVE_LEFT;
+		input_state |= INPUT_STATE_HERO1_MOVE_LEFT;
 	}
 	if (state[SDL_SCANCODE_S]){
-		input_state |= INPUT_STATE_MOVE_DOWN;
+		input_state |= INPUT_STATE_HERO1_MOVE_DOWN;
 	}
 	if (state[SDL_SCANCODE_D]){
-		input_state |= INPUT_STATE_MOVE_RIGHT;
+		input_state |= INPUT_STATE_HERO1_MOVE_RIGHT;
 	}
 	if (state[SDL_SCANCODE_SPACE]){
-		input_state |= INPUT_STATE_DROP_COIN;
+		input_state |= INPUT_STATE_HERO1_DROP_COIN;
 	}
+
+	//hero2
+	if (state[SDL_SCANCODE_UP]){
+		input_state |= INPUT_STATE_HERO2_MOVE_UP;
+	}
+	if (state[SDL_SCANCODE_LEFT]){
+		input_state |= INPUT_STATE_HERO2_MOVE_LEFT;
+	}
+	if (state[SDL_SCANCODE_DOWN]){
+		input_state |= INPUT_STATE_HERO2_MOVE_DOWN;
+	}
+	if (state[SDL_SCANCODE_RIGHT]){
+		input_state |= INPUT_STATE_HERO2_MOVE_RIGHT;
+	}
+	if (state[SDL_SCANCODE_KP_ENTER]){
+		input_state |= INPUT_STATE_HERO2_DROP_COIN;
+	}
+
+	//globals
 	if (state[SDL_SCANCODE_ESCAPE] || state[SDL_SCANCODE_Q]){
 		input_state |= INPUT_STATE_QUIT;
 	}
 
+	//joysticks
 	if (use_joy){
 		for (int i=0; i<MAX_JOYDEV; i++){
 			if (joy[i] != NULL){
 				Sint16 x_move = SDL_JoystickGetAxis(joy[i], 0);
 				if (x_move > 0){
-					input_state |= INPUT_STATE_MOVE_RIGHT;
+					input_state |= INPUT_STATE_HERO1_MOVE_RIGHT;
 				}
 				else if (x_move < 0){
-					input_state |= INPUT_STATE_MOVE_LEFT;
+					input_state |= INPUT_STATE_HERO1_MOVE_LEFT;
 				}
 			}
 		}
@@ -295,7 +355,7 @@ void Game::process_inputs()
 				}
 
 				if (button[0]){
-					input_state |= INPUT_STATE_DROP_COIN;
+					input_state |= INPUT_STATE_HERO1_DROP_COIN;
 				}
 			}
 		}
@@ -310,39 +370,75 @@ void Game::process_state()
 		running = 0;
 	}
 
-	hero->motion.active = 0;
-	hero->motion.movement.y = 0;
-	hero->motion.movement.x = 0;
+	hero1->motion.active = 0;
+	hero1->motion.movement.y = 0;
+	hero1->motion.movement.x = 0;
 
-	if (input_state & INPUT_STATE_MOVE_UP){
-		hero->motion.active = 1;
-		hero->motion.movement.y -= Sprite::step;
+	if (input_state & INPUT_STATE_HERO1_MOVE_UP){
+		hero1->motion.active = 1;
+		hero1->motion.movement.y -= Sprite::step;
 	}
 
-	if (input_state & INPUT_STATE_MOVE_DOWN){
-		hero->motion.active = 1;
-		hero->motion.movement.y += Sprite::step;
+	if (input_state & INPUT_STATE_HERO1_MOVE_DOWN){
+		hero1->motion.active = 1;
+		hero1->motion.movement.y += Sprite::step;
 	}
 
-	if (input_state & INPUT_STATE_MOVE_LEFT){
-		hero->motion.active = 1;
-		hero->motion.movement.x -= Sprite::step;
+	if (input_state & INPUT_STATE_HERO1_MOVE_LEFT){
+		hero1->motion.active = 1;
+		hero1->motion.movement.x -= Sprite::step;
 	}
 
-	if (input_state & INPUT_STATE_MOVE_RIGHT){
-		hero->motion.active = 1;
-		hero->motion.movement.x += Sprite::step;
+	if (input_state & INPUT_STATE_HERO1_MOVE_RIGHT){
+		hero1->motion.active = 1;
+		hero1->motion.movement.x += Sprite::step;
 	}
 
-	if (input_state & INPUT_STATE_DROP_COIN){
-		int new_x = hero->location.x;
-		if (hero->motion.movement.x < 0){
-			new_x += (hero->width / 2) + 10;
+	if (input_state & INPUT_STATE_HERO1_DROP_COIN){
+		int new_x = hero1->location.x;
+		if (hero1->motion.movement.x < 0){
+			new_x += (hero1->width / 2) + 10;
 		}
 		else{
-			new_x -= (hero->width / 2) + 10;
+			new_x -= (hero1->width / 2) + 10;
 		}
-		add_coin(new_x, hero->location.y + 15);
+		add_coin(new_x, hero1->location.y + 15);
+	}
+
+	//hero2
+	hero2->motion.active = 0;
+	hero2->motion.movement.y = 0;
+	hero2->motion.movement.x = 0;
+
+	if (input_state & INPUT_STATE_HERO2_MOVE_UP){
+		hero2->motion.active = 1;
+		hero2->motion.movement.y -= Sprite::step;
+	}
+
+	if (input_state & INPUT_STATE_HERO2_MOVE_DOWN){
+		hero2->motion.active = 1;
+		hero2->motion.movement.y += Sprite::step;
+	}
+
+	if (input_state & INPUT_STATE_HERO2_MOVE_LEFT){
+		hero2->motion.active = 1;
+		hero2->motion.movement.x -= Sprite::step;
+	}
+
+	if (input_state & INPUT_STATE_HERO2_MOVE_RIGHT){
+		hero2->motion.active = 1;
+		hero2->motion.movement.x += Sprite::step;
+	}
+
+	if (input_state & INPUT_STATE_HERO2_DROP_COIN){
+		int new_x = hero2->location.x;
+		if (hero2->motion.movement.x < 0){
+			new_x += (hero2->width / 2) + 10;
+		}
+		else{
+			new_x -= (hero2->width / 2) + 10;
+		}
+		add_coin(new_x, hero2->location.y + 15);
 	}
 }
 
@@ -409,23 +505,23 @@ void Game::process_events()
 					} break;
 					case SDLK_w:
 					{
-						hero->motion.active = 1;
-						hero->motion.movement.y = -Sprite::step;
+						hero1->motion.active = 1;
+						hero1->motion.movement.y = -Sprite::step;
 					} break;
 					case SDLK_s:
 					{
-						hero->motion.active = 1;
-						hero->motion.movement.y = Sprite::step;
+						hero1->motion.active = 1;
+						hero1->motion.movement.y = Sprite::step;
 					} break;
 					case SDLK_a:
 					{
-						hero->motion.active = 1;
-						hero->motion.movement.x = -Sprite::step;
+						hero1->motion.active = 1;
+						hero1->motion.movement.x = -Sprite::step;
 					} break;
 					case SDLK_d:
 					{
-						hero->motion.active = 1;
-						hero->motion.movement.x = Sprite::step;
+						hero1->motion.active = 1;
+						hero1->motion.movement.x = Sprite::step;
 					} break;
 					case SDLK_LEFT:
 					{
@@ -449,14 +545,14 @@ void Game::process_events()
 					} break;
 					case SDLK_SPACE:
 					{
-						int new_x = hero->location.x;
-						if (hero->motion.movement.x < 0){
-							new_x += (hero->width / 2) + 10;
+						int new_x = hero1->location.x;
+						if (hero1->motion.movement.x < 0){
+							new_x += (hero1->width / 2) + 10;
 						}
 						else{
-							new_x -= (hero->width / 2) + 10;
+							new_x -= (hero1->width / 2) + 10;
 						}
-						add_coin(new_x, hero->location.y + 15);
+						add_coin(new_x, hero1->location.y + 15);
 					} break;
 					case SDLK_q:
 					case SDLK_ESCAPE:
@@ -471,18 +567,18 @@ void Game::process_events()
 					case SDLK_w:
 					case SDLK_s:
 					{
-						hero->motion.active = 1;
-						hero->motion.movement.y = 0;
-						if (!hero->motion.movement.x && !hero->motion.movement.y){
-							hero->motion.active = 0;
+						hero1->motion.active = 1;
+						hero1->motion.movement.y = 0;
+						if (!hero1->motion.movement.x && !hero1->motion.movement.y){
+							hero1->motion.active = 0;
 						}
 					} break;
 					case SDLK_a:
 					case SDLK_d:
 					{
-						hero->motion.movement.x = 0;
-						if (!hero->motion.movement.x && !hero->motion.movement.y){
-							hero->motion.active = 0;
+						hero1->motion.movement.x = 0;
+						if (!hero1->motion.movement.x && !hero1->motion.movement.y){
+							hero1->motion.active = 0;
 						}
 					} break;
 					case SDLK_RIGHT:
