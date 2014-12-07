@@ -23,8 +23,7 @@ private:
 	static const int MAX_JOYDEV = 4;
 	int width;
 	int height;
-	Hero *hero1;
-	Hero *hero2;
+	Hero *hero[2];
 	point_t grid_base;
 	movement_t background;
 	Sprite *blocks[BLOCKS];
@@ -40,6 +39,7 @@ private:
 	void init_hero();
 	void init_controller();
 	void add_coin(int x, int y, bool ignore_tick);
+	void process_hero_state(int heronum);
 	void process_state();
 
 public:
