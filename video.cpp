@@ -69,8 +69,6 @@ void Video::create_window()
 	}
 
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED|SDL_RENDERER_PRESENTVSYNC);
-
-	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
 }
 
 SDL_Texture *Video::make_texture_from_image(const char *file)
