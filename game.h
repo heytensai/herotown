@@ -19,6 +19,7 @@ private:
 	static const int BLOCKS = 128;
 	static const int COINS = 128;
 	static const int COIN_TICKS = 200;
+	static const int MAX_JOYDEV = 4;
 	int width;
 	int height;
 	Sprite *hero;
@@ -29,10 +30,13 @@ private:
 	input_state_t last_input_state;
 	input_state_t input_state;
 	Uint32 last_coin_added;
+	bool use_joy;
+	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 
 	void init_blocks();
 	void init_coins();
 	void init_hero();
+	void init_controller();
 	void add_coin(int x, int y, bool ignore_tick);
 	void process_state();
 

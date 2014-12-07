@@ -21,6 +21,12 @@ Game::Game(int width, int height)
 	init_coins();
 
 	sound.init();
+	init_controller();
+
+	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
+	SDL_EventState(SDL_JOYAXISMOTION, SDL_IGNORE);
+	SDL_EventState(SDL_JOYBUTTONDOWN, SDL_IGNORE);
+	SDL_EventState(SDL_JOYBUTTONUP, SDL_IGNORE);
 }
 
 Game::~Game()
@@ -45,6 +51,16 @@ Game::~Game()
 		delete video;
 		video = NULL;
 	}
+	/*
+	 * TODO this causes a double free in SDL
+	for (int i=0; i<MAX_JOYDEV; i++){
+		if (joy[i] != NULL){
+			printf("closing joystick %i\n");
+			SDL_JoystickClose(joy[i]);
+			joy[i] = NULL;
+		}
+	}
+	*/
 }
 
 void Game::add_coin(int x, int y, bool ignore_tick = false)
@@ -75,6 +91,35 @@ void Game::init_coins()
 	}
 	for (int i=0; i<1; i++){
 		add_coin(i * 30 + 200, 530, true);
+	}
+}
+
+void Game::init_controller()
+{
+	for (int i=0; i<MAX_JOYDEV; i++){
+		joy[i] = NULL;
+	}
+
+	SDL_InitSubSystem(SDL_INIT_JOYSTICK);
+	fprintf(stdout, "joy=%d\n", SDL_NumJoysticks());
+	if (SDL_NumJoysticks() > 0){
+		use_joy = true;
+		for (int i=0; i<SDL_NumJoysticks(); i++){
+			joy[i] = SDL_JoystickOpen(i);
+			printf("Name: %s\n", SDL_JoystickNameForIndex(i));
+			printf("Number of Axes: %d\n", SDL_JoystickNumAxes(joy[i]));
+			printf("Number of Buttons: %d\n", SDL_JoystickNumButtons(joy[i]));
+			printf("Number of Balls: %d\n", SDL_JoystickNumBalls(joy[i]));
+			if (SDL_IsGameController(i)){
+				printf("Is a game controller\n");
+			}
+			else{
+				printf("Is NOT a game controller\n");
+			}
+		}
+	}
+	else{
+		use_joy = true;
 	}
 }
 
@@ -224,6 +269,38 @@ void Game::process_inputs()
 		input_state |= INPUT_STATE_QUIT;
 	}
 
+	if (use_joy){
+		for (int i=0; i<MAX_JOYDEV; i++){
+			if (joy[i] != NULL){
+				Sint16 x_move = SDL_JoystickGetAxis(joy[i], 0);
+				if (x_move > 0){
+					input_state |= INPUT_STATE_MOVE_RIGHT;
+				}
+				else if (x_move < 0){
+					input_state |= INPUT_STATE_MOVE_LEFT;
+				}
+			}
+		}
+
+		Uint8 button[16] = {};
+		for (int i=0; i<MAX_JOYDEV; i++){
+			if (joy[i] != NULL){
+				for (int j=0; j<SDL_JoystickNumButtons(joy[i]); j++){
+					button[j] = SDL_JoystickGetButton(joy[i], j);
+					/*
+					if (button[j]){
+						printf("button %d on joy %d is pressed\n", j, i);
+					}
+					*/
+				}
+
+				if (button[0]){
+					input_state |= INPUT_STATE_DROP_COIN;
+				}
+			}
+		}
+	}
+
 	process_state();
 }
 
@@ -284,6 +361,12 @@ void Game::process_events()
 			case SDL_KEYUP:
 			{
 				//ignore
+			} break;
+			case SDL_JOYDEVICEADDED:
+			case SDL_JOYDEVICEREMOVED:
+			{
+				//TODO: handle joystick plug/unplug events
+				printf("joystick added or removed\n");
 			} break;
 			case SDL_WINDOWEVENT:
 			{
