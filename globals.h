@@ -7,6 +7,4 @@
 #define COLORDEPTH 32
 #define BPP (COLORDEPTH / 4)
 
-#include "SDL2/SDL_ttf.h"
-
 #endif /* GLOBALS_H */

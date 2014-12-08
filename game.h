@@ -8,6 +8,7 @@
 #include "hero.h"
 #include "sound.h"
 #include "input.h"
+#include "SDL2/SDL_ttf.h"
 
 class Game
 {
