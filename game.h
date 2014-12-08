@@ -1,12 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#define APPNAME "sdlapp"
-#define WIDTH 800
-#define HEIGHT 600
-#define COLORDEPTH 32
-#define BPP (COLORDEPTH / 4)
-
+#include "globals.h"
 #include "point.h"
 #include "video.h"
 #include "sprite.h"
