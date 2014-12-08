@@ -5,7 +5,8 @@ Sprite::Sprite(int width, int height)
 	this->width = width;
 	this->height = height;
 	texture = NULL;
-	animated = 0;
+	animated_left = 0;
+	animated_right = 0;
 	hidden = false;
 }
 
@@ -15,14 +16,14 @@ Sprite::~Sprite()
 		SDL_DestroyTexture(texture);
 		texture = NULL;
 	}
-	if (animated){
-		for (int i=0; i<animated; i++){
-			if (animation[i] != NULL){
-				SDL_DestroyTexture(animation[i]);
-				animation[i] = NULL;
+	if (animated_left){
+		for (int i=0; i<animated_left; i++){
+			if (animation_left[i] != NULL){
+				SDL_DestroyTexture(animation_left[i]);
+				animation_left[i] = NULL;
 			}
 		}
-		delete[] animation;
+		delete[] animation_left;
 	}
 }
 
@@ -125,8 +126,12 @@ bool Sprite::moving()
 	return (motion.movement.x != 0) || (motion.movement.y != 0);
 }
 
-void Sprite::render_animation(SDL_Renderer *renderer)
+void Sprite::render_animation_left(SDL_Renderer *renderer)
 {
+	if (animated_left == 0){
+		render_static(renderer);
+		return;
+	}
 	SDL_Rect src;
 	src.x = 0;
 	src.y = 0;
@@ -138,14 +143,52 @@ void Sprite::render_animation(SDL_Renderer *renderer)
 	dst.w = width;
 	dst.h = height;
 
-	SDL_RenderCopy(renderer, animation[current_animation], &src, &dst);
+	SDL_RenderCopy(renderer, animation_left[current_animation_left], &src, &dst);
 	Uint32 now = SDL_GetTicks();
 	if (now - last_animation_tick > 50){
-		current_animation++;
-		if (current_animation >= animated){
-			current_animation = 0;
+		current_animation_left++;
+		if (current_animation_left >= animated_left){
+			current_animation_left = 0;
 		}
 		last_animation_tick = now;
+	}
+}
+
+void Sprite::render_animation_right(SDL_Renderer *renderer)
+{
+	if (animated_right == 0){
+		render_static(renderer);
+		return;
+	}
+	SDL_Rect src;
+	src.x = 0;
+	src.y = 0;
+	src.w = width;
+	src.h = height;
+	SDL_Rect dst;
+	dst.x = location.x - (width / 2);
+	dst.y = location.y - (height / 2);
+	dst.w = width;
+	dst.h = height;
+
+	SDL_RenderCopy(renderer, animation_right[current_animation_right], &src, &dst);
+	Uint32 now = SDL_GetTicks();
+	if (now - last_animation_tick > 50){
+		current_animation_right++;
+		if (current_animation_right >= animated_right){
+			current_animation_right = 0;
+		}
+		last_animation_tick = now;
+	}
+}
+
+void Sprite::render_animation(SDL_Renderer *renderer)
+{
+	if (motion.movement.x < 0){
+		render_animation_left(renderer);
+	}
+	else{
+		render_animation_right(renderer);
 	}
 }
 
@@ -181,27 +224,47 @@ void Sprite::render_static(SDL_Renderer *renderer)
 
 bool Sprite::is_animated()
 {
-	return (animated > 0);
+	return (animated_left > 0 || animated_right > 0);
 }
 
-void Sprite::enable_animation(int frames)
+void Sprite::enable_animation_left(int frames)
 {
-	animated = frames;
-	animation = new SDL_Texture *[frames];
-	animation_index = -1;
-	current_animation = 0;
+	animated_left = frames;
+	animation_left = new SDL_Texture *[frames];
+	animation_index_left = -1;
+	current_animation_left = 0;
 	last_animation_tick = SDL_GetTicks();
 }
 
-void Sprite::load_animation(SDL_Renderer *renderer, const char *file)
+void Sprite::enable_animation_right(int frames)
+{
+	animated_right = frames;
+	animation_right = new SDL_Texture *[frames];
+	animation_index_right = -1;
+	current_animation_right = 0;
+	last_animation_tick = SDL_GetTicks();
+}
+
+void Sprite::load_animation_left(SDL_Renderer *renderer, const char *file)
 {
 	// make sure we have room to add
-	if (animation_index == animated - 1){
+	if (animation_index_left == animated_left - 1){
 		return;
 	}
 
-	animation_index++;
-	animation[animation_index] = _load_image(renderer, file);
+	animation_index_left++;
+	animation_left[animation_index_left] = _load_image(renderer, file);
+}
+
+void Sprite::load_animation_right(SDL_Renderer *renderer, const char *file)
+{
+	// make sure we have room to add
+	if (animation_index_right == animated_right - 1){
+		return;
+	}
+
+	animation_index_right++;
+	animation_right[animation_index_right] = _load_image(renderer, file);
 }
 
 SDL_Texture *Sprite::_load_image(SDL_Renderer *renderer, const char *file)

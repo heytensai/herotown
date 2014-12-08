@@ -10,14 +10,20 @@
 class Sprite
 {
 private:
-	SDL_Texture **animation;
+	SDL_Texture **animation_right;
+	SDL_Texture **animation_left;
 	SDL_Texture *texture;
-	int animated;
-	int animation_index;
-	int current_animation;
+	int animated_left;
+	int animated_right;
+	int animation_index_left;
+	int animation_index_right;
+	int current_animation_left;
+	int current_animation_right;
 	Uint32 last_animation_tick;
 
 	SDL_Texture *_load_image(SDL_Renderer *renderer, const char *file);
+	void render_animation_left(SDL_Renderer *renderer);
+	void render_animation_right(SDL_Renderer *renderer);
 	void render_animation(SDL_Renderer *renderer);
 	void render_static(SDL_Renderer *renderer);
 
@@ -39,9 +45,11 @@ public:
 	bool moving();
 	bool can_move(char direction);
 	void load_image(SDL_Renderer *renderer, const char *file);
-	void load_animation(SDL_Renderer *renderer, const char *file);
+	void load_animation_left(SDL_Renderer *renderer, const char *file);
+	void load_animation_right(SDL_Renderer *renderer, const char *file);
 	void render(SDL_Renderer *renderer);
-	void enable_animation(int frames);
+	void enable_animation_left(int frames);
+	void enable_animation_right(int frames);
 	bool is_animated();
 	bool intersects(Sprite *other);
 	bool intersects(Sprite *other, int direction);

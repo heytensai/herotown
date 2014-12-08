@@ -221,15 +221,24 @@ void Game::init_hero()
 	hero[0]->motion.movement.x = 0;
 	hero[0]->motion.movement.y = 0;
 
-	hero[0]->enable_animation(8);
-	hero[0]->load_animation(video->renderer, "resources/yoshi0.png");
-	hero[0]->load_animation(video->renderer, "resources/yoshi1.png");
-	hero[0]->load_animation(video->renderer, "resources/yoshi2.png");
-	hero[0]->load_animation(video->renderer, "resources/yoshi3.png");
-	hero[0]->load_animation(video->renderer, "resources/yoshi4.png");
-	hero[0]->load_animation(video->renderer, "resources/yoshi5.png");
-	hero[0]->load_animation(video->renderer, "resources/yoshi6.png");
-	hero[0]->load_animation(video->renderer, "resources/yoshi7.png");
+	hero[0]->enable_animation_right(8);
+	hero[0]->load_animation_right(video->renderer, "resources/yoshi0.png");
+	hero[0]->load_animation_right(video->renderer, "resources/yoshi1.png");
+	hero[0]->load_animation_right(video->renderer, "resources/yoshi2.png");
+	hero[0]->load_animation_right(video->renderer, "resources/yoshi3.png");
+	hero[0]->load_animation_right(video->renderer, "resources/yoshi4.png");
+	hero[0]->load_animation_right(video->renderer, "resources/yoshi5.png");
+	hero[0]->load_animation_right(video->renderer, "resources/yoshi6.png");
+	hero[0]->load_animation_right(video->renderer, "resources/yoshi7.png");
+	hero[0]->enable_animation_left(8);
+	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left0.png");
+	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left1.png");
+	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left2.png");
+	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left3.png");
+	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left4.png");
+	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left5.png");
+	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left6.png");
+	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left7.png");
 
 	hero[0]->load_image(video->renderer, "resources/yoshi0.png");
 
@@ -241,15 +250,24 @@ void Game::init_hero()
 	hero[1]->motion.movement.x = 0;
 	hero[1]->motion.movement.y = 0;
 
-	hero[1]->enable_animation(8);
-	hero[1]->load_animation(video->renderer, "resources/mario0.png");
-	hero[1]->load_animation(video->renderer, "resources/mario1.png");
-	hero[1]->load_animation(video->renderer, "resources/mario2.png");
-	hero[1]->load_animation(video->renderer, "resources/mario3.png");
-	hero[1]->load_animation(video->renderer, "resources/mario4.png");
-	hero[1]->load_animation(video->renderer, "resources/mario5.png");
-	hero[1]->load_animation(video->renderer, "resources/mario6.png");
-	hero[1]->load_animation(video->renderer, "resources/mario7.png");
+	hero[1]->enable_animation_right(8);
+	hero[1]->load_animation_right(video->renderer, "resources/mario0.png");
+	hero[1]->load_animation_right(video->renderer, "resources/mario1.png");
+	hero[1]->load_animation_right(video->renderer, "resources/mario2.png");
+	hero[1]->load_animation_right(video->renderer, "resources/mario3.png");
+	hero[1]->load_animation_right(video->renderer, "resources/mario4.png");
+	hero[1]->load_animation_right(video->renderer, "resources/mario5.png");
+	hero[1]->load_animation_right(video->renderer, "resources/mario6.png");
+	hero[1]->load_animation_right(video->renderer, "resources/mario7.png");
+	hero[1]->enable_animation_left(8);
+	hero[1]->load_animation_left(video->renderer, "resources/mario-left0.png");
+	hero[1]->load_animation_left(video->renderer, "resources/mario-left1.png");
+	hero[1]->load_animation_left(video->renderer, "resources/mario-left2.png");
+	hero[1]->load_animation_left(video->renderer, "resources/mario-left3.png");
+	hero[1]->load_animation_left(video->renderer, "resources/mario-left4.png");
+	hero[1]->load_animation_left(video->renderer, "resources/mario-left5.png");
+	hero[1]->load_animation_left(video->renderer, "resources/mario-left6.png");
+	hero[1]->load_animation_left(video->renderer, "resources/mario-left7.png");
 
 	hero[1]->load_image(video->renderer, "resources/mario0.png");
 }
