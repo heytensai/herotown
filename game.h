@@ -30,6 +30,7 @@ private:
 	bool use_joy;
 	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 	TTF_Font *font;
+	int start_time;
 
 	void init_blocks();
 	void init_coins();
@@ -40,6 +41,8 @@ private:
 	void process_hero_state(int heronum);
 	void process_state();
 	void render_score(int heronum);
+	void render_time();
+	void render_text(int x, int y, char *text);
 
 public:
 	int running;
@@ -54,6 +57,7 @@ public:
 	void move_hero();
 	void render();
 	void create_random_coin();
+	void start();
 };
 
 #endif /* GAME_H */

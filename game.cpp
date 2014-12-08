@@ -74,6 +74,11 @@ Game::~Game()
 	TTF_Quit();
 }
 
+void Game::start()
+{
+	start_time = SDL_GetTicks() / 1000;
+}
+
 void Game::init_font()
 {
 	TTF_Init();
@@ -236,7 +241,42 @@ void Game::render()
 	hero[1]->render(video->renderer);
 	render_score(0);
 	render_score(1);
+	render_time();
 	video->finish_render();
+}
+
+void Game::render_time()
+{
+	char s[16];
+	int now = SDL_GetTicks() / 1000;
+	int elapsed = now - start_time;
+	int min = elapsed / 60;
+	int sec = elapsed % 60;
+	snprintf(s, sizeof(s), "%02d:%02d", min, sec);
+
+	render_text(350, 30, s);
+}
+
+void Game::render_text(int x, int y, char *text)
+{
+	SDL_Color color = {0, 0, 0};
+	SDL_Surface *f = TTF_RenderUTF8_Blended(font, text, color);
+	SDL_Texture *t = SDL_CreateTextureFromSurface(video->renderer, f);
+
+	SDL_Rect src;
+	src.x = 0;
+	src.y = 0;
+	src.w = f->w;
+	src.h = f->h;
+	SDL_Rect dst;
+	dst.x = x;
+	dst.y = y;
+	dst.w = f->w;
+	dst.h = f->h;
+	SDL_RenderCopy(video->renderer, t, &src, &dst);
+
+	SDL_FreeSurface(f);
+	SDL_DestroyTexture(t);
 }
 
 void Game::render_score(int heronum)
@@ -247,20 +287,7 @@ void Game::render_score(int heronum)
 	SDL_Surface *f = TTF_RenderUTF8_Blended(font, s, color);
 	SDL_Texture *t = SDL_CreateTextureFromSurface(video->renderer, f);
 
-	SDL_Rect src;
-	src.x = 0;
-	src.y = 0;
-	src.w = f->w;
-	src.h = f->h;
-	SDL_Rect dst;
-	dst.x = 20 + (720 * heronum);
-	dst.y = 20;
-	dst.w = f->w;
-	dst.h = f->h;
-	SDL_RenderCopy(video->renderer, t, &src, &dst);
-
-	SDL_FreeSurface(f);
-	SDL_DestroyTexture(t);
+	render_text(20 + (720 * heronum), 20, s);
 }
 
 void Game::move_hero()
