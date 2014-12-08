@@ -42,10 +42,12 @@ private:
 	void process_state();
 	void render_score(int heronum);
 	void render_time();
-	void render_text(int x, int y, char *text);
+	void render_text(int x, int y, const char *text);
+	void intro_screen_events();
 
 public:
 	int running;
+	bool exit_requested;
 	Video *video;
 	Sound sound;
 
@@ -58,6 +60,8 @@ public:
 	void render();
 	void create_random_coin();
 	void start();
+	void end();
+	void intro_screen();
 };
 
 #endif /* GAME_H */

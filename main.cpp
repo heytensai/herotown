@@ -5,15 +5,29 @@ int main(int argc, char **argv)
 	Game *game;
 	game = new Game(WIDTH, HEIGHT);
 
-	while (game->running){
+	while (1){
+		game->intro_screen();
 
-		// process events
-		game->process_inputs();
-		game->process_events();
+		if (game->exit_requested){
+			break;
+		}
 
-		game->create_random_coin();
-		game->move_hero();
-		game->render();
+		game->start();
+		while (game->running){
+
+			// process events
+			game->process_inputs();
+			game->process_events();
+
+			game->create_random_coin();
+			game->move_hero();
+			game->render();
+		}
+		game->end();
+
+		if (game->exit_requested){
+			break;
+		}
 	}
 
 	game->sound.destroy();

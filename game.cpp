@@ -13,14 +13,6 @@ Game::Game(int width, int height)
 	video->create_window();
 	video->load_background("resources/background.png");
 
-	background.active = 0;
-	background.movement.x = 0;
-	background.movement.y = 0;
-
-	init_hero();
-	init_blocks();
-	init_coins();
-
 	sound.init();
 	init_controller();
 	init_font();
@@ -34,6 +26,84 @@ Game::Game(int width, int height)
 }
 
 Game::~Game()
+{
+	/*
+	 * TODO this causes a double free in SDL
+	for (int i=0; i<MAX_JOYDEV; i++){
+		if (joy[i] != NULL){
+			printf("closing joystick %i\n");
+			SDL_JoystickClose(joy[i]);
+			joy[i] = NULL;
+		}
+	}
+	*/
+
+	if (video != NULL){
+		delete video;
+		video = NULL;
+	}
+	if (font != NULL){
+		TTF_CloseFont(font);
+		font = NULL;
+	}
+	TTF_Quit();
+}
+
+void Game::intro_screen()
+{
+	exit_requested = false;
+	running = 1;
+	const char *s = "Press SPACE to begin";
+
+	video->start_render();
+	video->blit_background();
+	render_text(200, 300, s);
+	video->finish_render();
+
+	while (running){
+		intro_screen_events();
+	}
+}
+
+void Game::intro_screen_events()
+{
+	SDL_Event event;
+
+	while (SDL_PollEvent(&event)){
+		switch (event.type) {
+			case SDL_QUIT:
+			{
+				running = 0;
+				exit_requested = true;
+			} break;
+			case SDL_KEYUP:
+			{
+				switch (event.key.keysym.sym){
+					case SDLK_SPACE:
+					{
+						running = 0;
+					} break;
+				}
+			} break;
+		}
+	}
+}
+
+void Game::start()
+{
+	background.active = 0;
+	background.movement.x = 0;
+	background.movement.y = 0;
+
+	init_hero();
+	init_blocks();
+	init_coins();
+
+	start_time = SDL_GetTicks() / 1000;
+	running = 1;
+}
+
+void Game::end()
 {
 	printf("hero 1 score %d\nhero 2 score %d\n", hero[0]->score, hero[1]->score);
 	if (hero[0] != NULL){
@@ -52,31 +122,6 @@ Game::~Game()
 			coins[i] = NULL;
 		}
 	}
-	if (video != NULL){
-		delete video;
-		video = NULL;
-	}
-	/*
-	 * TODO this causes a double free in SDL
-	for (int i=0; i<MAX_JOYDEV; i++){
-		if (joy[i] != NULL){
-			printf("closing joystick %i\n");
-			SDL_JoystickClose(joy[i]);
-			joy[i] = NULL;
-		}
-	}
-	*/
-
-	if (font != NULL){
-		TTF_CloseFont(font);
-		font = NULL;
-	}
-	TTF_Quit();
-}
-
-void Game::start()
-{
-	start_time = SDL_GetTicks() / 1000;
 }
 
 void Game::init_font()
@@ -257,7 +302,7 @@ void Game::render_time()
 	render_text(350, 30, s);
 }
 
-void Game::render_text(int x, int y, char *text)
+void Game::render_text(int x, int y, const char *text)
 {
 	SDL_Color color = {0, 0, 0};
 	SDL_Surface *f = TTF_RenderUTF8_Blended(font, text, color);
@@ -573,6 +618,7 @@ void Game::process_events()
 		switch (event.type) {
 			case SDL_QUIT:
 			{
+				exit_requested = true;
 				running = 0;
 			} break;
 			case SDL_TEXTINPUT:
