@@ -412,29 +412,53 @@ void Game::process_state()
 
 void Game::process_hero_state(int heronum)
 {
+	int other_hero = 1;
+	if (heronum == 1){
+		other_hero = 0;
+	}
 
 	hero[heronum]->motion.active = 0;
 	hero[heronum]->motion.movement.y = 0;
 	hero[heronum]->motion.movement.x = 0;
 
 	if (hero[heronum]->direction & HERO_MOVE_UP){
-		hero[heronum]->motion.active = 1;
 		hero[heronum]->motion.movement.y -= Sprite::step;
+		if (hero[heronum]->intersects(hero[other_hero], Sprite::DIRECTION_UP)){
+			hero[heronum]->motion.movement.y += Sprite::step;
+		}
+		else{
+			hero[heronum]->motion.active = 1;
+		}
 	}
 
 	if (hero[heronum]->direction & HERO_MOVE_DOWN){
-		hero[heronum]->motion.active = 1;
 		hero[heronum]->motion.movement.y += Sprite::step;
+		if (hero[heronum]->intersects(hero[other_hero], Sprite::DIRECTION_DOWN)){
+			hero[heronum]->motion.movement.y -= Sprite::step;
+		}
+		else{
+			hero[heronum]->motion.active = 1;
+		}
 	}
 
 	if (hero[heronum]->direction & HERO_MOVE_LEFT){
-		hero[heronum]->motion.active = 1;
 		hero[heronum]->motion.movement.x -= Sprite::step;
+		if (hero[heronum]->intersects(hero[other_hero], Sprite::DIRECTION_LEFT)){
+			hero[heronum]->motion.movement.x += Sprite::step;
+		}
+		else{
+			hero[heronum]->motion.active = 1;
+		}
 	}
 
 	if (hero[heronum]->direction & HERO_MOVE_RIGHT){
-		hero[heronum]->motion.active = 1;
 		hero[heronum]->motion.movement.x += Sprite::step;
+		if (hero[heronum]->intersects(hero[other_hero], Sprite::DIRECTION_RIGHT)){
+			hero[heronum]->motion.movement.x -= Sprite::step;
+		}
+		else{
+			hero[heronum]->motion.active = 1;
+		}
 	}
 
 	if (hero[heronum]->action & HERO_ACTION_COIN){

@@ -6,6 +6,7 @@
 #include "SDL2/SDL_image.h"
 #include "point.h"
 
+
 class Sprite
 {
 private:
@@ -28,6 +29,10 @@ public:
 	bool hidden;
 	static const int step = 4;
 	static const int edge_size = 80;
+	static const int DIRECTION_UP = 0x01;
+	static const int DIRECTION_DOWN = 0x02;
+	static const int DIRECTION_LEFT = 0x04;
+	static const int DIRECTION_RIGHT = 0x08;
 
 	Sprite(int width, int height);
 	~Sprite();
@@ -39,6 +44,7 @@ public:
 	void enable_animation(int frames);
 	bool is_animated();
 	bool intersects(Sprite *other);
+	bool intersects(Sprite *other, int direction);
 	bounding_box_t get_bounding_box();
 
 };
