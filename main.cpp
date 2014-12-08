@@ -11,6 +11,7 @@ int main(int argc, char **argv)
 		game->process_inputs();
 		game->process_events();
 
+		game->create_random_coin();
 		game->move_hero();
 		game->render();
 	}

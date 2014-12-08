@@ -28,7 +28,7 @@ public:
 	int height;
 	bool hidden;
 	static const int step = 4;
-	static const int edge_size = 80;
+	static const int edge_size = 00;
 	static const int DIRECTION_UP = 0x01;
 	static const int DIRECTION_DOWN = 0x02;
 	static const int DIRECTION_LEFT = 0x04;

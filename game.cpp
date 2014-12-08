@@ -1,4 +1,5 @@
 #include "game.h"
+#include <time.h>
 
 Game::Game(int width, int height)
 {
@@ -24,6 +25,8 @@ Game::Game(int width, int height)
 	init_controller();
 	init_font();
 
+	srand(time(NULL));
+
 	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
 	SDL_EventState(SDL_JOYAXISMOTION, SDL_IGNORE);
 	SDL_EventState(SDL_JOYBUTTONDOWN, SDL_IGNORE);
@@ -32,6 +35,7 @@ Game::Game(int width, int height)
 
 Game::~Game()
 {
+	printf("hero 1 score %d\nhero 2 score %d\n", hero[0]->score, hero[1]->score);
 	if (hero[0] != NULL){
 		delete hero[0];
 		hero[0] = NULL;
@@ -95,6 +99,26 @@ void Game::add_coin(int x, int y, bool ignore_tick = false)
 			return;
 		}
 	}
+}
+
+void Game::create_random_coin()
+{
+	Uint32 cur_tick = SDL_GetTicks();
+	if (cur_tick - last_coin_added < COIN_TICKS){
+		return;
+	}
+	last_coin_added = cur_tick;
+
+	int x, y;
+	x = (rand() % (WIDTH - 40)) + 20;
+	y = (rand() % (HEIGHT - 40)) + 20;
+	add_coin(x, y, true);
+	x = (rand() % (WIDTH - 40)) + 20;
+	y = (rand() % (HEIGHT - 40)) + 20;
+	add_coin(x, y, true);
+	x = (rand() % (WIDTH - 40)) + 20;
+	y = (rand() % (HEIGHT - 40)) + 20;
+	add_coin(x, y, true);
 }
 
 void Game::init_coins()
@@ -502,6 +526,7 @@ void Game::process_hero_state(int heronum)
 		}
 	}
 
+	/*
 	if (hero[heronum]->action & HERO_ACTION_COIN){
 		int new_x = hero[heronum]->location.x;
 		if (hero[heronum]->motion.movement.x < 0){
@@ -512,6 +537,7 @@ void Game::process_hero_state(int heronum)
 		}
 		add_coin(new_x, hero[heronum]->location.y + 15);
 	}
+	*/
 }
 
 void Game::process_events()

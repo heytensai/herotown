@@ -14,8 +14,8 @@ class Game
 {
 private:
 	static const int BLOCKS = 128;
-	static const int COINS = 128;
-	static const int COIN_TICKS = 200;
+	static const int COINS = 256;
+	static const int COIN_TICKS = 800;
 	static const int MAX_JOYDEV = 4;
 	int width;
 	int height;
@@ -53,6 +53,7 @@ public:
 	void move_background();
 	void move_hero();
 	void render();
+	void create_random_coin();
 };
 
 #endif /* GAME_H */
