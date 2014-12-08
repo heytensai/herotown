@@ -157,16 +157,16 @@ void Game::init_hero()
 	hero[1]->motion.movement.y = 0;
 
 	hero[1]->enable_animation(8);
-	hero[1]->load_animation(video->renderer, "resources/yoshi0.png");
-	hero[1]->load_animation(video->renderer, "resources/yoshi1.png");
-	hero[1]->load_animation(video->renderer, "resources/yoshi2.png");
-	hero[1]->load_animation(video->renderer, "resources/yoshi3.png");
-	hero[1]->load_animation(video->renderer, "resources/yoshi4.png");
-	hero[1]->load_animation(video->renderer, "resources/yoshi5.png");
-	hero[1]->load_animation(video->renderer, "resources/yoshi6.png");
-	hero[1]->load_animation(video->renderer, "resources/yoshi7.png");
+	hero[1]->load_animation(video->renderer, "resources/mario0.png");
+	hero[1]->load_animation(video->renderer, "resources/mario1.png");
+	hero[1]->load_animation(video->renderer, "resources/mario2.png");
+	hero[1]->load_animation(video->renderer, "resources/mario3.png");
+	hero[1]->load_animation(video->renderer, "resources/mario4.png");
+	hero[1]->load_animation(video->renderer, "resources/mario5.png");
+	hero[1]->load_animation(video->renderer, "resources/mario6.png");
+	hero[1]->load_animation(video->renderer, "resources/mario7.png");
 
-	hero[1]->load_image(video->renderer, "resources/yoshi0.png");
+	hero[1]->load_image(video->renderer, "resources/mario0.png");
 }
 
 void Game::init_blocks()
