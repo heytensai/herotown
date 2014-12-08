@@ -28,14 +28,17 @@ private:
 	Uint32 last_coin_added;
 	bool use_joy;
 	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
+	TTF_Font *font;
 
 	void init_blocks();
 	void init_coins();
 	void init_hero();
 	void init_controller();
+	void init_font();
 	void add_coin(int x, int y, bool ignore_tick);
 	void process_hero_state(int heronum);
 	void process_state();
+	void render_score(int heronum);
 
 public:
 	int running;

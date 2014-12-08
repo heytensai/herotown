@@ -22,6 +22,7 @@ Game::Game(int width, int height)
 
 	sound.init();
 	init_controller();
+	init_font();
 
 	SDL_EventState(SDL_MOUSEMOTION, SDL_IGNORE);
 	SDL_EventState(SDL_JOYAXISMOTION, SDL_IGNORE);
@@ -61,6 +62,18 @@ Game::~Game()
 		}
 	}
 	*/
+
+	if (font != NULL){
+		TTF_CloseFont(font);
+		font = NULL;
+	}
+	TTF_Quit();
+}
+
+void Game::init_font()
+{
+	TTF_Init();
+	font = TTF_OpenFont("resources/DejaVuSans-Bold.ttf", 30);
 }
 
 void Game::add_coin(int x, int y, bool ignore_tick = false)
@@ -199,7 +212,33 @@ void Game::render()
 	}
 	hero[0]->render(video->renderer);
 	hero[1]->render(video->renderer);
+	render_score(0);
+	render_score(1);
 	video->finish_render();
+}
+
+void Game::render_score(int heronum)
+{
+	SDL_Color color = {0, 0, 0};
+	char s[4];
+	snprintf(s, 4, "%i", hero[heronum]->score);
+	SDL_Surface *f = TTF_RenderUTF8_Blended(font, s, color);
+	SDL_Texture *t = SDL_CreateTextureFromSurface(video->renderer, f);
+
+	SDL_Rect src;
+	src.x = 0;
+	src.y = 0;
+	src.w = f->w;
+	src.h = f->h;
+	SDL_Rect dst;
+	dst.x = 30 + (600 * heronum);
+	dst.y = 30;
+	dst.w = f->w;
+	dst.h = f->h;
+	SDL_RenderCopy(video->renderer, t, &src, &dst);
+
+	SDL_FreeSurface(f);
+	SDL_DestroyTexture(t);
 }
 
 void Game::move_hero()
@@ -229,10 +268,12 @@ void Game::move_hero()
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){
 			if (hero[0]->intersects(coins[i])){
+				hero[0]->score++;
 				delete coins[i];
 				coins[i] = NULL;
 			}
 			if (hero[1]->intersects(coins[i])){
+				hero[1]->score++;
 				delete coins[i];
 				coins[i] = NULL;
 			}

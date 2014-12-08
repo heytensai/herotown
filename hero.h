@@ -16,6 +16,7 @@ private:
 public:
 	int direction;
 	int action;
+	int score;
 	
 	Hero(int width, int height);
 
