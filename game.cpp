@@ -231,8 +231,8 @@ void Game::render_score(int heronum)
 	src.w = f->w;
 	src.h = f->h;
 	SDL_Rect dst;
-	dst.x = 30 + (600 * heronum);
-	dst.y = 30;
+	dst.x = 20 + (720 * heronum);
+	dst.y = 20;
 	dst.w = f->w;
 	dst.h = f->h;
 	SDL_RenderCopy(video->renderer, t, &src, &dst);
