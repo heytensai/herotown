@@ -612,6 +612,12 @@ void Game::process_events()
 			} break;
 		}
 	}
+
+	int now = SDL_GetTicks() / 1000;
+	int elapsed = now - start_time;
+	if (elapsed >= 60){
+		running = 0;
+	}
 }
 
 
