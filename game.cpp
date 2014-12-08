@@ -123,9 +123,7 @@ void Game::create_random_coin()
 
 void Game::init_coins()
 {
-	for (int i=0; i<COINS; i++){
-		coins[i] = NULL;
-	}
+	memset(coins, 0, sizeof(Sprite *) * COINS);
 	for (int i=0; i<1; i++){
 		add_coin(i * 30 + 200, 530, true);
 	}
