@@ -99,8 +99,8 @@ bool Sprite::intersects(Sprite *other, int buffer)
 		return false;
 	}
 
-	bounding_box_t me = get_bounding_box();
-	bounding_box_t them = other->get_bounding_box();
+	bounding_box_t me = get_bounding_box(buffer);
+	bounding_box_t them = other->get_bounding_box(buffer);
 
 	if (me.top_left.x >= them.bottom_right.x){
 		return false;
