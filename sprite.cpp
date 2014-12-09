@@ -27,24 +27,24 @@ Sprite::~Sprite()
 	}
 }
 
-bounding_box_t Sprite::get_bounding_box()
+bounding_box_t Sprite::get_bounding_box(int buffer)
 {
 	bounding_box_t b;
-	b.top_left.x = location.x - (width / 2);
-	b.bottom_right.x = location.x + (width / 2);
-	b.top_left.y = location.y - (height / 2);
-	b.bottom_right.y = location.y + (height / 2);
+	b.top_left.x = location.x - (width / 2) - buffer;
+	b.bottom_right.x = location.x + (width / 2) + buffer;
+	b.top_left.y = location.y - (height / 2) - buffer;
+	b.bottom_right.y = location.y + (height / 2) + buffer;
 	return b;
 }
 
-bool Sprite::intersects(Sprite *other, int direction)
+bool Sprite::intersects(Sprite *other, int buffer, int direction)
 {
 	if (other == NULL){
 		return false;
 	}
 
-	bounding_box_t me = get_bounding_box();
-	bounding_box_t them = other->get_bounding_box();
+	bounding_box_t me = get_bounding_box(buffer);
+	bounding_box_t them = other->get_bounding_box(buffer);
 
 	switch (direction){
 		case DIRECTION_UP:
@@ -93,7 +93,7 @@ bool Sprite::intersects(Sprite *other, int direction)
 	return true;
 }
 
-bool Sprite::intersects(Sprite *other)
+bool Sprite::intersects(Sprite *other, int buffer)
 {
 	if (other == NULL){
 		return false;

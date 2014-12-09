@@ -51,9 +51,9 @@ public:
 	void enable_animation_left(int frames);
 	void enable_animation_right(int frames);
 	bool is_animated();
-	bool intersects(Sprite *other);
-	bool intersects(Sprite *other, int direction);
-	bounding_box_t get_bounding_box();
+	bool intersects(Sprite *other, int buffer);
+	bool intersects(Sprite *other, int buffer, int direction);
+	bounding_box_t get_bounding_box(int buffer = 0);
 
 };
 

@@ -39,7 +39,7 @@ private:
 	void init_font();
 	void add_coin(int x, int y, bool ignore_tick);
 	void process_hero_state(int heronum);
-	bool process_hero_movement(Sprite *hero, Sprite *other, int direction, int *x_or_y, int step);
+	bool process_hero_movement_direction(int heronum, int move, int direction);
 	void process_state();
 	void render_score(int heronum);
 	void render_time();

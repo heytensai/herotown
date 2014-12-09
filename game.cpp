@@ -378,12 +378,12 @@ void Game::move_heros()
 
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){
-			if (hero[0]->intersects(coins[i])){
+			if (hero[0]->intersects(coins[i], 0)){
 				hero[0]->score++;
 				delete coins[i];
 				coins[i] = NULL;
 			}
-			if (hero[1]->intersects(coins[i])){
+			if (hero[1]->intersects(coins[i], 0)){
 				hero[1]->score++;
 				delete coins[i];
 				coins[i] = NULL;
@@ -562,66 +562,39 @@ void Game::process_state()
 	process_hero_state(1);
 }
 
-bool Game::process_hero_movement(Sprite *hero, Sprite *other, int direction, int *x_or_y, int step)
-{
-	if (hero->intersects(other, direction)){
-		(*x_or_y) -= step;
-	}
-}
-
-void Game::process_hero_state(int heronum)
+bool Game::process_hero_movement_direction(int heronum, int move, int direction)
 {
 	int other_hero = 1;
 	if (heronum == 1){
 		other_hero = 0;
 	}
 
+	if (hero[heronum]->direction & move){
+		hero[heronum]->motion.active = 1;
+		if (hero[heronum]->intersects(hero[other_hero], Hero::step, direction)) return false;
+		return true;
+	}
+	
+	return false;
+}
+
+void Game::process_hero_state(int heronum)
+{
 	hero[heronum]->motion.active = 0;
 	hero[heronum]->motion.movement.y = 0;
 	hero[heronum]->motion.movement.x = 0;
 
-	if (hero[heronum]->direction & HERO_MOVE_UP){
-		hero[heronum]->motion.active = 1;
+	if (process_hero_movement_direction(heronum, HERO_MOVE_UP, Sprite::DIRECTION_UP)){
 		hero[heronum]->motion.movement.y -= Sprite::step;
-		process_hero_movement(hero[heronum],
-			hero[other_hero],
-			Sprite::DIRECTION_UP,
-			&hero[heronum]->motion.movement.y,
-			-Sprite::step
-		);
 	}
-
-	if (hero[heronum]->direction & HERO_MOVE_DOWN){
-		hero[heronum]->motion.active = 1;
+	if (process_hero_movement_direction(heronum, HERO_MOVE_DOWN, Sprite::DIRECTION_DOWN)){
 		hero[heronum]->motion.movement.y += Sprite::step;
-		process_hero_movement(hero[heronum],
-			hero[other_hero],
-			Sprite::DIRECTION_DOWN,
-			&hero[heronum]->motion.movement.y,
-			Sprite::step
-		);
 	}
-
-	if (hero[heronum]->direction & HERO_MOVE_LEFT){
-		hero[heronum]->motion.active = 1;
+	if (process_hero_movement_direction(heronum, HERO_MOVE_RIGHT, Sprite::DIRECTION_RIGHT)){
+		hero[heronum]->motion.movement.x += Sprite::step;
+	}
+	if (process_hero_movement_direction(heronum, HERO_MOVE_LEFT, Sprite::DIRECTION_LEFT)){
 		hero[heronum]->motion.movement.x -= Sprite::step;
-		process_hero_movement(hero[heronum],
-			hero[other_hero],
-			Sprite::DIRECTION_LEFT,
-			&hero[heronum]->motion.movement.x,
-			-Sprite::step
-		);
-	}
-
-	if (hero[heronum]->direction & HERO_MOVE_RIGHT){
-		hero[heronum]->motion.active = 1;
-		hero[heronum]->motion.movement.x = Sprite::step;
-		process_hero_movement(hero[heronum],
-			hero[other_hero],
-			Sprite::DIRECTION_RIGHT,
-			&hero[heronum]->motion.movement.x,
-			Sprite::step
-		);
 	}
 
 	/*
