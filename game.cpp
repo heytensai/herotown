@@ -467,10 +467,10 @@ void Game::process_inputs()
 		hero[0]->direction &= ~(HERO_MOVE_RIGHT);
 	}
 	if (state[SDL_SCANCODE_SPACE]){
-		hero[0]->action |= HERO_ACTION_COIN;
+		hero[0]->action |= HERO_ACTION_BOMB;
 	}
 	else{
-		hero[0]->action &= ~(HERO_ACTION_COIN);
+		hero[0]->action &= ~(HERO_ACTION_BOMB);
 	}
 
 	//hero[1]
@@ -498,11 +498,11 @@ void Game::process_inputs()
 	else{
 		hero[1]->direction &= ~(HERO_MOVE_RIGHT);
 	}
-	if (state[SDL_SCANCODE_KP_ENTER]){
-		hero[1]->action |= HERO_ACTION_COIN;
+	if (state[SDL_SCANCODE_RETURN]){
+		hero[1]->action |= HERO_ACTION_BOMB;
 	}
 	else{
-		hero[1]->action &= ~(HERO_ACTION_COIN);
+		hero[1]->action &= ~(HERO_ACTION_BOMB);
 	}
 
 	//globals
@@ -540,10 +540,10 @@ void Game::process_inputs()
 				}
 
 				if (button[0]){
-					hero[0]->action |= HERO_ACTION_COIN;
+					hero[0]->action |= HERO_ACTION_BOMB;
 				}
 				else{
-					hero[0]->action &= ~(HERO_ACTION_COIN);
+					hero[0]->action &= ~(HERO_ACTION_BOMB);
 				}
 			}
 		}
@@ -560,6 +560,12 @@ void Game::process_state()
 
 	process_hero_state(0);
 	process_hero_state(1);
+
+	process_bombs();
+}
+
+void Game::process_bombs()
+{
 }
 
 bool Game::process_hero_movement_direction(int heronum, int move, int direction)

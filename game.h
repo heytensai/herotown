@@ -8,13 +8,14 @@
 #include "hero.h"
 #include "sound.h"
 #include "input.h"
-#include "SDL2/SDL_ttf.h"
+#include "bomb.h"
 
 class Game
 {
 private:
 	static const int BLOCKS = 128;
 	static const int COINS = 256;
+	static const int BOMBS = 6;
 	static const int COIN_TICKS = 800;
 	static const int MAX_JOYDEV = 4;
 	int width;
@@ -24,6 +25,7 @@ private:
 	movement_t background;
 	Sprite *blocks[BLOCKS];
 	Sprite *coins[COINS];
+	Bomb *bombs[BOMBS];
 	input_state_t last_input_state;
 	input_state_t input_state;
 	Uint32 last_coin_added;
@@ -41,6 +43,7 @@ private:
 	void process_hero_state(int heronum);
 	bool process_hero_movement_direction(int heronum, int move, int direction);
 	void process_state();
+	void process_bombs();
 	void render_score(int heronum);
 	void render_time();
 	void render_text(int x, int y, const char *text);
