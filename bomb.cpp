@@ -23,7 +23,6 @@ bool Bomb::exploded()
 	Uint32 now = SDL_GetTicks();
 	Uint32 life = now - explode_start;
 	if (life >= EXPLODE_TIME){
-		printf("now=%i, life=%i, explode_start=%i\n", now, life, explode_start);
 		return true;
 	}
 	return false;
