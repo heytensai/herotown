@@ -507,7 +507,7 @@ void Game::process_inputs()
 	}
 
 	//globals
-	if (state[SDL_SCANCODE_ESCAPE] || state[SDL_SCANCODE_Q]){
+	if (state[SDL_SCANCODE_ESCAPE]){
 		input_state |= INPUT_STATE_QUIT;
 	}
 
