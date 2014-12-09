@@ -8,13 +8,17 @@ class Bomb : public Sprite
 {
 private:
 	Uint32 start;
+	int explode_start;
 
 public:
 	static const int TIME_LIMIT = 3000;
+	static const int EXPLODE_TIME = 500;
 	static const int RANGE = 10;
 
 	Bomb(SDL_Renderer *renderer);
 	bool ready_to_explode();
+	void explode();
+	bool exploded();
 
 };
 

@@ -595,6 +595,19 @@ void Game::process_state()
 
 void Game::process_bombs()
 {
+	for (int i=0; i<BOMBS; i++){
+		if (bombs[i] != NULL){
+			if (bombs[i]->ready_to_explode()){
+				printf("exploding bomb\n");
+				bombs[i]->explode();
+			}
+			if (bombs[i]->exploded()){
+				printf("deleting bomb\n");
+				delete bombs[i];
+				bombs[i] = NULL;
+			}
+		}
+	}
 }
 
 bool Game::process_hero_movement_direction(int heronum, int move, int direction)
