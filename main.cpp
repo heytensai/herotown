@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 			game->process_events();
 
 			game->create_random_coin();
-			game->move_hero();
+			game->move_heros();
 			game->render();
 		}
 		game->end();

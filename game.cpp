@@ -358,29 +358,23 @@ void Game::render_score(int heronum)
 	render_text(20 + (720 * heronum), 20, s);
 }
 
-void Game::move_hero()
+void Game::move_hero(Hero *h)
 {
-	// move hero[0] (if hero[0] is in bounds)
-	if (hero[0]->motion.active){
-		if (hero[0]->can_move('x')){
-			hero[0]->location.x += hero[0]->motion.movement.x;
+	if (h->motion.active){
+		if (h->can_move('x')){
+			h->location.x += h->motion.movement.x;
 		}
 
-		if (hero[0]->can_move('y')){
-			hero[0]->location.y += hero[0]->motion.movement.y;
+		if (h->can_move('y')){
+			h->location.y += h->motion.movement.y;
 		}
 	}
+}
 
-	// move hero[1] (if hero[1] is in bounds)
-	if (hero[1]->motion.active){
-		if (hero[1]->can_move('x')){
-			hero[1]->location.x += hero[1]->motion.movement.x;
-		}
-
-		if (hero[1]->can_move('y')){
-			hero[1]->location.y += hero[1]->motion.movement.y;
-		}
-	}
+void Game::move_heros()
+{
+	move_hero(hero[0]);
+	move_hero(hero[1]);
 
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){

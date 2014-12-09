@@ -45,6 +45,7 @@ private:
 	void render_time();
 	void render_text(int x, int y, const char *text);
 	void intro_screen_events();
+	void move_hero(Hero *hero);
 
 public:
 	int running;
@@ -57,7 +58,7 @@ public:
 	void process_events();
 	void process_inputs();
 	void move_background();
-	void move_hero();
+	void move_heros();
 	void render();
 	void create_random_coin();
 	void start();
