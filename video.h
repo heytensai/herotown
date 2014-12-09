@@ -2,8 +2,6 @@
 #define VIDEO_H
 
 #include "globals.h"
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
 #include "sprite.h"
 
 class Video

@@ -8,6 +8,7 @@
 #define HERO_MOVE_DOWN  0x08
 
 #define HERO_ACTION_COIN 0x01
+#define HERO_ACTION_BOMB 0x01
 
 class Hero : public Sprite
 {
