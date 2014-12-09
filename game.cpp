@@ -53,7 +53,6 @@ void Game::intro_screen()
 {
 	exit_requested = false;
 	running = 1;
-	exit_requested = false;
 	const char *s = "Press SPACE to begin";
 
 	video->start_render();
@@ -513,7 +512,7 @@ void Game::process_inputs()
 	}
 
 	//globals
-	if (state[SDL_SCANCODE_ESCAPE]){
+	if (state[SDL_SCANCODE_BACKSPACE]){
 		input_state |= INPUT_STATE_QUIT;
 	}
 

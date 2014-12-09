@@ -24,10 +24,6 @@ int main(int argc, char **argv)
 			game->render();
 		}
 		game->end();
-
-		if (game->exit_requested){
-			break;
-		}
 	}
 
 	game->sound.destroy();
