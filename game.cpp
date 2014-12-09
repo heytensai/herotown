@@ -568,6 +568,13 @@ void Game::process_state()
 	process_hero_state(1);
 }
 
+bool Game::process_hero_movement(Sprite *hero, Sprite *other, int direction, int *x_or_y, int step)
+{
+	if (hero->intersects(other, direction)){
+		(*x_or_y) -= step;
+	}
+}
+
 void Game::process_hero_state(int heronum)
 {
 	int other_hero = 1;
@@ -580,43 +587,47 @@ void Game::process_hero_state(int heronum)
 	hero[heronum]->motion.movement.x = 0;
 
 	if (hero[heronum]->direction & HERO_MOVE_UP){
+		hero[heronum]->motion.active = 1;
 		hero[heronum]->motion.movement.y -= Sprite::step;
-		if (hero[heronum]->intersects(hero[other_hero], Sprite::DIRECTION_UP)){
-			hero[heronum]->motion.movement.y += Sprite::step;
-		}
-		else{
-			hero[heronum]->motion.active = 1;
-		}
+		process_hero_movement(hero[heronum],
+			hero[other_hero],
+			Sprite::DIRECTION_UP,
+			&hero[heronum]->motion.movement.y,
+			-Sprite::step
+		);
 	}
 
 	if (hero[heronum]->direction & HERO_MOVE_DOWN){
+		hero[heronum]->motion.active = 1;
 		hero[heronum]->motion.movement.y += Sprite::step;
-		if (hero[heronum]->intersects(hero[other_hero], Sprite::DIRECTION_DOWN)){
-			hero[heronum]->motion.movement.y -= Sprite::step;
-		}
-		else{
-			hero[heronum]->motion.active = 1;
-		}
+		process_hero_movement(hero[heronum],
+			hero[other_hero],
+			Sprite::DIRECTION_DOWN,
+			&hero[heronum]->motion.movement.y,
+			Sprite::step
+		);
 	}
 
 	if (hero[heronum]->direction & HERO_MOVE_LEFT){
+		hero[heronum]->motion.active = 1;
 		hero[heronum]->motion.movement.x -= Sprite::step;
-		if (hero[heronum]->intersects(hero[other_hero], Sprite::DIRECTION_LEFT)){
-			hero[heronum]->motion.movement.x += Sprite::step;
-		}
-		else{
-			hero[heronum]->motion.active = 1;
-		}
+		process_hero_movement(hero[heronum],
+			hero[other_hero],
+			Sprite::DIRECTION_LEFT,
+			&hero[heronum]->motion.movement.x,
+			-Sprite::step
+		);
 	}
 
 	if (hero[heronum]->direction & HERO_MOVE_RIGHT){
-		hero[heronum]->motion.movement.x += Sprite::step;
-		if (hero[heronum]->intersects(hero[other_hero], Sprite::DIRECTION_RIGHT)){
-			hero[heronum]->motion.movement.x -= Sprite::step;
-		}
-		else{
-			hero[heronum]->motion.active = 1;
-		}
+		hero[heronum]->motion.active = 1;
+		hero[heronum]->motion.movement.x = Sprite::step;
+		process_hero_movement(hero[heronum],
+			hero[other_hero],
+			Sprite::DIRECTION_RIGHT,
+			&hero[heronum]->motion.movement.x,
+			Sprite::step
+		);
 	}
 
 	/*
