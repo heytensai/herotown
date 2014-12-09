@@ -53,6 +53,7 @@ void Game::intro_screen()
 {
 	exit_requested = false;
 	running = 1;
+	exit_requested = false;
 	const char *s = "Press SPACE to begin";
 
 	video->start_render();
@@ -79,6 +80,11 @@ void Game::intro_screen_events()
 			case SDL_KEYUP:
 			{
 				switch (event.key.keysym.sym){
+					case SDLK_ESCAPE:
+					{
+						running = 0;
+						exit_requested = true;
+					} break;
 					case SDLK_SPACE:
 					{
 						running = 0;
