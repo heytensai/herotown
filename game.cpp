@@ -607,6 +607,11 @@ bool Game::process_hero_movement_direction(int heronum, int move, int direction)
 	if (hero[heronum]->direction & move){
 		hero[heronum]->motion.active = 1;
 		if (hero[heronum]->intersects(hero[other_hero], Hero::step, direction)) return false;
+		for (int i=0; i<BOMBS; i++){
+			if (bombs[i] != NULL){
+				if (hero[heronum]->intersects(bombs[i], Hero::step, direction)) return false;
+			}
+		}
 		return true;
 	}
 	
