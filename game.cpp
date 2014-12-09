@@ -104,6 +104,8 @@ void Game::start()
 	init_blocks();
 	init_coins();
 
+	memset(bombs, 0, sizeof(bombs));
+
 	start_time = SDL_GetTicks() / 1000;
 	running = 1;
 }
@@ -133,6 +135,23 @@ void Game::init_font()
 {
 	TTF_Init();
 	font = TTF_OpenFont("resources/DejaVuSans-Bold.ttf", 30);
+}
+
+void Game::add_bomb(int x, int y)
+{
+	Uint32 cur_tick = SDL_GetTicks();
+	if (cur_tick - last_bomb_added < BOMB_TICKS){
+		return;
+	}
+	last_bomb_added = cur_tick;
+	for (int i=0; i<BOMBS; i++){
+		if (bombs[i] == NULL){
+			bombs[i] = new Bomb(video->renderer);
+			bombs[i]->location.x = x;
+			bombs[i]->location.y = y;
+			return;
+		}
+	}
 }
 
 void Game::add_coin(int x, int y, bool ignore_tick = false)
@@ -307,10 +326,20 @@ void Game::render()
 	}
 	hero[0]->render(video->renderer);
 	hero[1]->render(video->renderer);
+	render_bombs();
 	render_score(0);
 	render_score(1);
 	render_time();
 	video->finish_render();
+}
+
+void Game::render_bombs()
+{
+	for (int i=0; i<BOMBS; i++){
+		if (bombs[i] != NULL){
+			bombs[i]->render(video->renderer);
+		}
+	}
 }
 
 void Game::render_time()
@@ -603,8 +632,7 @@ void Game::process_hero_state(int heronum)
 		hero[heronum]->motion.movement.x -= Sprite::step;
 	}
 
-	/*
-	if (hero[heronum]->action & HERO_ACTION_COIN){
+	if (hero[heronum]->action & HERO_ACTION_BOMB){
 		int new_x = hero[heronum]->location.x;
 		if (hero[heronum]->motion.movement.x < 0){
 			new_x += (hero[heronum]->width / 2) + 10;
@@ -612,9 +640,8 @@ void Game::process_hero_state(int heronum)
 		else{
 			new_x -= (hero[heronum]->width / 2) + 10;
 		}
-		add_coin(new_x, hero[heronum]->location.y + 15);
+		add_bomb(new_x, hero[heronum]->location.y + 15);
 	}
-	*/
 }
 
 void Game::process_events()
