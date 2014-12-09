@@ -598,11 +598,16 @@ void Game::process_bombs()
 	for (int i=0; i<BOMBS; i++){
 		if (bombs[i] != NULL){
 			if (bombs[i]->ready_to_explode()){
-				printf("exploding bomb\n");
 				bombs[i]->explode();
+
+				if (bombs[i]->intersects(hero[0], Bomb::RANGE)){
+					printf("bomb hit hero[0]\n");
+				}
+				if (bombs[i]->intersects(hero[1], Bomb::RANGE)){
+					printf("bomb hit hero[1]\n");
+				}
 			}
 			if (bombs[i]->exploded()){
-				printf("deleting bomb\n");
 				delete bombs[i];
 				bombs[i] = NULL;
 			}
