@@ -20,6 +20,7 @@ public:
 	int score;
 	
 	Hero(int width, int height);
+	void subtract_coins(int count);
 
 };
 

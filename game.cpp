@@ -601,10 +601,10 @@ void Game::process_bombs()
 				bombs[i]->explode();
 
 				if (bombs[i]->intersects(hero[0], Bomb::RANGE)){
-					printf("bomb hit hero[0]\n");
+					hero[0]->subtract_coins(10);
 				}
 				if (bombs[i]->intersects(hero[1], Bomb::RANGE)){
-					printf("bomb hit hero[1]\n");
+					hero[1]->subtract_coins(10);
 				}
 			}
 			if (bombs[i]->exploded()){
