@@ -11,6 +11,7 @@ private:
 	SDL_Texture **animation_right;
 	SDL_Texture **animation_left;
 	SDL_Texture *texture;
+	bool use_animation_always;
 	int animated_left;
 	int animated_right;
 	int animation_index_left;
@@ -31,6 +32,7 @@ public:
 	int width;
 	int height;
 	bool hidden;
+	int animation_speed;
 	static const int step = 4;
 	static const int edge_size = 00;
 	static const int DIRECTION_UP = 0x01;
@@ -52,6 +54,7 @@ public:
 	bool intersects(Sprite *other, int buffer);
 	bool intersects(Sprite *other, int buffer, int direction);
 	bounding_box_t get_bounding_box(int buffer = 0);
+	void always_animate(bool b);
 
 };
 

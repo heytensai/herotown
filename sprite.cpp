@@ -8,6 +8,8 @@ Sprite::Sprite(int width, int height)
 	animated_left = 0;
 	animated_right = 0;
 	hidden = false;
+	use_animation_always = false;
+	animation_speed = 50;
 }
 
 Sprite::~Sprite()
@@ -145,7 +147,7 @@ void Sprite::render_animation_left(SDL_Renderer *renderer)
 
 	SDL_RenderCopy(renderer, animation_left[current_animation_left], &src, &dst);
 	Uint32 now = SDL_GetTicks();
-	if (now - last_animation_tick > 50){
+	if (now - last_animation_tick > animation_speed){
 		current_animation_left++;
 		if (current_animation_left >= animated_left){
 			current_animation_left = 0;
@@ -173,7 +175,7 @@ void Sprite::render_animation_right(SDL_Renderer *renderer)
 
 	SDL_RenderCopy(renderer, animation_right[current_animation_right], &src, &dst);
 	Uint32 now = SDL_GetTicks();
-	if (now - last_animation_tick > 50){
+	if (now - last_animation_tick > animation_speed){
 		current_animation_right++;
 		if (current_animation_right >= animated_right){
 			current_animation_right = 0;
@@ -198,8 +200,8 @@ void Sprite::render(SDL_Renderer *renderer)
 		return;
 	}
 
-	if (is_animated() && can_move('x')){
-		if (motion.active){
+	if (is_animated()){
+		if (motion.active || use_animation_always){
 			render_animation(renderer);
 			return;
 		}
@@ -225,6 +227,11 @@ void Sprite::render_static(SDL_Renderer *renderer)
 bool Sprite::is_animated()
 {
 	return (animated_left > 0 || animated_right > 0);
+}
+
+void Sprite::always_animate(bool b)
+{
+	use_animation_always = b;
 }
 
 void Sprite::enable_animation_left(int frames)
