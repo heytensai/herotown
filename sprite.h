@@ -15,6 +15,7 @@ public:
 	const static int WALK_LEFT = 0x0001;
 	const static int WALK_RIGHT = 0x0002;
 	const static int TICK = 0x0003;
+	const static int BOOM = 0x0004;
 	SDL_Texture **texture;
 	int name;
 	Uint32 speed;

@@ -12,8 +12,8 @@ private:
 
 public:
 	static const int TIME_LIMIT = 3000;
-	static const int EXPLODE_TIME = 500;
-	static const int RANGE = 10;
+	static const int EXPLODE_TIME = 20 * 5;
+	static const int RANGE = 30;
 
 	Bomb(SDL_Renderer *renderer);
 	bool ready_to_explode();

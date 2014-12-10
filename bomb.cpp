@@ -17,10 +17,21 @@ Bomb::Bomb(SDL_Renderer *renderer)
 	a->height = height;
 	a->load_image(renderer, "resources/bomb0.png");
 	a->load_image(renderer, "resources/bomb1.png");
-	//a->texture[0] = _load_image(renderer, "resources/bomb0.png");
-	//a->texture[1] = _load_image(renderer, "resources/bomb1.png");
 	add_animation(a);
 	set_animation(Animation::TICK);
+
+	a = new Animation();
+	a->set_frames(5);
+	a->name = Animation::BOOM;
+	a->speed = 20;
+	a->width = 103;
+	a->height = 101;
+	a->load_image(renderer, "resources/bomb-explosion0.png");
+	a->load_image(renderer, "resources/bomb-explosion1.png");
+	a->load_image(renderer, "resources/bomb-explosion2.png");
+	a->load_image(renderer, "resources/bomb-explosion3.png");
+	a->load_image(renderer, "resources/bomb-explosion4.png");
+	add_animation(a);
 
 	always_animate(true);
 	explode_start = 0;
@@ -29,6 +40,7 @@ Bomb::Bomb(SDL_Renderer *renderer)
 void Bomb::explode()
 {
 	explode_start = SDL_GetTicks();
+	set_animation(Animation::BOOM);
 }
 
 bool Bomb::exploded()
