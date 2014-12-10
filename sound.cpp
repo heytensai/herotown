@@ -21,6 +21,8 @@ void Sound::init()
 {
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 	load(SOUND_BEEP, "resources/beep.wav");
+	load(SOUND_DING1, "resources/ding1.wav");
+	load(SOUND_DING2, "resources/ding2.wav");
 }
 
 void Sound::load(int soundId, const char *file)

@@ -436,11 +436,13 @@ void Game::move_heros()
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){
 			if (hero[0]->intersects(coins[i], 0)){
+				sound.play(Sound::SOUND_DING1);
 				hero[0]->score++;
 				delete coins[i];
 				coins[i] = NULL;
 			}
 			if (hero[1]->intersects(coins[i], 0)){
+				sound.play(Sound::SOUND_DING2);
 				hero[1]->score++;
 				delete coins[i];
 				coins[i] = NULL;
@@ -629,9 +631,11 @@ void Game::process_bombs()
 				bombs[i]->explode();
 
 				if (bombs[i]->intersects(hero[0], Bomb::RANGE)){
+					sound.play(Sound::SOUND_BEEP);
 					hero[0]->subtract_coins(10);
 				}
 				if (bombs[i]->intersects(hero[1], Bomb::RANGE)){
+					sound.play(Sound::SOUND_BEEP);
 					hero[1]->subtract_coins(10);
 				}
 			}

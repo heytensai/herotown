@@ -14,6 +14,8 @@ public:
 	typedef enum
 	{
 		SOUND_BEEP,
+		SOUND_DING1,
+		SOUND_DING2,
 	} sound_t;
 
 	Sound();
