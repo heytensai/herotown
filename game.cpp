@@ -628,6 +628,7 @@ void Game::process_bombs()
 	for (int i=0; i<BOMBS; i++){
 		if (bombs[i] != NULL){
 			if (bombs[i]->ready_to_explode()){
+				sound.play(Sound::SOUND_EXPLODE);
 				bombs[i]->explode();
 
 				if (bombs[i]->intersects(hero[0], Bomb::RANGE)){

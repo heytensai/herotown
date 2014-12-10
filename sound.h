@@ -16,6 +16,7 @@ public:
 		SOUND_BEEP,
 		SOUND_DING1,
 		SOUND_DING2,
+		SOUND_EXPLODE,
 	} sound_t;
 
 	Sound();

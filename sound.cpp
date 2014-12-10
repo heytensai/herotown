@@ -23,6 +23,7 @@ void Sound::init()
 	load(SOUND_BEEP, "resources/beep.wav");
 	load(SOUND_DING1, "resources/ding1.wav");
 	load(SOUND_DING2, "resources/ding2.wav");
+	load(SOUND_EXPLODE, "resources/explode.wav");
 }
 
 void Sound::load(int soundId, const char *file)
