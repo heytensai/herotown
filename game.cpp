@@ -104,6 +104,8 @@ void Game::start()
 	init_blocks();
 	init_coins();
 
+	memset(bombs, 0, sizeof(bombs));
+
 	start_time = SDL_GetTicks() / 1000;
 	running = 1;
 }
@@ -133,6 +135,23 @@ void Game::init_font()
 {
 	TTF_Init();
 	font = TTF_OpenFont("resources/DejaVuSans-Bold.ttf", 30);
+}
+
+void Game::add_bomb(int x, int y)
+{
+	Uint32 cur_tick = SDL_GetTicks();
+	if (cur_tick - last_bomb_added < BOMB_TICKS){
+		return;
+	}
+	last_bomb_added = cur_tick;
+	for (int i=0; i<BOMBS; i++){
+		if (bombs[i] == NULL){
+			bombs[i] = new Bomb(video->renderer);
+			bombs[i]->location.x = x;
+			bombs[i]->location.y = y;
+			return;
+		}
+	}
 }
 
 void Game::add_coin(int x, int y, bool ignore_tick = false)
@@ -307,10 +326,20 @@ void Game::render()
 	}
 	hero[0]->render(video->renderer);
 	hero[1]->render(video->renderer);
+	render_bombs();
 	render_score(0);
 	render_score(1);
 	render_time();
 	video->finish_render();
+}
+
+void Game::render_bombs()
+{
+	for (int i=0; i<BOMBS; i++){
+		if (bombs[i] != NULL){
+			bombs[i]->render(video->renderer);
+		}
+	}
 }
 
 void Game::render_time()
@@ -464,10 +493,10 @@ void Game::process_inputs()
 		hero[0]->direction &= ~(HERO_MOVE_RIGHT);
 	}
 	if (state[SDL_SCANCODE_SPACE]){
-		hero[0]->action |= HERO_ACTION_COIN;
+		hero[0]->action |= HERO_ACTION_BOMB;
 	}
 	else{
-		hero[0]->action &= ~(HERO_ACTION_COIN);
+		hero[0]->action &= ~(HERO_ACTION_BOMB);
 	}
 
 	//hero[1]
@@ -495,11 +524,11 @@ void Game::process_inputs()
 	else{
 		hero[1]->direction &= ~(HERO_MOVE_RIGHT);
 	}
-	if (state[SDL_SCANCODE_KP_ENTER]){
-		hero[1]->action |= HERO_ACTION_COIN;
+	if (state[SDL_SCANCODE_RETURN]){
+		hero[1]->action |= HERO_ACTION_BOMB;
 	}
 	else{
-		hero[1]->action &= ~(HERO_ACTION_COIN);
+		hero[1]->action &= ~(HERO_ACTION_BOMB);
 	}
 
 	//globals
@@ -537,10 +566,10 @@ void Game::process_inputs()
 				}
 
 				if (button[0]){
-					hero[0]->action |= HERO_ACTION_COIN;
+					hero[0]->action |= HERO_ACTION_BOMB;
 				}
 				else{
-					hero[0]->action &= ~(HERO_ACTION_COIN);
+					hero[0]->action &= ~(HERO_ACTION_BOMB);
 				}
 			}
 		}
@@ -557,6 +586,30 @@ void Game::process_state()
 
 	process_hero_state(0);
 	process_hero_state(1);
+
+	process_bombs();
+}
+
+void Game::process_bombs()
+{
+	for (int i=0; i<BOMBS; i++){
+		if (bombs[i] != NULL){
+			if (bombs[i]->ready_to_explode()){
+				bombs[i]->explode();
+
+				if (bombs[i]->intersects(hero[0], Bomb::RANGE)){
+					hero[0]->subtract_coins(10);
+				}
+				if (bombs[i]->intersects(hero[1], Bomb::RANGE)){
+					hero[1]->subtract_coins(10);
+				}
+			}
+			if (bombs[i]->exploded()){
+				delete bombs[i];
+				bombs[i] = NULL;
+			}
+		}
+	}
 }
 
 bool Game::process_hero_movement_direction(int heronum, int move, int direction)
@@ -569,6 +622,11 @@ bool Game::process_hero_movement_direction(int heronum, int move, int direction)
 	if (hero[heronum]->direction & move){
 		hero[heronum]->motion.active = 1;
 		if (hero[heronum]->intersects(hero[other_hero], Hero::step, direction)) return false;
+		for (int i=0; i<BOMBS; i++){
+			if (bombs[i] != NULL){
+				if (hero[heronum]->intersects(bombs[i], Hero::step, direction)) return false;
+			}
+		}
 		return true;
 	}
 	
@@ -594,8 +652,7 @@ void Game::process_hero_state(int heronum)
 		hero[heronum]->motion.movement.x -= Sprite::step;
 	}
 
-	/*
-	if (hero[heronum]->action & HERO_ACTION_COIN){
+	if (hero[heronum]->action & HERO_ACTION_BOMB){
 		int new_x = hero[heronum]->location.x;
 		if (hero[heronum]->motion.movement.x < 0){
 			new_x += (hero[heronum]->width / 2) + 10;
@@ -603,9 +660,8 @@ void Game::process_hero_state(int heronum)
 		else{
 			new_x -= (hero[heronum]->width / 2) + 10;
 		}
-		add_coin(new_x, hero[heronum]->location.y + 15);
+		add_bomb(new_x, hero[heronum]->location.y + 15);
 	}
-	*/
 }
 
 void Game::process_events()
