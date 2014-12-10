@@ -349,11 +349,8 @@ void Game::render_text(int x, int y, const char *text)
 
 void Game::render_score(int heronum)
 {
-	SDL_Color color = {0, 0, 0};
 	char s[4];
 	snprintf(s, 4, "%i", hero[heronum]->score);
-	SDL_Surface *f = TTF_RenderUTF8_Blended(font, s, color);
-	SDL_Texture *t = SDL_CreateTextureFromSurface(video->renderer, f);
 
 	render_text(20 + (720 * heronum), 20, s);
 }
