@@ -4,27 +4,47 @@
 #include "globals.h"
 #include "point.h"
 
+class Animation
+{
+private:
+	int frames;
+	int last_loaded_texture;
+
+public:
+	const static int NONE = 0x0000;
+	const static int WALK_LEFT = 0x0001;
+	const static int WALK_RIGHT = 0x0002;
+	const static int TICK = 0x0003;
+	SDL_Texture **texture;
+	int name;
+	Uint32 speed;
+	int width;
+	int height;
+
+	Animation();
+	~Animation();
+	int get_frames();
+	void set_frames(int frames);
+	void load_image(SDL_Renderer *renderer, const char *file);
+};
 
 class Sprite
 {
 private:
-	SDL_Texture **animation_right;
-	SDL_Texture **animation_left;
+	static const int ANIMATION_MAX = 8;
+	Animation *animation[ANIMATION_MAX];
+	int animation_count;
+	int active_animation;
+	int animation_frame;
 	SDL_Texture *texture;
 	bool use_animation_always;
-	int animated_left;
-	int animated_right;
-	int animation_index_left;
-	int animation_index_right;
-	int current_animation_left;
-	int current_animation_right;
 	Uint32 last_animation_tick;
 
-	SDL_Texture *_load_image(SDL_Renderer *renderer, const char *file);
-	void render_animation_left(SDL_Renderer *renderer);
-	void render_animation_right(SDL_Renderer *renderer);
 	void render_animation(SDL_Renderer *renderer);
 	void render_static(SDL_Renderer *renderer);
+
+protected:
+	SDL_Texture *_load_image(SDL_Renderer *renderer, const char *file);
 
 public:
 	point_t location;
@@ -32,7 +52,6 @@ public:
 	int width;
 	int height;
 	bool hidden;
-	int animation_speed;
 	static const int step = 4;
 	static const int edge_size = 00;
 	static const int DIRECTION_UP = 0x01;
@@ -45,16 +64,14 @@ public:
 	bool moving();
 	bool can_move(char direction);
 	void load_image(SDL_Renderer *renderer, const char *file);
-	void load_animation_left(SDL_Renderer *renderer, const char *file);
-	void load_animation_right(SDL_Renderer *renderer, const char *file);
 	void render(SDL_Renderer *renderer);
-	void enable_animation_left(int frames);
-	void enable_animation_right(int frames);
 	bool is_animated();
 	bool intersects(Sprite *other, int buffer);
 	bool intersects(Sprite *other, int buffer, int direction);
 	bounding_box_t get_bounding_box(int buffer = 0);
 	void always_animate(bool b);
+	bool add_animation(Animation *animation);
+	bool set_animation(const int name);
 
 };
 

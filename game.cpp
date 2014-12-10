@@ -14,7 +14,7 @@ Game::Game(int width, int height)
 	video->load_background("resources/background.png");
 
 	sound.init();
-	init_controller();
+	//init_controller();
 	init_font();
 
 	srand(time(NULL));
@@ -240,60 +240,91 @@ void Game::init_hero()
 	hero[0] = new Hero(48, 64);
 	hero[0]->location.x = 80;
 	hero[0]->location.y = 520;
-
 	hero[0]->motion.active = 0;
 	hero[0]->motion.movement.x = 0;
 	hero[0]->motion.movement.y = 0;
-
-	hero[0]->enable_animation_right(8);
-	hero[0]->load_animation_right(video->renderer, "resources/yoshi0.png");
-	hero[0]->load_animation_right(video->renderer, "resources/yoshi1.png");
-	hero[0]->load_animation_right(video->renderer, "resources/yoshi2.png");
-	hero[0]->load_animation_right(video->renderer, "resources/yoshi3.png");
-	hero[0]->load_animation_right(video->renderer, "resources/yoshi4.png");
-	hero[0]->load_animation_right(video->renderer, "resources/yoshi5.png");
-	hero[0]->load_animation_right(video->renderer, "resources/yoshi6.png");
-	hero[0]->load_animation_right(video->renderer, "resources/yoshi7.png");
-	hero[0]->enable_animation_left(8);
-	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left0.png");
-	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left1.png");
-	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left2.png");
-	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left3.png");
-	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left4.png");
-	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left5.png");
-	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left6.png");
-	hero[0]->load_animation_left(video->renderer, "resources/yoshi-left7.png");
-
 	hero[0]->load_image(video->renderer, "resources/yoshi0.png");
+
+	Animation *a;
+	a = new Animation();
+	a->set_frames(8);
+	a->name = Animation::WALK_RIGHT;
+	a->speed = 50;
+	a->width = hero[0]->width;
+	a->height = hero[0]->height;
+	a->load_image(video->renderer, "resources/yoshi0.png");
+	a->load_image(video->renderer, "resources/yoshi1.png");
+	a->load_image(video->renderer, "resources/yoshi2.png");
+	a->load_image(video->renderer, "resources/yoshi3.png");
+	a->load_image(video->renderer, "resources/yoshi4.png");
+	a->load_image(video->renderer, "resources/yoshi5.png");
+	a->load_image(video->renderer, "resources/yoshi6.png");
+	a->load_image(video->renderer, "resources/yoshi7.png");
+	a->load_image(video->renderer, "resources/yoshi8.png");
+	hero[0]->add_animation(a);
+
+	a = new Animation();
+	a->set_frames(8);
+	a->name = Animation::WALK_LEFT;
+	a->speed = 50;
+	a->width = hero[0]->width;
+	a->height = hero[0]->height;
+	a->load_image(video->renderer, "resources/yoshi-left0.png");
+	a->load_image(video->renderer, "resources/yoshi-left1.png");
+	a->load_image(video->renderer, "resources/yoshi-left2.png");
+	a->load_image(video->renderer, "resources/yoshi-left3.png");
+	a->load_image(video->renderer, "resources/yoshi-left4.png");
+	a->load_image(video->renderer, "resources/yoshi-left5.png");
+	a->load_image(video->renderer, "resources/yoshi-left6.png");
+	a->load_image(video->renderer, "resources/yoshi-left7.png");
+	a->load_image(video->renderer, "resources/yoshi-left8.png");
+	hero[0]->add_animation(a);
+
+	hero[0]->set_animation(Animation::NONE);
 
 	hero[1] = new Hero(48, 64);
 	hero[1]->location.x = 720;
 	hero[1]->location.y = 520;
-
 	hero[1]->motion.active = 0;
 	hero[1]->motion.movement.x = 0;
 	hero[1]->motion.movement.y = 0;
-
-	hero[1]->enable_animation_right(8);
-	hero[1]->load_animation_right(video->renderer, "resources/mario0.png");
-	hero[1]->load_animation_right(video->renderer, "resources/mario1.png");
-	hero[1]->load_animation_right(video->renderer, "resources/mario2.png");
-	hero[1]->load_animation_right(video->renderer, "resources/mario3.png");
-	hero[1]->load_animation_right(video->renderer, "resources/mario4.png");
-	hero[1]->load_animation_right(video->renderer, "resources/mario5.png");
-	hero[1]->load_animation_right(video->renderer, "resources/mario6.png");
-	hero[1]->load_animation_right(video->renderer, "resources/mario7.png");
-	hero[1]->enable_animation_left(8);
-	hero[1]->load_animation_left(video->renderer, "resources/mario-left0.png");
-	hero[1]->load_animation_left(video->renderer, "resources/mario-left1.png");
-	hero[1]->load_animation_left(video->renderer, "resources/mario-left2.png");
-	hero[1]->load_animation_left(video->renderer, "resources/mario-left3.png");
-	hero[1]->load_animation_left(video->renderer, "resources/mario-left4.png");
-	hero[1]->load_animation_left(video->renderer, "resources/mario-left5.png");
-	hero[1]->load_animation_left(video->renderer, "resources/mario-left6.png");
-	hero[1]->load_animation_left(video->renderer, "resources/mario-left7.png");
-
 	hero[1]->load_image(video->renderer, "resources/mario0.png");
+
+	a = new Animation();
+	a->set_frames(8);
+	a->name = Animation::WALK_RIGHT;
+	a->speed = 50;
+	a->width = hero[0]->width;
+	a->height = hero[0]->height;
+	a->load_image(video->renderer, "resources/mario0.png");
+	a->load_image(video->renderer, "resources/mario1.png");
+	a->load_image(video->renderer, "resources/mario2.png");
+	a->load_image(video->renderer, "resources/mario3.png");
+	a->load_image(video->renderer, "resources/mario4.png");
+	a->load_image(video->renderer, "resources/mario5.png");
+	a->load_image(video->renderer, "resources/mario6.png");
+	a->load_image(video->renderer, "resources/mario7.png");
+	a->load_image(video->renderer, "resources/mario8.png");
+	hero[1]->add_animation(a);
+
+	a = new Animation();
+	a->set_frames(8);
+	a->name = Animation::WALK_LEFT;
+	a->speed = 50;
+	a->width = hero[0]->width;
+	a->height = hero[0]->height;
+	a->load_image(video->renderer, "resources/mario-left0.png");
+	a->load_image(video->renderer, "resources/mario-left1.png");
+	a->load_image(video->renderer, "resources/mario-left2.png");
+	a->load_image(video->renderer, "resources/mario-left3.png");
+	a->load_image(video->renderer, "resources/mario-left4.png");
+	a->load_image(video->renderer, "resources/mario-left5.png");
+	a->load_image(video->renderer, "resources/mario-left6.png");
+	a->load_image(video->renderer, "resources/mario-left7.png");
+	a->load_image(video->renderer, "resources/mario-left8.png");
+	hero[1]->add_animation(a);
+
+	hero[1]->set_animation(Animation::NONE);
 }
 
 void Game::init_blocks()
@@ -641,15 +672,19 @@ void Game::process_hero_state(int heronum)
 
 	if (process_hero_movement_direction(heronum, HERO_MOVE_UP, Sprite::DIRECTION_UP)){
 		hero[heronum]->motion.movement.y -= Sprite::step;
+		hero[heronum]->set_animation(Animation::WALK_LEFT);
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_DOWN, Sprite::DIRECTION_DOWN)){
 		hero[heronum]->motion.movement.y += Sprite::step;
+		hero[heronum]->set_animation(Animation::WALK_RIGHT);
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_RIGHT, Sprite::DIRECTION_RIGHT)){
 		hero[heronum]->motion.movement.x += Sprite::step;
+		hero[heronum]->set_animation(Animation::WALK_RIGHT);
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_LEFT, Sprite::DIRECTION_LEFT)){
 		hero[heronum]->motion.movement.x -= Sprite::step;
+		hero[heronum]->set_animation(Animation::WALK_LEFT);
 	}
 
 	if (hero[heronum]->action & HERO_ACTION_BOMB){

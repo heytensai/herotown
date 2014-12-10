@@ -8,11 +8,21 @@ Bomb::Bomb(SDL_Renderer *renderer)
 	motion.movement.x = 0;
 	motion.movement.y = 0;
 	load_image(renderer, "resources/bomb.png");
-	enable_animation_right(2);
-	load_animation_right(renderer, "resources/bomb0.png");
-	load_animation_right(renderer, "resources/bomb1.png");
+
+	Animation *a = new Animation();
+	a->set_frames(2);
+	a->name = Animation::TICK;
+	a->speed = 200;
+	a->width = width;
+	a->height = height;
+	a->load_image(renderer, "resources/bomb0.png");
+	a->load_image(renderer, "resources/bomb1.png");
+	//a->texture[0] = _load_image(renderer, "resources/bomb0.png");
+	//a->texture[1] = _load_image(renderer, "resources/bomb1.png");
+	add_animation(a);
+	set_animation(Animation::TICK);
+
 	always_animate(true);
-	animation_speed = 200;
 	explode_start = 0;
 }
 

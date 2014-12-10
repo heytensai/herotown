@@ -1,15 +1,61 @@
 #include "sprite.h"
 
+Animation::Animation()
+{
+	frames = -1;
+	texture = NULL;
+	last_loaded_texture = -1;
+}
+
+Animation::~Animation()
+{
+	if (texture != NULL){
+		for (int i=0; i<frames; i++){
+			SDL_DestroyTexture(texture[i]);
+		}
+		delete texture;
+		texture = NULL;
+	}
+}
+
+int Animation::get_frames()
+{
+	return frames;
+}
+
+void Animation::set_frames(int frames)
+{
+	this->frames = frames;
+	texture = new SDL_Texture *[frames];
+	memset(texture, 0, sizeof(SDL_Texture *) * frames);
+}
+
+void Animation::load_image(SDL_Renderer *renderer, const char *file)
+{
+	if (last_loaded_texture == frames - 1){
+		return;
+	}
+	last_loaded_texture++;
+	SDL_Surface *tmp = NULL;
+	tmp = IMG_Load(file);
+	if (tmp == NULL){
+		fprintf(stderr, "failed to load sprite image\n");
+		return;
+	}
+
+	texture[last_loaded_texture] = SDL_CreateTextureFromSurface(renderer, tmp);
+	SDL_FreeSurface(tmp);
+}
+
 Sprite::Sprite(int width, int height)
 {
 	this->width = width;
 	this->height = height;
 	texture = NULL;
-	animated_left = 0;
-	animated_right = 0;
 	hidden = false;
 	use_animation_always = false;
-	animation_speed = 50;
+	animation_count = -1;
+	memset(animation, 0, sizeof(animation));
 }
 
 Sprite::~Sprite()
@@ -18,15 +64,33 @@ Sprite::~Sprite()
 		SDL_DestroyTexture(texture);
 		texture = NULL;
 	}
-	if (animated_left){
-		for (int i=0; i<animated_left; i++){
-			if (animation_left[i] != NULL){
-				SDL_DestroyTexture(animation_left[i]);
-				animation_left[i] = NULL;
+}
+
+bool Sprite::add_animation(Animation *animation)
+{
+	if (animation_count == ANIMATION_MAX - 1){
+		return false;
+	}
+	animation_count++;
+	this->animation[animation_count] = animation;
+	return true;
+}
+
+bool Sprite::set_animation(const int name)
+{
+	if (name != Animation::NONE){
+		for (int i=0; i<=animation_count; i++){
+			if (animation[i]->name == name){
+				active_animation = i;
+				if (animation_frame >= animation[i]->get_frames()){
+					animation_frame = 0;
+				}
+				return true;
 			}
 		}
-		delete[] animation_left;
 	}
+	active_animation = -1;
+	return false;
 }
 
 bounding_box_t Sprite::get_bounding_box(int buffer)
@@ -128,69 +192,30 @@ bool Sprite::moving()
 	return (motion.movement.x != 0) || (motion.movement.y != 0);
 }
 
-void Sprite::render_animation_left(SDL_Renderer *renderer)
-{
-	if (animated_left == 0){
-		render_static(renderer);
-		return;
-	}
-	SDL_Rect src;
-	src.x = 0;
-	src.y = 0;
-	src.w = width;
-	src.h = height;
-	SDL_Rect dst;
-	dst.x = location.x - (width / 2);
-	dst.y = location.y - (height / 2);
-	dst.w = width;
-	dst.h = height;
-
-	SDL_RenderCopy(renderer, animation_left[current_animation_left], &src, &dst);
-	Uint32 now = SDL_GetTicks();
-	if (now - last_animation_tick > animation_speed){
-		current_animation_left++;
-		if (current_animation_left >= animated_left){
-			current_animation_left = 0;
-		}
-		last_animation_tick = now;
-	}
-}
-
-void Sprite::render_animation_right(SDL_Renderer *renderer)
-{
-	if (animated_right == 0){
-		render_static(renderer);
-		return;
-	}
-	SDL_Rect src;
-	src.x = 0;
-	src.y = 0;
-	src.w = width;
-	src.h = height;
-	SDL_Rect dst;
-	dst.x = location.x - (width / 2);
-	dst.y = location.y - (height / 2);
-	dst.w = width;
-	dst.h = height;
-
-	SDL_RenderCopy(renderer, animation_right[current_animation_right], &src, &dst);
-	Uint32 now = SDL_GetTicks();
-	if (now - last_animation_tick > animation_speed){
-		current_animation_right++;
-		if (current_animation_right >= animated_right){
-			current_animation_right = 0;
-		}
-		last_animation_tick = now;
-	}
-}
-
 void Sprite::render_animation(SDL_Renderer *renderer)
 {
-	if (motion.movement.x < 0){
-		render_animation_left(renderer);
-	}
-	else{
-		render_animation_right(renderer);
+	Animation *a = animation[active_animation];
+	SDL_Texture *tex = a->texture[animation_frame];
+
+	SDL_Rect src;
+	src.x = 0;
+	src.y = 0;
+	src.w = a->width;
+	src.h = a->height;
+	SDL_Rect dst;
+	dst.x = location.x - (a->width / 2);
+	dst.y = location.y - (a->height / 2);
+	dst.w = a->width;
+	dst.h = a->height;
+
+	SDL_RenderCopy(renderer, tex, &src, &dst);
+	Uint32 now = SDL_GetTicks();
+	if (now - last_animation_tick > a->speed){
+		animation_frame++;
+		if (animation_frame >= a->get_frames()){
+			animation_frame = 0;
+		}
+		last_animation_tick = now;
 	}
 }
 
@@ -200,13 +225,12 @@ void Sprite::render(SDL_Renderer *renderer)
 		return;
 	}
 
-	if (is_animated()){
-		if (motion.active || use_animation_always){
-			render_animation(renderer);
-			return;
-		}
+	if (is_animated() && (use_animation_always || moving())){
+		render_animation(renderer);
 	}
-	render_static(renderer);
+	else{
+		render_static(renderer);
+	}
 }
 void Sprite::render_static(SDL_Renderer *renderer)
 {
@@ -226,52 +250,12 @@ void Sprite::render_static(SDL_Renderer *renderer)
 
 bool Sprite::is_animated()
 {
-	return (animated_left > 0 || animated_right > 0);
+	return (animation_count > -1);
 }
 
 void Sprite::always_animate(bool b)
 {
 	use_animation_always = b;
-}
-
-void Sprite::enable_animation_left(int frames)
-{
-	animated_left = frames;
-	animation_left = new SDL_Texture *[frames];
-	animation_index_left = -1;
-	current_animation_left = 0;
-	last_animation_tick = SDL_GetTicks();
-}
-
-void Sprite::enable_animation_right(int frames)
-{
-	animated_right = frames;
-	animation_right = new SDL_Texture *[frames];
-	animation_index_right = -1;
-	current_animation_right = 0;
-	last_animation_tick = SDL_GetTicks();
-}
-
-void Sprite::load_animation_left(SDL_Renderer *renderer, const char *file)
-{
-	// make sure we have room to add
-	if (animation_index_left == animated_left - 1){
-		return;
-	}
-
-	animation_index_left++;
-	animation_left[animation_index_left] = _load_image(renderer, file);
-}
-
-void Sprite::load_animation_right(SDL_Renderer *renderer, const char *file)
-{
-	// make sure we have room to add
-	if (animation_index_right == animated_right - 1){
-		return;
-	}
-
-	animation_index_right++;
-	animation_right[animation_index_right] = _load_image(renderer, file);
 }
 
 SDL_Texture *Sprite::_load_image(SDL_Renderer *renderer, const char *file)
