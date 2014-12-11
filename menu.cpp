@@ -4,7 +4,7 @@ Menu::Menu(Video *video)
 {
 	this->video = video;
 	running = true;
-	exit = false;
+	result = 0;
 }
 
 void Menu::event_loop()
@@ -21,7 +21,7 @@ void Menu::event_loop()
 				case SDL_QUIT:
 				{
 					running = false;
-					exit = true;
+					result = 1;
 				} break;
 				case SDL_KEYUP:
 				{
@@ -29,7 +29,7 @@ void Menu::event_loop()
 						case SDLK_ESCAPE:
 						{
 							running = false;
-							exit = true;
+							result = 1;
 						} break;
 						case SDLK_SPACE:
 						{

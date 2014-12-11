@@ -691,7 +691,7 @@ bool Game::intro_screen()
 	menu.render();
 	menu.event_loop();
 
-	return menu.exit;
+	return (menu.result > 0);
 }
 
 

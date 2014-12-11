@@ -11,7 +11,7 @@ private:
 
 public:
 	bool running;
-	bool exit;
+	int result;
 	Menu(Video *video);
 	void render();
 	void event_loop();
