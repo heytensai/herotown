@@ -687,11 +687,11 @@ void Game::process_events()
  */
 bool Game::intro_screen()
 {
-	Menu menu(video);
+	IntroMenu menu(video);
 	menu.render();
 	menu.event_loop();
 
-	return (menu.result > 0);
+	return menu.exit();
 }
 
 

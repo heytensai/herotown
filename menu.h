@@ -6,7 +6,7 @@
 
 class Menu
 {
-private:
+protected:
 	Video *video;
 
 public:
@@ -15,6 +15,18 @@ public:
 	Menu(Video *video);
 	void render();
 	void event_loop();
+
+};
+
+class IntroMenu : public Menu
+{
+private:
+
+public:
+	IntroMenu(Video *video);
+	void render();
+	void event_loop();
+	bool exit();
 
 };
 
