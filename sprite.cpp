@@ -35,7 +35,6 @@ void Animation::load_image(SDL_Renderer *renderer, const char *file)
 	if (last_loaded_texture == frames - 1){
 		return;
 	}
-	last_loaded_texture++;
 	SDL_Surface *tmp = NULL;
 	tmp = IMG_Load(file);
 	if (tmp == NULL){
@@ -43,8 +42,14 @@ void Animation::load_image(SDL_Renderer *renderer, const char *file)
 		return;
 	}
 
-	texture[last_loaded_texture] = SDL_CreateTextureFromSurface(renderer, tmp);
+	SDL_Texture *t = SDL_CreateTextureFromSurface(renderer, tmp);
 	SDL_FreeSurface(tmp);
+	if (t == NULL){
+		fprintf(stderr, "failed to load sprite texture\n");
+		return;
+	}
+	last_loaded_texture++;
+	texture[last_loaded_texture] = t;
 }
 
 Sprite::Sprite(int width, int height)
