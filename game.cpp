@@ -93,6 +93,8 @@ void Game::add_bomb(int x, int y)
 			bombs[i] = new Bomb(video->renderer);
 			bombs[i]->location.x = x;
 			bombs[i]->location.y = y;
+			sound.play(Sound::SOUND_TICKING);
+
 			return;
 		}
 	}
