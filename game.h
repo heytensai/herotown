@@ -25,8 +25,8 @@ private:
 	Hero *hero[2];
 	point_t grid_base;
 	movement_t background;
-	Sprite *blocks[BLOCKS];
-	Sprite *coins[COINS];
+	Block *blocks[BLOCKS];
+	Coin *coins[COINS];
 	Bomb *bombs[BOMBS];
 	input_state_t last_input_state;
 	input_state_t input_state;
