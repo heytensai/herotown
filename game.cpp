@@ -90,7 +90,7 @@ void Game::add_bomb(int x, int y)
 	last_bomb_added = cur_tick;
 	for (int i=0; i<BOMBS; i++){
 		if (bombs[i] == NULL){
-			bombs[i] = new Bomb(video->renderer);
+			bombs[i] = new Bomb(video);
 			bombs[i]->location.x = x;
 			bombs[i]->location.y = y;
 			sound.play(Sound::SOUND_TICKING);
@@ -111,11 +111,11 @@ void Game::add_coin(int x, int y, bool ignore_tick = false)
 	}
 	for (int i=0; i<COINS; i++){
 		if (coins[i] == NULL){
-			coins[i] = new Sprite(20, 25);
+			coins[i] = new Sprite(video, 20, 25);
 			coins[i]->motion.active = 0;
 			coins[i]->location.x = x;
 			coins[i]->location.y = y;
-			coins[i]->load_image(video->renderer, "resources/coin0.png");
+			coins[i]->load_image("resources/coin0.png");
 			return;
 		}
 	}
@@ -183,13 +183,13 @@ void Game::init_controller()
  */
 void Game::init_hero()
 {
-	hero[0] = new Hero(48, 64);
+	hero[0] = new Hero(video, 48, 64);
 	hero[0]->location.x = 80;
 	hero[0]->location.y = 520;
 	hero[0]->motion.active = 0;
 	hero[0]->motion.movement.x = 0;
 	hero[0]->motion.movement.y = 0;
-	hero[0]->load_image(video->renderer, "resources/yoshi0.png");
+	hero[0]->load_image("resources/yoshi0.png");
 
 	Animation *a;
 	a = new Animation();
@@ -198,15 +198,15 @@ void Game::init_hero()
 	a->speed = 50;
 	a->width = hero[0]->width;
 	a->height = hero[0]->height;
-	a->load_image(video->renderer, "resources/yoshi0.png");
-	a->load_image(video->renderer, "resources/yoshi1.png");
-	a->load_image(video->renderer, "resources/yoshi2.png");
-	a->load_image(video->renderer, "resources/yoshi3.png");
-	a->load_image(video->renderer, "resources/yoshi4.png");
-	a->load_image(video->renderer, "resources/yoshi5.png");
-	a->load_image(video->renderer, "resources/yoshi6.png");
-	a->load_image(video->renderer, "resources/yoshi7.png");
-	a->load_image(video->renderer, "resources/yoshi8.png");
+	a->load_image(video, "resources/yoshi0.png");
+	a->load_image(video, "resources/yoshi1.png");
+	a->load_image(video, "resources/yoshi2.png");
+	a->load_image(video, "resources/yoshi3.png");
+	a->load_image(video, "resources/yoshi4.png");
+	a->load_image(video, "resources/yoshi5.png");
+	a->load_image(video, "resources/yoshi6.png");
+	a->load_image(video, "resources/yoshi7.png");
+	a->load_image(video, "resources/yoshi8.png");
 	hero[0]->add_animation(a);
 
 	a = new Animation();
@@ -215,26 +215,26 @@ void Game::init_hero()
 	a->speed = 50;
 	a->width = hero[0]->width;
 	a->height = hero[0]->height;
-	a->load_image(video->renderer, "resources/yoshi-left0.png");
-	a->load_image(video->renderer, "resources/yoshi-left1.png");
-	a->load_image(video->renderer, "resources/yoshi-left2.png");
-	a->load_image(video->renderer, "resources/yoshi-left3.png");
-	a->load_image(video->renderer, "resources/yoshi-left4.png");
-	a->load_image(video->renderer, "resources/yoshi-left5.png");
-	a->load_image(video->renderer, "resources/yoshi-left6.png");
-	a->load_image(video->renderer, "resources/yoshi-left7.png");
-	a->load_image(video->renderer, "resources/yoshi-left8.png");
+	a->load_image(video, "resources/yoshi-left0.png");
+	a->load_image(video, "resources/yoshi-left1.png");
+	a->load_image(video, "resources/yoshi-left2.png");
+	a->load_image(video, "resources/yoshi-left3.png");
+	a->load_image(video, "resources/yoshi-left4.png");
+	a->load_image(video, "resources/yoshi-left5.png");
+	a->load_image(video, "resources/yoshi-left6.png");
+	a->load_image(video, "resources/yoshi-left7.png");
+	a->load_image(video, "resources/yoshi-left8.png");
 	hero[0]->add_animation(a);
 
 	hero[0]->set_animation(Animation::NONE);
 
-	hero[1] = new Hero(48, 64);
+	hero[1] = new Hero(video, 48, 64);
 	hero[1]->location.x = 720;
 	hero[1]->location.y = 520;
 	hero[1]->motion.active = 0;
 	hero[1]->motion.movement.x = 0;
 	hero[1]->motion.movement.y = 0;
-	hero[1]->load_image(video->renderer, "resources/mario0.png");
+	hero[1]->load_image("resources/mario0.png");
 
 	a = new Animation();
 	a->set_frames(8);
@@ -242,15 +242,15 @@ void Game::init_hero()
 	a->speed = 50;
 	a->width = hero[0]->width;
 	a->height = hero[0]->height;
-	a->load_image(video->renderer, "resources/mario0.png");
-	a->load_image(video->renderer, "resources/mario1.png");
-	a->load_image(video->renderer, "resources/mario2.png");
-	a->load_image(video->renderer, "resources/mario3.png");
-	a->load_image(video->renderer, "resources/mario4.png");
-	a->load_image(video->renderer, "resources/mario5.png");
-	a->load_image(video->renderer, "resources/mario6.png");
-	a->load_image(video->renderer, "resources/mario7.png");
-	a->load_image(video->renderer, "resources/mario8.png");
+	a->load_image(video, "resources/mario0.png");
+	a->load_image(video, "resources/mario1.png");
+	a->load_image(video, "resources/mario2.png");
+	a->load_image(video, "resources/mario3.png");
+	a->load_image(video, "resources/mario4.png");
+	a->load_image(video, "resources/mario5.png");
+	a->load_image(video, "resources/mario6.png");
+	a->load_image(video, "resources/mario7.png");
+	a->load_image(video, "resources/mario8.png");
 	hero[1]->add_animation(a);
 
 	a = new Animation();
@@ -259,15 +259,15 @@ void Game::init_hero()
 	a->speed = 50;
 	a->width = hero[0]->width;
 	a->height = hero[0]->height;
-	a->load_image(video->renderer, "resources/mario-left0.png");
-	a->load_image(video->renderer, "resources/mario-left1.png");
-	a->load_image(video->renderer, "resources/mario-left2.png");
-	a->load_image(video->renderer, "resources/mario-left3.png");
-	a->load_image(video->renderer, "resources/mario-left4.png");
-	a->load_image(video->renderer, "resources/mario-left5.png");
-	a->load_image(video->renderer, "resources/mario-left6.png");
-	a->load_image(video->renderer, "resources/mario-left7.png");
-	a->load_image(video->renderer, "resources/mario-left8.png");
+	a->load_image(video, "resources/mario-left0.png");
+	a->load_image(video, "resources/mario-left1.png");
+	a->load_image(video, "resources/mario-left2.png");
+	a->load_image(video, "resources/mario-left3.png");
+	a->load_image(video, "resources/mario-left4.png");
+	a->load_image(video, "resources/mario-left5.png");
+	a->load_image(video, "resources/mario-left6.png");
+	a->load_image(video, "resources/mario-left7.png");
+	a->load_image(video, "resources/mario-left8.png");
 	hero[1]->add_animation(a);
 
 	hero[1]->set_animation(Animation::NONE);
@@ -279,11 +279,11 @@ void Game::init_blocks()
 		blocks[i] = NULL;
 	}
 	for (int i=0; (i*32)<=width; i++){
-		blocks[i] = new Sprite(32, 16);
+		blocks[i] = new Sprite(video, 32, 16);
 		blocks[i]->motion.active = 0;
 		blocks[i]->location.x = i * 32;
 		blocks[i]->location.y = 550;
-		blocks[i]->load_image(video->renderer, "resources/block.png");
+		blocks[i]->load_image("resources/block.png");
 	}
 }
 
@@ -293,16 +293,16 @@ void Game::render()
 	video->blit_background();
 	for (int i=0; i<BLOCKS; i++){
 		if (blocks[i] != NULL){
-			blocks[i]->render(video->renderer);
+			blocks[i]->render();
 		}
 	}
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){
-			coins[i]->render(video->renderer);
+			coins[i]->render();
 		}
 	}
-	hero[0]->render(video->renderer);
-	hero[1]->render(video->renderer);
+	hero[0]->render();
+	hero[1]->render();
 	render_bombs();
 	render_score(0);
 	render_score(1);
@@ -314,7 +314,7 @@ void Game::render_bombs()
 {
 	for (int i=0; i<BOMBS; i++){
 		if (bombs[i] != NULL){
-			bombs[i]->render(video->renderer);
+			bombs[i]->render();
 		}
 	}
 }

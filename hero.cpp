@@ -1,7 +1,7 @@
 #include "hero.h"
 
-Hero::Hero(int width, int height)
-	: Sprite(width, height)
+Hero::Hero(Video *video, int width, int height)
+	: Sprite(video, width, height)
 {
 	direction = 0;
 	score = 0;

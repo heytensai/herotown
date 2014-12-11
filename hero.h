@@ -19,7 +19,7 @@ public:
 	int action;
 	int score;
 	
-	Hero(int width, int height);
+	Hero(Video *video, int width, int height);
 	void subtract_coins(int count);
 
 };

@@ -3,6 +3,7 @@
 
 #include "globals.h"
 #include "point.h"
+#include "video.h"
 
 class Animation
 {
@@ -26,12 +27,13 @@ public:
 	~Animation();
 	int get_frames();
 	void set_frames(int frames);
-	void load_image(SDL_Renderer *renderer, const char *file);
+	void load_image(Video *video, const char *file);
 };
 
 class Sprite
 {
 private:
+	Video *video;
 	static const int ANIMATION_MAX = 8;
 	Animation *animation[ANIMATION_MAX];
 	int animation_count;
@@ -41,11 +43,11 @@ private:
 	bool use_animation_always;
 	Uint32 last_animation_tick;
 
-	void render_animation(SDL_Renderer *renderer);
-	void render_static(SDL_Renderer *renderer);
+	void render_animation();
+	void render_static();
 
 protected:
-	SDL_Texture *_load_image(SDL_Renderer *renderer, const char *file);
+	SDL_Texture *_load_image(const char *file);
 
 public:
 	point_t location;
@@ -60,12 +62,12 @@ public:
 	static const int DIRECTION_LEFT = 0x04;
 	static const int DIRECTION_RIGHT = 0x08;
 
-	Sprite(int width, int height);
+	Sprite(Video *video, int width, int height);
 	~Sprite();
 	bool moving();
 	bool can_move(char direction);
-	void load_image(SDL_Renderer *renderer, const char *file);
-	void render(SDL_Renderer *renderer);
+	void load_image(const char *file);
+	void render();
 	bool is_animated();
 	bool intersects(Sprite *other, int buffer);
 	bool intersects(Sprite *other, int buffer, int direction);

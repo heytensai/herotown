@@ -15,7 +15,7 @@ public:
 	static const int EXPLODE_TIME = 20 * 5;
 	static const int RANGE = 30;
 
-	Bomb(SDL_Renderer *renderer);
+	Bomb(Video *video);
 	bool ready_to_explode();
 	void explode();
 	bool exploded();

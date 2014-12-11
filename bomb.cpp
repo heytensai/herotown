@@ -1,13 +1,13 @@
 #include "bomb.h"
 
-Bomb::Bomb(SDL_Renderer *renderer)
-	: Sprite(46, 57)
+Bomb::Bomb(Video *video)
+	: Sprite(video, 46, 57)
 {
 	start = SDL_GetTicks();
 	motion.active = 0;
 	motion.movement.x = 0;
 	motion.movement.y = 0;
-	load_image(renderer, "resources/bomb.png");
+	load_image("resources/bomb.png");
 
 	Animation *a = new Animation();
 	a->set_frames(2);
@@ -15,8 +15,8 @@ Bomb::Bomb(SDL_Renderer *renderer)
 	a->speed = 200;
 	a->width = width;
 	a->height = height;
-	a->load_image(renderer, "resources/bomb0.png");
-	a->load_image(renderer, "resources/bomb1.png");
+	a->load_image(video, "resources/bomb0.png");
+	a->load_image(video, "resources/bomb1.png");
 	add_animation(a);
 	set_animation(Animation::TICK);
 
@@ -26,11 +26,11 @@ Bomb::Bomb(SDL_Renderer *renderer)
 	a->speed = 20;
 	a->width = 103;
 	a->height = 101;
-	a->load_image(renderer, "resources/bomb-explosion0.png");
-	a->load_image(renderer, "resources/bomb-explosion1.png");
-	a->load_image(renderer, "resources/bomb-explosion2.png");
-	a->load_image(renderer, "resources/bomb-explosion3.png");
-	a->load_image(renderer, "resources/bomb-explosion4.png");
+	a->load_image(video, "resources/bomb-explosion0.png");
+	a->load_image(video, "resources/bomb-explosion1.png");
+	a->load_image(video, "resources/bomb-explosion2.png");
+	a->load_image(video, "resources/bomb-explosion3.png");
+	a->load_image(video, "resources/bomb-explosion4.png");
 	add_animation(a);
 
 	always_animate(true);

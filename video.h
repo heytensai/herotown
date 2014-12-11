@@ -2,7 +2,6 @@
 #define VIDEO_H
 
 #include "globals.h"
-#include "sprite.h"
 
 class Video
 {

@@ -30,7 +30,7 @@ void Animation::set_frames(int frames)
 	memset(texture, 0, sizeof(SDL_Texture *) * frames);
 }
 
-void Animation::load_image(SDL_Renderer *renderer, const char *file)
+void Animation::load_image(Video *video, const char *file)
 {
 	if (last_loaded_texture == frames - 1){
 		return;
@@ -42,7 +42,7 @@ void Animation::load_image(SDL_Renderer *renderer, const char *file)
 		return;
 	}
 
-	SDL_Texture *t = SDL_CreateTextureFromSurface(renderer, tmp);
+	SDL_Texture *t = SDL_CreateTextureFromSurface(video->renderer, tmp);
 	SDL_FreeSurface(tmp);
 	if (t == NULL){
 		fprintf(stderr, "failed to load sprite texture\n");
@@ -52,8 +52,9 @@ void Animation::load_image(SDL_Renderer *renderer, const char *file)
 	texture[last_loaded_texture] = t;
 }
 
-Sprite::Sprite(int width, int height)
+Sprite::Sprite(Video *video, int width, int height)
 {
+	this->video = video;
 	this->width = width;
 	this->height = height;
 	texture = NULL;
@@ -197,7 +198,7 @@ bool Sprite::moving()
 	return (motion.movement.x != 0) || (motion.movement.y != 0);
 }
 
-void Sprite::render_animation(SDL_Renderer *renderer)
+void Sprite::render_animation()
 {
 	Animation *a = animation[active_animation];
 	SDL_Texture *tex = a->texture[animation_frame];
@@ -213,7 +214,7 @@ void Sprite::render_animation(SDL_Renderer *renderer)
 	dst.w = a->width;
 	dst.h = a->height;
 
-	SDL_RenderCopy(renderer, tex, &src, &dst);
+	SDL_RenderCopy(video->renderer, tex, &src, &dst);
 	Uint32 now = SDL_GetTicks();
 	if (now - last_animation_tick > a->speed){
 		animation_frame++;
@@ -224,20 +225,20 @@ void Sprite::render_animation(SDL_Renderer *renderer)
 	}
 }
 
-void Sprite::render(SDL_Renderer *renderer)
+void Sprite::render()
 {
 	if (hidden){
 		return;
 	}
 
 	if (is_animated() && (use_animation_always || moving())){
-		render_animation(renderer);
+		render_animation();
 	}
 	else{
-		render_static(renderer);
+		render_static();
 	}
 }
-void Sprite::render_static(SDL_Renderer *renderer)
+void Sprite::render_static()
 {
 	SDL_Rect src;
 	src.x = 0;
@@ -250,7 +251,7 @@ void Sprite::render_static(SDL_Renderer *renderer)
 	dst.w = width;
 	dst.h = height;
 
-	SDL_RenderCopy(renderer, texture, &src, &dst);
+	SDL_RenderCopy(video->renderer, texture, &src, &dst);
 }
 
 bool Sprite::is_animated()
@@ -263,7 +264,7 @@ void Sprite::always_animate(bool b)
 	use_animation_always = b;
 }
 
-SDL_Texture *Sprite::_load_image(SDL_Renderer *renderer, const char *file)
+SDL_Texture *Sprite::_load_image(const char *file)
 {
 	SDL_Surface *tmp = NULL;
 	tmp = IMG_Load(file);
@@ -272,20 +273,20 @@ SDL_Texture *Sprite::_load_image(SDL_Renderer *renderer, const char *file)
 		return NULL;
 	}
 
-	SDL_Texture *t = SDL_CreateTextureFromSurface(renderer, tmp);
+	SDL_Texture *t = SDL_CreateTextureFromSurface(video->renderer, tmp);
 	SDL_FreeSurface(tmp);
 
 	return t;
 }
 
-void Sprite::load_image(SDL_Renderer *renderer, const char *file)
+void Sprite::load_image(const char *file)
 {
 	if (texture != NULL){
 		SDL_DestroyTexture(texture);
 		texture = NULL;
 	}
 
-	texture = _load_image(renderer, file);
+	texture = _load_image(file);
 	if (texture == NULL){
 		fprintf(stderr, "failed to create sprite texture: %s\n", SDL_GetError());
 	}
