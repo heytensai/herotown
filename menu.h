@@ -20,9 +20,8 @@ public:
 
 class IntroMenu : public Menu
 {
-private:
-
 public:
+	int timer_option;
 	IntroMenu(Video *video);
 	void render();
 	void event_loop();

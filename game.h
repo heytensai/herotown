@@ -35,6 +35,7 @@ private:
 	bool use_joy;
 	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 	int start_time;
+	int running_time;
 
 	void init_blocks();
 	void init_coins();

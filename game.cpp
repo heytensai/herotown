@@ -321,7 +321,7 @@ void Game::render_time()
 {
 	char s[16];
 	int now = SDL_GetTicks() / 1000;
-	int elapsed = now - start_time;
+	int elapsed = running_time - (now - start_time);
 	int min = elapsed / 60;
 	int sec = elapsed % 60;
 	snprintf(s, sizeof(s), "%02d:%02d", min, sec);
@@ -677,7 +677,7 @@ void Game::process_events()
 
 	int now = SDL_GetTicks() / 1000;
 	int elapsed = now - start_time;
-	if (elapsed >= 60){
+	if (elapsed >= running_time){
 		running = 0;
 	}
 }
@@ -690,6 +690,7 @@ bool Game::intro_screen()
 	IntroMenu menu(video);
 	menu.render();
 	menu.event_loop();
+	running_time = menu.timer_option;
 
 	return menu.exit();
 }

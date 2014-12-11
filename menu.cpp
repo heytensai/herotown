@@ -3,6 +3,7 @@
 IntroMenu::IntroMenu(Video *video)
 	: Menu(video)
 {
+	timer_option = 60;
 }
 
 bool IntroMenu::exit()
@@ -25,6 +26,23 @@ void IntroMenu::event_loop()
 				{
 					running = false;
 					result = 1;
+				} break;
+				case SDL_KEYDOWN:
+				{
+					switch (event.key.keysym.sym){
+						case SDLK_UP:
+						{
+							if (timer_option >= 300) break;
+							timer_option++;
+							render();
+						} break;
+						case SDLK_DOWN:
+						{
+							if (timer_option <= 0) break;
+							timer_option--;
+							render();
+						} break;
+					}
 				} break;
 				case SDL_KEYUP:
 				{
@@ -49,11 +67,17 @@ void IntroMenu::render()
 {
 	const char *s1 = "Press SPACE to begin";
 	const char *s2 = "Press ESCAPE to exit";
+	const char *s3 = "Timer";
+	char s4[4];
+
+	snprintf(s4, sizeof(s4), "%i", timer_option);
 
 	video->start_render();
 	video->blit_background();
 	video->render_text(220, 250, s1);
 	video->render_text(220, 330, s2);
+	video->render_text(220, 410, s3);
+	video->render_text(540, 410, s4);
 	video->finish_render();
 }
 
