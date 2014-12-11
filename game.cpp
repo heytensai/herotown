@@ -15,7 +15,6 @@ Game::Game(int width, int height)
 
 	sound.init();
 	//init_controller();
-	init_font();
 
 	srand(time(NULL));
 
@@ -42,64 +41,7 @@ Game::~Game()
 		delete video;
 		video = NULL;
 	}
-	if (font != NULL){
-		TTF_CloseFont(font);
-		font = NULL;
-	}
 	TTF_Quit();
-}
-
-void Game::intro_screen()
-{
-	exit_requested = false;
-	running = 1;
-
-	intro_screen_paint();
-	while (running){
-		intro_screen_events();
-	}
-}
-
-void Game::intro_screen_paint()
-{
-	const char *s = "Press SPACE to begin";
-	video->start_render();
-	video->blit_background();
-	render_text(200, 300, s);
-	video->finish_render();
-}
-
-void Game::intro_screen_events()
-{
-	SDL_Event event;
-
-	while (SDL_PollEvent(&event)){
-		switch (event.type) {
-			case SDL_WINDOWEVENT:
-			{
-				intro_screen_paint();
-			} break;
-			case SDL_QUIT:
-			{
-				running = 0;
-				exit_requested = true;
-			} break;
-			case SDL_KEYUP:
-			{
-				switch (event.key.keysym.sym){
-					case SDLK_ESCAPE:
-					{
-						running = 0;
-						exit_requested = true;
-					} break;
-					case SDLK_SPACE:
-					{
-						running = 0;
-					} break;
-				}
-			} break;
-		}
-	}
 }
 
 void Game::start()
@@ -137,12 +79,6 @@ void Game::end()
 			coins[i] = NULL;
 		}
 	}
-}
-
-void Game::init_font()
-{
-	TTF_Init();
-	font = TTF_OpenFont("resources/DejaVuSans-Bold.ttf", 30);
 }
 
 void Game::add_bomb(int x, int y)
@@ -390,29 +326,7 @@ void Game::render_time()
 	int sec = elapsed % 60;
 	snprintf(s, sizeof(s), "%02d:%02d", min, sec);
 
-	render_text(350, 30, s);
-}
-
-void Game::render_text(int x, int y, const char *text)
-{
-	SDL_Color color = {0, 0, 0};
-	SDL_Surface *f = TTF_RenderUTF8_Blended(font, text, color);
-	SDL_Texture *t = SDL_CreateTextureFromSurface(video->renderer, f);
-
-	SDL_Rect src;
-	src.x = 0;
-	src.y = 0;
-	src.w = f->w;
-	src.h = f->h;
-	SDL_Rect dst;
-	dst.x = x;
-	dst.y = y;
-	dst.w = f->w;
-	dst.h = f->h;
-	SDL_RenderCopy(video->renderer, t, &src, &dst);
-
-	SDL_FreeSurface(f);
-	SDL_DestroyTexture(t);
+	video->render_text(350, 30, s);
 }
 
 void Game::render_score(int heronum)
@@ -420,7 +334,7 @@ void Game::render_score(int heronum)
 	char s[4];
 	snprintf(s, 4, "%i", hero[heronum]->score);
 
-	render_text(20 + (720 * heronum), 20, s);
+	video->render_text(20 + (720 * heronum), 20, s);
 }
 
 void Game::move_hero(Hero *h)
@@ -766,6 +680,18 @@ void Game::process_events()
 	if (elapsed >= 60){
 		running = 0;
 	}
+}
+
+/*
+ * return true if we should exit
+ */
+bool Game::intro_screen()
+{
+	Menu menu(video);
+	menu.render();
+	menu.event_loop();
+
+	return menu.exit;
 }
 
 

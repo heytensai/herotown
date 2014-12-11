@@ -12,6 +12,9 @@ private:
 	Uint32 pitch_offset(int x, int y);
 	SDL_Texture *background = NULL;
 	SDL_Window *window;
+	TTF_Font *font;
+
+	void init_font();
 
 public:
 	SDL_Renderer *renderer = NULL;
@@ -30,6 +33,7 @@ public:
 	Uint32 map_rgba(Uint8 r, Uint8 g, Uint8 b, Uint8 a);
 	void start_render();
 	void finish_render();
+	void render_text(int x, int y, const char *text);
 
 };
 

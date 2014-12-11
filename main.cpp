@@ -6,9 +6,7 @@ int main(int argc, char **argv)
 	game = new Game(WIDTH, HEIGHT);
 
 	while (1){
-		game->intro_screen();
-
-		if (game->exit_requested){
+		if (game->intro_screen()){
 			break;
 		}
 

@@ -10,6 +10,10 @@ Video::Video(int width, int height)
 Video::~Video()
 {
 	destroy_window();
+	if (font != NULL){
+		TTF_CloseFont(font);
+		font = NULL;
+	}
 	SDL_Quit();
 }
 
@@ -126,5 +130,34 @@ void Video::init()
 		fprintf(stderr, "E: video init: %s\n", SDL_GetError());
 		exit(1);
 	}
+	init_font();
+}
+
+void Video::render_text(int x, int y, const char *text)
+{
+	SDL_Color color = {0, 0, 0};
+	SDL_Surface *f = TTF_RenderUTF8_Blended(font, text, color);
+	SDL_Texture *t = SDL_CreateTextureFromSurface(renderer, f);
+
+	SDL_Rect src;
+	src.x = 0;
+	src.y = 0;
+	src.w = f->w;
+	src.h = f->h;
+	SDL_Rect dst;
+	dst.x = x;
+	dst.y = y;
+	dst.w = f->w;
+	dst.h = f->h;
+	SDL_RenderCopy(renderer, t, &src, &dst);
+
+	SDL_FreeSurface(f);
+	SDL_DestroyTexture(t);
+}
+
+void Video::init_font()
+{
+	TTF_Init();
+	font = TTF_OpenFont("resources/DejaVuSans-Bold.ttf", 30);
 }
 
