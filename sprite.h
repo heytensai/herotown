@@ -78,4 +78,16 @@ public:
 
 };
 
+class Coin : public Sprite
+{
+public:
+	Coin(Video *video);
+};
+
+class Block : public Sprite
+{
+public:
+	Block(Video *video);
+};
+
 #endif /* SPRITE_H */

@@ -111,11 +111,9 @@ void Game::add_coin(int x, int y, bool ignore_tick = false)
 	}
 	for (int i=0; i<COINS; i++){
 		if (coins[i] == NULL){
-			coins[i] = new Sprite(video, 20, 25);
-			coins[i]->motion.active = 0;
+			coins[i] = new Coin(video);
 			coins[i]->location.x = x;
 			coins[i]->location.y = y;
-			coins[i]->load_image("resources/coin0.png");
 			return;
 		}
 	}
@@ -279,8 +277,7 @@ void Game::init_blocks()
 		blocks[i] = NULL;
 	}
 	for (int i=0; (i*32)<=width; i++){
-		blocks[i] = new Sprite(video, 32, 16);
-		blocks[i]->motion.active = 0;
+		blocks[i] = new Block(video);
 		blocks[i]->location.x = i * 32;
 		blocks[i]->location.y = 550;
 		blocks[i]->load_image("resources/block.png");

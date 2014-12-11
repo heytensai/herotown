@@ -316,3 +316,15 @@ bool Sprite::can_move(char direction)
 	}
 	return true;
 }
+
+Coin::Coin(Video *video)
+	: Sprite(video, 20, 25)
+{
+	load_image("resources/coin0.png");
+}
+
+Block::Block(Video *video)
+	: Sprite(video, 32, 16)
+{
+	load_image("resources/block.png");
+}
