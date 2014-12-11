@@ -53,16 +53,20 @@ void Game::intro_screen()
 {
 	exit_requested = false;
 	running = 1;
-	const char *s = "Press SPACE to begin";
 
+	intro_screen_paint();
+	while (running){
+		intro_screen_events();
+	}
+}
+
+void Game::intro_screen_paint()
+{
+	const char *s = "Press SPACE to begin";
 	video->start_render();
 	video->blit_background();
 	render_text(200, 300, s);
 	video->finish_render();
-
-	while (running){
-		intro_screen_events();
-	}
 }
 
 void Game::intro_screen_events()
@@ -71,6 +75,10 @@ void Game::intro_screen_events()
 
 	while (SDL_PollEvent(&event)){
 		switch (event.type) {
+			case SDL_WINDOWEVENT:
+			{
+				intro_screen_paint();
+			} break;
 			case SDL_QUIT:
 			{
 				running = 0;

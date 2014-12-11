@@ -52,6 +52,7 @@ private:
 	void render_bombs();
 	void render_text(int x, int y, const char *text);
 	void intro_screen_events();
+	void intro_screen_paint();
 	void move_hero(Hero *hero);
 
 public:
