@@ -8,8 +8,8 @@
 class Animation
 {
 private:
-	int frames;
-	int last_loaded_texture;
+	Uint32 frames;
+	Uint32 last_loaded_texture;
 
 public:
 	const static int NONE = 0x0000;
@@ -25,9 +25,10 @@ public:
 
 	Animation();
 	~Animation();
-	int get_frames();
+	Uint32 get_frames();
 	void set_frames(int frames);
 	void load_image(Video *video, const char *file);
+	SDL_Texture *get_texture(Uint32 frame);
 };
 
 class Sprite
@@ -38,7 +39,7 @@ private:
 	Animation *animation[ANIMATION_MAX];
 	int animation_count;
 	int active_animation;
-	int animation_frame;
+	Uint32 animation_frame;
 	SDL_Texture *texture;
 	bool use_animation_always;
 	Uint32 last_animation_tick;

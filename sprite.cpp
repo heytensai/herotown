@@ -10,7 +10,7 @@ Animation::Animation()
 Animation::~Animation()
 {
 	if (texture != NULL){
-		for (int i=0; i<frames; i++){
+		for (Uint32 i=0; i<frames; i++){
 			SDL_DestroyTexture(texture[i]);
 		}
 		delete texture;
@@ -18,7 +18,20 @@ Animation::~Animation()
 	}
 }
 
-int Animation::get_frames()
+SDL_Texture *Animation::get_texture(Uint32 frame)
+{
+	if (frame < 0){
+		fprintf(stderr, "attempt to read -1 animation\n");
+		return texture[0];
+	}
+	if (frame > frames - 1){
+		fprintf(stderr, "attempt to read %dnth animation (only %d frames)\n", frame, frames);
+		frame = frames - 1;
+	}
+	return texture[frame];
+}
+
+Uint32 Animation::get_frames()
 {
 	return frames;
 }
@@ -201,7 +214,15 @@ bool Sprite::moving()
 void Sprite::render_animation()
 {
 	Animation *a = animation[active_animation];
-	SDL_Texture *tex = a->texture[animation_frame];
+	if (a == NULL){
+		fprintf(stderr, "null animation frame\n");
+		return;
+	}
+	SDL_Texture *tex = a->get_texture(animation_frame);
+	if (tex == NULL){
+		fprintf(stderr, "null animation texture\n");
+		return;
+	}
 
 	SDL_Rect src;
 	src.x = 0;
