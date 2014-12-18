@@ -338,10 +338,26 @@ bool Sprite::can_move(char direction)
 	return true;
 }
 
+Animation Coin::animation_1;
+
 Coin::Coin(Video *video)
-	: Sprite(video, 20, 25)
+	: Sprite(video, 30, 32)
 {
 	load_image("resources/coin0.png");
+	if (animation_1.texture == NULL){
+		animation_1.set_frames(4);
+		animation_1.name = Animation::SPIN;
+		animation_1.speed = 200;
+		animation_1.width = width;
+		animation_1.height = height;
+		animation_1.load_image(video, "resources/coins0.png");
+		animation_1.load_image(video, "resources/coins1.png");
+		animation_1.load_image(video, "resources/coins2.png");
+		animation_1.load_image(video, "resources/coins3.png");
+	}
+	add_animation(&animation_1);
+	set_animation(Animation::SPIN);
+	always_animate(true);
 }
 
 Block::Block(Video *video)

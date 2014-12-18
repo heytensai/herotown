@@ -17,6 +17,7 @@ public:
 	const static int WALK_RIGHT = 0x0002;
 	const static int TICK = 0x0003;
 	const static int BOOM = 0x0004;
+	const static int SPIN = 0x0005;
 	SDL_Texture **texture;
 	int name;
 	Uint32 speed;
@@ -81,6 +82,8 @@ public:
 
 class Coin : public Sprite
 {
+private:
+	static Animation animation_1;
 public:
 	Coin(Video *video);
 };
