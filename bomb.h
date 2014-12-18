@@ -9,6 +9,8 @@ class Bomb : public Sprite
 private:
 	Uint32 start;
 	int explode_start;
+	static Animation animation_1;
+	static Animation animation_2;
 
 public:
 	static const int TIME_LIMIT = 3000;

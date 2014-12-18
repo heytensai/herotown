@@ -1,5 +1,8 @@
 #include "bomb.h"
 
+Animation Bomb::animation_1;
+Animation Bomb::animation_2;
+
 Bomb::Bomb(Video *video)
 	: Sprite(video, 46, 57)
 {
@@ -9,29 +12,31 @@ Bomb::Bomb(Video *video)
 	motion.movement.y = 0;
 	load_image("resources/bomb.png");
 
-	Animation *a = new Animation();
-	a->set_frames(2);
-	a->name = Animation::TICK;
-	a->speed = 200;
-	a->width = width;
-	a->height = height;
-	a->load_image(video, "resources/bomb0.png");
-	a->load_image(video, "resources/bomb1.png");
-	add_animation(a);
+	if (animation_1.get_frames() != 2){
+		animation_1.set_frames(2);
+		animation_1.name = Animation::TICK;
+		animation_1.speed = 200;
+		animation_1.width = width;
+		animation_1.height = height;
+		animation_1.load_image(video, "resources/bomb0.png");
+		animation_1.load_image(video, "resources/bomb1.png");
+	}
+	add_animation(&animation_1);
 	set_animation(Animation::TICK);
 
-	a = new Animation();
-	a->set_frames(5);
-	a->name = Animation::BOOM;
-	a->speed = 20;
-	a->width = 103;
-	a->height = 101;
-	a->load_image(video, "resources/bomb-explosion0.png");
-	a->load_image(video, "resources/bomb-explosion1.png");
-	a->load_image(video, "resources/bomb-explosion2.png");
-	a->load_image(video, "resources/bomb-explosion3.png");
-	a->load_image(video, "resources/bomb-explosion4.png");
-	add_animation(a);
+	if (animation_2.get_frames() != 5){
+		animation_2.set_frames(5);
+		animation_2.name = Animation::BOOM;
+		animation_2.speed = 20;
+		animation_2.width = 103;
+		animation_2.height = 101;
+		animation_2.load_image(video, "resources/bomb-explosion0.png");
+		animation_2.load_image(video, "resources/bomb-explosion1.png");
+		animation_2.load_image(video, "resources/bomb-explosion2.png");
+		animation_2.load_image(video, "resources/bomb-explosion3.png");
+		animation_2.load_image(video, "resources/bomb-explosion4.png");
+	}
+	add_animation(&animation_2);
 
 	always_animate(true);
 	explode_start = 0;
