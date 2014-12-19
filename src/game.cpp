@@ -66,6 +66,10 @@ void Game::end()
 		delete hero[0];
 		hero[0] = NULL;
 	}
+	if (hero[1] != NULL){
+		delete hero[1];
+		hero[1] = NULL;
+	}
 	for (int i=0; i<BLOCKS; i++){
 		if (blocks[i] != NULL){
 			delete blocks[i];
