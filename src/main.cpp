@@ -21,6 +21,7 @@ int main(int argc, char **argv)
 			game->move_heros();
 			game->render();
 		}
+		game->score_screen();
 		game->end();
 	}
 

@@ -69,6 +69,7 @@ public:
 	void start();
 	void end();
 	bool intro_screen();
+	void score_screen();
 };
 
 #endif /* GAME_H */

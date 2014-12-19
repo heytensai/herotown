@@ -62,7 +62,6 @@ void Game::start()
 
 void Game::end()
 {
-	printf("hero 1 score %d\nhero 2 score %d\n", hero[0]->score, hero[1]->score);
 	if (hero[0] != NULL){
 		delete hero[0];
 		hero[0] = NULL;
@@ -692,6 +691,15 @@ bool Game::intro_screen()
 	running_time = menu.timer_option;
 
 	return menu.exit();
+}
+
+void Game::score_screen()
+{
+	ScoreMenu menu(video);
+	menu.score1 = hero[0]->score;
+	menu.score2 = hero[1]->score;
+	menu.render();
+	menu.event_loop();
 }
 
 

@@ -18,6 +18,17 @@ public:
 
 };
 
+class ScoreMenu : public Menu
+{
+public:
+	int score1;
+	int score2;
+
+	ScoreMenu(Video *video);
+	void render();
+	void event_loop();
+};
+
 class IntroMenu : public Menu
 {
 public:
