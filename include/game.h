@@ -36,7 +36,6 @@ private:
 	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 	int start_time;
 	int running_time;
-	Uint32 last_tick;
 
 	void init_blocks();
 	void init_coins();
