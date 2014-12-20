@@ -2,6 +2,8 @@ Things that need to be done
 
 * don't load animations from disk every time
 * make timing based on clock, not on frames
+	- clamped to 30ms. is this the best?
+* segfault when deleting Bomb::animation_2. why?
 
 Done
 
