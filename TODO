@@ -1,5 +1,8 @@
 Things that need to be done
 
-* time limit < 5 doesn't make sense
 * don't load animations from disk every time
 * make timing based on clock, not on frames
+
+Done
+
+* time limit < 5 doesn't make sense

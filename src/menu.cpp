@@ -93,7 +93,7 @@ void IntroMenu::event_loop()
 						} break;
 						case SDLK_DOWN:
 						{
-							if (timer_option <= 0) break;
+							if (timer_option <= 5) break;
 							timer_option--;
 							render();
 						} break;
