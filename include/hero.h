@@ -15,6 +15,7 @@ class Hero : public Sprite
 private:
 
 public:
+	static const int STEP = 5;
 	int direction;
 	int action;
 	int score;

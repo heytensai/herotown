@@ -20,6 +20,7 @@ private:
 	static const int COIN_TICKS = 800;
 	static const int BOMB_TICKS = 1000;
 	static const int MAX_JOYDEV = 4;
+	static const Uint32 FRAME_TICKS = 33;
 	int width;
 	int height;
 	Hero *hero[2];
@@ -36,6 +37,8 @@ private:
 	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 	int start_time;
 	int running_time;
+	Uint32 last_tick;
+	Uint32 current_tick;
 
 	void init_blocks();
 	void init_coins();

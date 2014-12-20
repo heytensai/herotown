@@ -240,7 +240,7 @@ void Game::init_hero()
 	a = new Animation();
 	a->set_frames(8);
 	a->name = Animation::WALK_RIGHT;
-	a->speed = 50;
+	a->speed = 20;
 	a->width = hero[0]->width;
 	a->height = hero[0]->height;
 	a->load_image(video, "resources/mario0.png");
@@ -257,7 +257,7 @@ void Game::init_hero()
 	a = new Animation();
 	a->set_frames(8);
 	a->name = Animation::WALK_LEFT;
-	a->speed = 50;
+	a->speed = 20;
 	a->width = hero[0]->width;
 	a->height = hero[0]->height;
 	a->load_image(video, "resources/mario-left0.png");
@@ -581,10 +581,10 @@ bool Game::process_hero_movement_direction(int heronum, int move, int direction)
 
 	if (hero[heronum]->direction & move){
 		hero[heronum]->motion.active = 1;
-		if (hero[heronum]->intersects(hero[other_hero], Hero::step, direction)) return false;
+		if (hero[heronum]->intersects(hero[other_hero], Hero::STEP, direction)) return false;
 		for (int i=0; i<BOMBS; i++){
 			if (bombs[i] != NULL){
-				if (hero[heronum]->intersects(bombs[i], Hero::step, direction)) return false;
+				if (hero[heronum]->intersects(bombs[i], Hero::STEP, direction)) return false;
 			}
 		}
 		return true;
@@ -600,19 +600,19 @@ void Game::process_hero_state(int heronum)
 	hero[heronum]->motion.movement.x = 0;
 
 	if (process_hero_movement_direction(heronum, HERO_MOVE_UP, Sprite::DIRECTION_UP)){
-		hero[heronum]->motion.movement.y -= Sprite::step;
+		hero[heronum]->motion.movement.y -= Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_LEFT);
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_DOWN, Sprite::DIRECTION_DOWN)){
-		hero[heronum]->motion.movement.y += Sprite::step;
+		hero[heronum]->motion.movement.y += Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_RIGHT);
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_RIGHT, Sprite::DIRECTION_RIGHT)){
-		hero[heronum]->motion.movement.x += Sprite::step;
+		hero[heronum]->motion.movement.x += Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_RIGHT);
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_LEFT, Sprite::DIRECTION_LEFT)){
-		hero[heronum]->motion.movement.x -= Sprite::step;
+		hero[heronum]->motion.movement.x -= Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_LEFT);
 	}
 
@@ -708,7 +708,9 @@ void Game::score_screen()
 
 void Game::main_loop()
 {
+	last_tick = SDL_GetTicks();
 	while (running){
+		current_tick = SDL_GetTicks();
 
 		// process events
 		process_inputs();
@@ -717,6 +719,15 @@ void Game::main_loop()
 		create_random_coin();
 		move_heros();
 		render();
+
+		last_tick = SDL_GetTicks();
+		Uint32 ticker = last_tick - current_tick;
+		if (ticker < FRAME_TICKS){
+			Uint32 sleep_ticks = FRAME_TICKS - ticker;
+			//printf("render took %dms, sleeping %dms\n", ticker, sleep_ticks);
+			SDL_Delay(sleep_ticks);
+		}
+
 	}
 }
 
