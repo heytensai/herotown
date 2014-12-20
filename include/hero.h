@@ -25,4 +25,16 @@ public:
 
 };
 
+class Yoshi : public Hero
+{
+public:
+	Yoshi(Video *video);
+};
+
+class Mario : public Hero
+{
+public:
+	Mario(Video *video);
+};
+
 #endif /* HERO_H */
