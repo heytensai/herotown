@@ -202,7 +202,6 @@ void Game::init_blocks()
 		blocks[i] = new Block(video);
 		blocks[i]->location.x = i * 32;
 		blocks[i]->location.y = 550;
-		blocks[i]->load_image("resources/block.png");
 	}
 }
 
