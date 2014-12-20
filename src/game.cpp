@@ -706,6 +706,20 @@ void Game::score_screen()
 	menu.event_loop();
 }
 
+void Game::main_loop()
+{
+	while (running){
+
+		// process events
+		process_inputs();
+		process_events();
+
+		create_random_coin();
+		move_heros();
+		render();
+	}
+}
+
 
 /*
 			case SDL_KEYDOWN:

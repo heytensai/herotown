@@ -36,6 +36,7 @@ private:
 	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 	int start_time;
 	int running_time;
+	Uint32 last_tick;
 
 	void init_blocks();
 	void init_coins();
@@ -51,6 +52,12 @@ private:
 	void render_time();
 	void render_bombs();
 	void move_hero(Hero *hero);
+	void process_events();
+	void process_inputs();
+	void move_background();
+	void move_heros();
+	void render();
+	void create_random_coin();
 
 public:
 	int running;
@@ -60,16 +67,11 @@ public:
 
 	Game(int width, int height);
 	~Game();
-	void process_events();
-	void process_inputs();
-	void move_background();
-	void move_heros();
-	void render();
-	void create_random_coin();
 	void start();
 	void end();
 	bool intro_screen();
 	void score_screen();
+	void main_loop();
 };
 
 #endif /* GAME_H */

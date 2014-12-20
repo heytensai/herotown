@@ -11,16 +11,7 @@ int main(int argc, char **argv)
 		}
 
 		game->start();
-		while (game->running){
-
-			// process events
-			game->process_inputs();
-			game->process_events();
-
-			game->create_random_coin();
-			game->move_heros();
-			game->render();
-		}
+		game->main_loop();
 		game->score_screen();
 		game->end();
 	}
