@@ -1,4 +1,5 @@
 #include "bombycoinygame.h"
+#include "jumpygame.h"
 
 int main(int argc, char **argv)
 {
@@ -10,8 +11,9 @@ int main(int argc, char **argv)
 	Sound sound;
 	sound.init();
 
-	BombyCoinyGame *game;
-	game = new BombyCoinyGame(&video, &sound);
+	Game *game;
+	//game = new BombyCoinyGame(&video, &sound);
+	game = new JumpyGame(&video, &sound);
 
 	while (1){
 		if (game->intro_screen()){
@@ -23,9 +25,8 @@ int main(int argc, char **argv)
 		game->score_screen();
 		game->end();
 	}
+	delete game;
 
 	sound.destroy();
 	video.quit();
-
-	delete game;
 }

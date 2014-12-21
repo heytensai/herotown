@@ -13,17 +13,19 @@ protected:
 	bool use_joy;
 	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 
+	void init_controller();
+
 public:
 
 	Game(Video *video, Sound *sound);
-	void init_controller();
+	virtual ~Game();
 
 	// Override these
-	void start();
-	void end();
-	bool intro_screen();
-	void score_screen();
-	void main_loop();
+	virtual void start() =0;
+	virtual void end() =0;
+	virtual bool intro_screen() =0;
+	virtual void score_screen() =0;
+	virtual void main_loop() =0;
 };
 
 #endif /* GAME_H */

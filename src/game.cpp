@@ -15,6 +15,10 @@ Game::Game(Video *video, Sound *sound)
 	SDL_EventState(SDL_JOYBUTTONUP, SDL_IGNORE);
 }
 
+Game::~Game()
+{
+}
+
 void Game::init_controller()
 {
 	for (int i=0; i<MAX_JOYDEV; i++){
