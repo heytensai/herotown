@@ -12,17 +12,6 @@ BombyCoinyGame::BombyCoinyGame(Video *video, Sound *sound)
 
 BombyCoinyGame::~BombyCoinyGame()
 {
-	/*
-	 * TODO this causes a double free in SDL
-	for (int i=0; i<MAX_JOYDEV; i++){
-		if (joy[i] != NULL){
-			printf("closing joystick %i\n");
-			SDL_JoystickClose(joy[i]);
-			joy[i] = NULL;
-		}
-	}
-	*/
-
 	video = NULL;
 }
 
