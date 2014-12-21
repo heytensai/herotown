@@ -62,9 +62,9 @@ public:
 	int running;
 	bool exit_requested;
 	Video *video;
-	Sound sound;
+	Sound *sound;
 
-	Game(Video *video);
+	Game(Video *video, Sound *sound);
 	~Game();
 	void start();
 	void end();

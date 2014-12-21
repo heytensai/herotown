@@ -1,13 +1,13 @@
 #include "game.h"
 #include <time.h>
 
-Game::Game(Video *video)
+Game::Game(Video *video, Sound *sound)
 {
 	this->video = video;
+	this->sound = sound;
 	running = 1;
 	input_state = 0;
 
-	sound.init();
 	//init_controller();
 
 	srand(time(NULL));
@@ -86,7 +86,7 @@ void Game::add_bomb(Hero *owner, int x, int y)
 			bombs[i] = new Bomb(video);
 			bombs[i]->location.x = x;
 			bombs[i]->location.y = y;
-			sound.play(Sound::SOUND_TICKING);
+			sound->play(Sound::SOUND_TICKING);
 
 			return;
 		}
@@ -268,13 +268,13 @@ void Game::move_heros()
 	for (int i=0; i<COINS; i++){
 		if (coins[i] != NULL){
 			if (hero[0]->intersects(coins[i], 0)){
-				sound.play(Sound::SOUND_DING1);
+				sound->play(Sound::SOUND_DING1);
 				hero[0]->score++;
 				delete coins[i];
 				coins[i] = NULL;
 			}
 			if (hero[1]->intersects(coins[i], 0)){
-				sound.play(Sound::SOUND_DING2);
+				sound->play(Sound::SOUND_DING2);
 				hero[1]->score++;
 				delete coins[i];
 				coins[i] = NULL;
@@ -460,15 +460,15 @@ void Game::process_bombs()
 	for (int i=0; i<BOMBS; i++){
 		if (bombs[i] != NULL){
 			if (bombs[i]->ready_to_explode()){
-				sound.play(Sound::SOUND_EXPLODE);
+				sound->play(Sound::SOUND_EXPLODE);
 				bombs[i]->explode();
 
 				if (bombs[i]->intersects(hero[0], Bomb::RANGE)){
-					sound.play(Sound::SOUND_BEEP);
+					sound->play(Sound::SOUND_BEEP);
 					hero[0]->subtract_coins(10);
 				}
 				if (bombs[i]->intersects(hero[1], Bomb::RANGE)){
-					sound.play(Sound::SOUND_BEEP);
+					sound->play(Sound::SOUND_BEEP);
 					hero[1]->subtract_coins(10);
 				}
 			}
@@ -649,7 +649,7 @@ void Game::main_loop()
 				switch (event.key.keysym.sym){
 					case SDLK_b:
 					{
-						sound.play(Sound::SOUND_BEEP);
+						sound->play(Sound::SOUND_BEEP);
 					} break;
 					case SDLK_w:
 					{
