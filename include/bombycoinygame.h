@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef BOMBY_COINY_GAME_H
+#define BOMBY_COINY_GAME_H
 
 #include "globals.h"
 #include "point.h"
@@ -11,7 +11,7 @@
 #include "bomb.h"
 #include "menu.h"
 
-class Game
+class BombyCoinyGame
 {
 private:
 	static const int BLOCKS = 128;
@@ -64,8 +64,8 @@ public:
 	Video *video;
 	Sound *sound;
 
-	Game(Video *video, Sound *sound);
-	~Game();
+	BombyCoinyGame(Video *video, Sound *sound);
+	~BombyCoinyGame();
 	void start();
 	void end();
 	bool intro_screen();
@@ -73,4 +73,4 @@ public:
 	void main_loop();
 };
 
-#endif /* GAME_H */
+#endif /* BOMBY_COINY_GAME_H */

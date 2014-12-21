@@ -1,7 +1,7 @@
-#include "game.h"
+#include "bombycoinygame.h"
 #include <time.h>
 
-Game::Game(Video *video, Sound *sound)
+BombyCoinyGame::BombyCoinyGame(Video *video, Sound *sound)
 {
 	this->video = video;
 	this->sound = sound;
@@ -18,7 +18,7 @@ Game::Game(Video *video, Sound *sound)
 	SDL_EventState(SDL_JOYBUTTONUP, SDL_IGNORE);
 }
 
-Game::~Game()
+BombyCoinyGame::~BombyCoinyGame()
 {
 	/*
 	 * TODO this causes a double free in SDL
@@ -34,7 +34,7 @@ Game::~Game()
 	video = NULL;
 }
 
-void Game::start()
+void BombyCoinyGame::start()
 {
 	background.active = 0;
 	background.movement.x = 0;
@@ -50,7 +50,7 @@ void Game::start()
 	running = 1;
 }
 
-void Game::end()
+void BombyCoinyGame::end()
 {
 	if (hero[0] != NULL){
 		delete hero[0];
@@ -74,7 +74,7 @@ void Game::end()
 	}
 }
 
-void Game::add_bomb(Hero *owner, int x, int y)
+void BombyCoinyGame::add_bomb(Hero *owner, int x, int y)
 {
 	Uint32 cur_tick = SDL_GetTicks();
 	if (cur_tick - owner->last_bomb_added < BOMB_TICKS){
@@ -93,7 +93,7 @@ void Game::add_bomb(Hero *owner, int x, int y)
 	}
 }
 
-void Game::add_coin(int x, int y, bool ignore_tick = false)
+void BombyCoinyGame::add_coin(int x, int y, bool ignore_tick = false)
 {
 	if (!ignore_tick){
 		Uint32 cur_tick = SDL_GetTicks();
@@ -112,7 +112,7 @@ void Game::add_coin(int x, int y, bool ignore_tick = false)
 	}
 }
 
-void Game::create_random_coin()
+void BombyCoinyGame::create_random_coin()
 {
 	Uint32 cur_tick = SDL_GetTicks();
 	if (cur_tick - last_coin_added < COIN_TICKS){
@@ -132,7 +132,7 @@ void Game::create_random_coin()
 	add_coin(x, y, true);
 }
 
-void Game::init_coins()
+void BombyCoinyGame::init_coins()
 {
 	memset(coins, 0, sizeof(Sprite *) * COINS);
 	for (int i=0; i<15; i++){
@@ -140,7 +140,7 @@ void Game::init_coins()
 	}
 }
 
-void Game::init_controller()
+void BombyCoinyGame::init_controller()
 {
 	for (int i=0; i<MAX_JOYDEV; i++){
 		joy[i] = NULL;
@@ -172,7 +172,7 @@ void Game::init_controller()
 /*
  * this must happen after video is created
  */
-void Game::init_hero()
+void BombyCoinyGame::init_hero()
 {
 	hero[0] = new Yoshi(video);
 	hero[0]->location.x = 80;
@@ -183,7 +183,7 @@ void Game::init_hero()
 	hero[1]->location.y = 520;
 }
 
-void Game::init_blocks()
+void BombyCoinyGame::init_blocks()
 {
 	for (int i=0; i<BLOCKS; i++){
 		blocks[i] = NULL;
@@ -195,7 +195,7 @@ void Game::init_blocks()
 	}
 }
 
-void Game::render()
+void BombyCoinyGame::render()
 {
 	video->start_render();
 	video->blit_background();
@@ -218,7 +218,7 @@ void Game::render()
 	video->finish_render();
 }
 
-void Game::render_bombs()
+void BombyCoinyGame::render_bombs()
 {
 	for (int i=0; i<BOMBS; i++){
 		if (bombs[i] != NULL){
@@ -227,7 +227,7 @@ void Game::render_bombs()
 	}
 }
 
-void Game::render_time()
+void BombyCoinyGame::render_time()
 {
 	char s[16];
 	int now = SDL_GetTicks() / 1000;
@@ -239,7 +239,7 @@ void Game::render_time()
 	video->render_text(350, 30, s);
 }
 
-void Game::render_score(int heronum)
+void BombyCoinyGame::render_score(int heronum)
 {
 	char s[4];
 	snprintf(s, 4, "%i", hero[heronum]->score);
@@ -247,7 +247,7 @@ void Game::render_score(int heronum)
 	video->render_text(20 + (720 * heronum), 20, s);
 }
 
-void Game::move_hero(Hero *h)
+void BombyCoinyGame::move_hero(Hero *h)
 {
 	if (h->motion.active){
 		if (h->can_move('x')){
@@ -260,7 +260,7 @@ void Game::move_hero(Hero *h)
 	}
 }
 
-void Game::move_heros()
+void BombyCoinyGame::move_heros()
 {
 	move_hero(hero[0]);
 	move_hero(hero[1]);
@@ -283,7 +283,7 @@ void Game::move_heros()
 	}
 }
 
-void Game::move_background()
+void BombyCoinyGame::move_background()
 {
 	if (hero[0]->moving()){
 		if (!hero[0]->can_move('x')){
@@ -325,7 +325,7 @@ void Game::move_background()
 	}
 }
 
-void Game::process_inputs()
+void BombyCoinyGame::process_inputs()
 {
 	int numkeys;
 	const Uint8 *state = SDL_GetKeyboardState(&numkeys);
@@ -443,7 +443,7 @@ void Game::process_inputs()
 	process_state();
 }
 
-void Game::process_state()
+void BombyCoinyGame::process_state()
 {
 	if (input_state & INPUT_STATE_QUIT){
 		running = 0;
@@ -455,7 +455,7 @@ void Game::process_state()
 	process_bombs();
 }
 
-void Game::process_bombs()
+void BombyCoinyGame::process_bombs()
 {
 	for (int i=0; i<BOMBS; i++){
 		if (bombs[i] != NULL){
@@ -480,7 +480,7 @@ void Game::process_bombs()
 	}
 }
 
-bool Game::process_hero_movement_direction(int heronum, int move, int direction)
+bool BombyCoinyGame::process_hero_movement_direction(int heronum, int move, int direction)
 {
 	int other_hero = 1;
 	if (heronum == 1){
@@ -501,7 +501,7 @@ bool Game::process_hero_movement_direction(int heronum, int move, int direction)
 	return false;
 }
 
-void Game::process_hero_state(int heronum)
+void BombyCoinyGame::process_hero_state(int heronum)
 {
 	hero[heronum]->motion.active = 0;
 	hero[heronum]->motion.movement.y = 0;
@@ -536,7 +536,7 @@ void Game::process_hero_state(int heronum)
 	}
 }
 
-void Game::process_events()
+void BombyCoinyGame::process_events()
 {
 	SDL_Event event;
 
@@ -595,7 +595,7 @@ void Game::process_events()
 /*
  * return true if we should exit
  */
-bool Game::intro_screen()
+bool BombyCoinyGame::intro_screen()
 {
 	IntroMenu menu(video);
 	menu.render();
@@ -605,7 +605,7 @@ bool Game::intro_screen()
 	return menu.exit();
 }
 
-void Game::score_screen()
+void BombyCoinyGame::score_screen()
 {
 	ScoreMenu menu(video);
 	menu.score1 = hero[0]->score;
@@ -614,7 +614,7 @@ void Game::score_screen()
 	menu.event_loop();
 }
 
-void Game::main_loop()
+void BombyCoinyGame::main_loop()
 {
 	last_tick = SDL_GetTicks();
 	while (running){

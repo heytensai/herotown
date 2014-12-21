@@ -1,4 +1,4 @@
-#include "game.h"
+#include "bombycoinygame.h"
 
 int main(int argc, char **argv)
 {
@@ -10,8 +10,8 @@ int main(int argc, char **argv)
 	Sound sound;
 	sound.init();
 
-	Game *game;
-	game = new Game(&video, &sound);
+	BombyCoinyGame *game;
+	game = new BombyCoinyGame(&video, &sound);
 
 	while (1){
 		if (game->intro_screen()){
