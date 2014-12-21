@@ -32,7 +32,6 @@ private:
 	input_state_t last_input_state;
 	input_state_t input_state;
 	Uint32 last_coin_added;
-	Uint32 last_bomb_added;
 	bool use_joy;
 	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 	int start_time;
@@ -45,7 +44,7 @@ private:
 	void init_hero();
 	void init_controller();
 	void add_coin(int x, int y, bool ignore_tick);
-	void add_bomb(int x, int y);
+	void add_bomb(Hero *owner, int x, int y);
 	void process_hero_state(int heronum);
 	bool process_hero_movement_direction(int heronum, int move, int direction);
 	void process_state();

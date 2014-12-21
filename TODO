@@ -5,8 +5,8 @@ Things that need to be done
 	- clamped to 30ms. is this the best?
 * segfault when deleting Bomb::animation_2. why?
 * partial movement should be allowed
-* bomb regeneration
 
 Done
 
 * time limit < 5 doesn't make sense
+* bomb regeneration linked to hero, not global

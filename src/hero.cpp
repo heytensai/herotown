@@ -8,6 +8,7 @@ Hero::Hero(Video *video, int width, int height)
 	motion.active = 0;
 	motion.movement.x = 0;
 	motion.movement.y = 0;
+	last_bomb_added = 0;
 }
 
 void Hero::subtract_coins(int count)

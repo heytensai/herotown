@@ -19,6 +19,7 @@ public:
 	int direction;
 	int action;
 	int score;
+	Uint32 last_bomb_added;
 	
 	Hero(Video *video, int width, int height);
 	void subtract_coins(int count);

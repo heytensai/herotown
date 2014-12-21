@@ -84,13 +84,13 @@ void Game::end()
 	}
 }
 
-void Game::add_bomb(int x, int y)
+void Game::add_bomb(Hero *owner, int x, int y)
 {
 	Uint32 cur_tick = SDL_GetTicks();
-	if (cur_tick - last_bomb_added < BOMB_TICKS){
+	if (cur_tick - owner->last_bomb_added < BOMB_TICKS){
 		return;
 	}
-	last_bomb_added = cur_tick;
+	owner->last_bomb_added = cur_tick;
 	for (int i=0; i<BOMBS; i++){
 		if (bombs[i] == NULL){
 			bombs[i] = new Bomb(video);
@@ -542,7 +542,7 @@ void Game::process_hero_state(int heronum)
 		else{
 			new_x -= (hero[heronum]->width / 2) + 10;
 		}
-		add_bomb(new_x, hero[heronum]->location.y + 15);
+		add_bomb(hero[heronum], new_x, hero[heronum]->location.y + 15);
 	}
 }
 
