@@ -2,8 +2,13 @@
 
 int main(int argc, char **argv)
 {
+	Video video(WIDTH, HEIGHT);
+	video.init();
+	video.create_window();
+	video.load_background("resources/background.png");
+
 	Game *game;
-	game = new Game(WIDTH, HEIGHT);
+	game = new Game(&video);
 
 	while (1){
 		if (game->intro_screen()){
@@ -17,7 +22,7 @@ int main(int argc, char **argv)
 	}
 
 	game->sound.destroy();
-	game->video->quit();
+	video.quit();
 
 	delete game;
 }

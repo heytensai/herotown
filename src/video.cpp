@@ -14,6 +14,7 @@ Video::~Video()
 		TTF_CloseFont(font);
 		font = NULL;
 	}
+	TTF_Quit();
 	SDL_Quit();
 }
 

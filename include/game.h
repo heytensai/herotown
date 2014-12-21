@@ -21,8 +21,6 @@ private:
 	static const int BOMB_TICKS = 1000;
 	static const int MAX_JOYDEV = 4;
 	static const Uint32 FRAME_TICKS = 33;
-	int width;
-	int height;
 	Hero *hero[2];
 	point_t grid_base;
 	movement_t background;
@@ -66,7 +64,7 @@ public:
 	Video *video;
 	Sound sound;
 
-	Game(int width, int height);
+	Game(Video *video);
 	~Game();
 	void start();
 	void end();

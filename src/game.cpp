@@ -1,17 +1,11 @@
 #include "game.h"
 #include <time.h>
 
-Game::Game(int width, int height)
+Game::Game(Video *video)
 {
-	this->width = width;
-	this->height = height;
+	this->video = video;
 	running = 1;
 	input_state = 0;
-
-	video = new Video(width, height);
-	video->init();
-	video->create_window();
-	video->load_background("resources/background.png");
 
 	sound.init();
 	//init_controller();
@@ -37,11 +31,7 @@ Game::~Game()
 	}
 	*/
 
-	if (video != NULL){
-		delete video;
-		video = NULL;
-	}
-	TTF_Quit();
+	video = NULL;
 }
 
 void Game::start()
@@ -198,7 +188,7 @@ void Game::init_blocks()
 	for (int i=0; i<BLOCKS; i++){
 		blocks[i] = NULL;
 	}
-	for (int i=0; (i*32)<=width; i++){
+	for (int i=0; (i*32)<=video->width; i++){
 		blocks[i] = new Block(video);
 		blocks[i]->location.x = i * 32;
 		blocks[i]->location.y = 550;
