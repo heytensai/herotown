@@ -10,8 +10,9 @@
 #include "input.h"
 #include "bomb.h"
 #include "menu.h"
+#include "game.h"
 
-class BombyCoinyGame
+class BombyCoinyGame : public Game
 {
 private:
 	static const int BLOCKS = 128;
@@ -30,8 +31,6 @@ private:
 	input_state_t last_input_state;
 	input_state_t input_state;
 	Uint32 last_coin_added;
-	bool use_joy;
-	SDL_Joystick *joy[MAX_JOYDEV]; // 4 joydevs seems enough
 	int start_time;
 	int running_time;
 	Uint32 last_tick;
@@ -40,7 +39,6 @@ private:
 	void init_blocks();
 	void init_coins();
 	void init_hero();
-	void init_controller();
 	void add_coin(int x, int y, bool ignore_tick);
 	void add_bomb(Hero *owner, int x, int y);
 	void process_hero_state(int heronum);
@@ -61,8 +59,6 @@ private:
 public:
 	int running;
 	bool exit_requested;
-	Video *video;
-	Sound *sound;
 
 	BombyCoinyGame(Video *video, Sound *sound);
 	~BombyCoinyGame();
