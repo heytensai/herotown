@@ -16,6 +16,7 @@ private:
 
 public:
 	static const int STEP = 5;
+	static const int TERMINAL_VELOCITY = -15;
 	int direction;
 	int action;
 	int score;

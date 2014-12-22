@@ -6,7 +6,7 @@ JumpyGame::JumpyGame(Video *video, Sound *sound)
 	running = true;
 	run_once = false;
 	gravity.direction = 3.14;
-	gravity.speed = 7;
+	gravity.speed = 5;
 }
 
 JumpyGame::~JumpyGame()
@@ -149,8 +149,8 @@ void JumpyGame::move_hero()
 
 	// adjust velocity for gravity
 	hero[0]->velocity.speed -= gravity.speed;
-	if (hero[0]->velocity.speed < 0){
-		hero[0]->velocity.speed = 0;
+	if (hero[0]->velocity.speed < Hero::TERMINAL_VELOCITY){
+		hero[0]->velocity.speed = Hero::TERMINAL_VELOCITY;
 	}
 
 	// apply gravity
