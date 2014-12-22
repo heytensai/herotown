@@ -252,11 +252,11 @@ void Sprite::render()
 		return;
 	}
 
-	if (is_animated() && (use_animation_always || moving())){
-		render_animation();
+	if (!is_animated() || (active_animation == -1)){
+		render_static();
 	}
 	else{
-		render_static();
+		render_animation();
 	}
 }
 void Sprite::render_static()

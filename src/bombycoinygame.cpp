@@ -458,6 +458,7 @@ void BombyCoinyGame::process_hero_state(int heronum)
 	hero[heronum]->motion.active = 0;
 	hero[heronum]->motion.movement.y = 0;
 	hero[heronum]->motion.movement.x = 0;
+	hero[heronum]->set_animation(Animation::NONE);
 
 	if (process_hero_movement_direction(heronum, HERO_MOVE_UP, Sprite::DIRECTION_UP)){
 		hero[heronum]->motion.movement.y -= Hero::STEP;
