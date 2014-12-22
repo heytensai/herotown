@@ -56,6 +56,9 @@ void JumpyGame::process_inputs()
 	int numkeys;
 	const Uint8 *state = SDL_GetKeyboardState(&numkeys);
 
+	//reset hero
+	hero[0]->motion.movement.x = 0;
+
 	if (state[SDL_SCANCODE_SPACE]){
 		//somehow need to know if hero is on the ground
 		if (hero[0]->can_jump){
@@ -71,6 +74,12 @@ void JumpyGame::process_inputs()
 		hero[0]->location.x = 30;
 		hero[0]->location.y = 300;
 		hero[0]->velocity.speed = 0;
+	}
+	if (state[SDL_SCANCODE_A]){
+		hero[0]->motion.movement.x = -Sprite::step;
+	}
+	if (state[SDL_SCANCODE_D]){
+		hero[0]->motion.movement.x = Sprite::step;
 	}
 }
 
@@ -123,8 +132,17 @@ void JumpyGame::render()
 
 void JumpyGame::move_hero()
 {
-	hero[0]->set_animation(Animation::WALK_RIGHT);
-	hero[0]->location.x++;
+	if (hero[0]->motion.movement.x < 0){
+		hero[0]->set_animation(Animation::WALK_LEFT);
+		hero[0]->location.x += hero[0]->motion.movement.x;
+	}
+	else if (hero[0]->motion.movement.x > 0){
+		hero[0]->set_animation(Animation::WALK_RIGHT);
+		hero[0]->location.x += hero[0]->motion.movement.x;
+	}
+	else{
+		hero[0]->set_animation(Animation::NONE);
+	}
 
 	// apply velocity
 	hero[0]->location.y -= hero[0]->velocity.speed;
