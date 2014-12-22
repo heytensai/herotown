@@ -52,6 +52,7 @@ protected:
 	SDL_Texture *_load_image(const char *file);
 
 public:
+	velocity_t velocity;
 	point_t location;
 	movement_t motion;
 	int width;

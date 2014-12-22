@@ -75,6 +75,7 @@ Sprite::Sprite(Video *video, int width, int height)
 	use_animation_always = false;
 	animation_count = -1;
 	memset(animation, 0, sizeof(animation));
+	velocity.speed = 0;
 }
 
 Sprite::~Sprite()

@@ -16,4 +16,9 @@ typedef struct {
 	point_t movement;
 } movement_t;
 
+typedef struct {
+	float direction;
+	float speed;
+} velocity_t;
+
 #endif /* POINT_H */
