@@ -463,18 +463,22 @@ void BombyCoinyGame::process_hero_state(int heronum)
 	if (process_hero_movement_direction(heronum, HERO_MOVE_UP, Sprite::DIRECTION_UP)){
 		hero[heronum]->motion.movement.y -= Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_LEFT);
+		hero[heronum]->facing = Sprite::LEFT;
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_DOWN, Sprite::DIRECTION_DOWN)){
 		hero[heronum]->motion.movement.y += Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_RIGHT);
+		hero[heronum]->facing = Sprite::RIGHT;
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_RIGHT, Sprite::DIRECTION_RIGHT)){
 		hero[heronum]->motion.movement.x += Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_RIGHT);
+		hero[heronum]->facing = Sprite::RIGHT;
 	}
 	if (process_hero_movement_direction(heronum, HERO_MOVE_LEFT, Sprite::DIRECTION_LEFT)){
 		hero[heronum]->motion.movement.x -= Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_LEFT);
+		hero[heronum]->facing = Sprite::LEFT;
 	}
 
 	if (hero[heronum]->action & HERO_ACTION_BOMB){

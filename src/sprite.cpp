@@ -70,19 +70,25 @@ Sprite::Sprite(Video *video, int width, int height)
 	this->video = video;
 	this->width = width;
 	this->height = height;
-	texture = NULL;
+	for (int i=0; i<Sprite::MAX; i++){
+		texture[i] = NULL;
+	}
 	hidden = false;
 	use_animation_always = false;
 	animation_count = -1;
 	memset(animation, 0, sizeof(animation));
 	velocity.speed = 0;
+	direction = 0;
+	facing = 0;
 }
 
 Sprite::~Sprite()
 {
-	if (texture != NULL){
-		SDL_DestroyTexture(texture);
-		texture = NULL;
+	for (int i=0; i<Sprite::MAX; i++){
+		if (texture[i] != NULL){
+			SDL_DestroyTexture(texture[i]);
+			texture[i] = NULL;
+		}
 	}
 }
 
@@ -262,6 +268,17 @@ void Sprite::render()
 }
 void Sprite::render_static()
 {
+	SDL_Texture *t;
+	if (texture[facing] != NULL){
+		t = texture[facing];
+	}
+	else if (texture[NONE] != NULL){
+		t = texture[NONE];
+	}
+	else{
+		return;
+	}
+
 	SDL_Rect src;
 	src.x = 0;
 	src.y = 0;
@@ -273,7 +290,7 @@ void Sprite::render_static()
 	dst.w = width;
 	dst.h = height;
 
-	SDL_RenderCopy(video->renderer, texture, &src, &dst);
+	SDL_RenderCopy(video->renderer, t, &src, &dst);
 }
 
 bool Sprite::is_animated()
@@ -301,15 +318,15 @@ SDL_Texture *Sprite::_load_image(const char *file)
 	return t;
 }
 
-void Sprite::load_image(const char *file)
+void Sprite::load_image(Direction d, const char *file)
 {
-	if (texture != NULL){
-		SDL_DestroyTexture(texture);
-		texture = NULL;
+	if (texture[d] != NULL){
+		SDL_DestroyTexture(texture[d]);
+		texture[d] = NULL;
 	}
 
-	texture = _load_image(file);
-	if (texture == NULL){
+	texture[d] = _load_image(file);
+	if (texture[d] == NULL){
 		fprintf(stderr, "failed to create sprite texture: %s\n", SDL_GetError());
 	}
 }
@@ -344,7 +361,7 @@ Animation Coin::animation_1;
 Coin::Coin(Video *video)
 	: Sprite(video, 30, 32)
 {
-	load_image("resources/coin0.png");
+	load_image(Sprite::NONE, "resources/coin0.png");
 	if (animation_1.texture == NULL){
 		animation_1.set_frames(4);
 		animation_1.name = Animation::SPIN;
@@ -364,11 +381,11 @@ Coin::Coin(Video *video)
 Block::Block(Video *video)
 	: Sprite(video, 32, 16)
 {
-	load_image("resources/block.png");
+	load_image(Sprite::NONE, "resources/block.png");
 }
 
 Fireball::Fireball(Video *video)
 	: Sprite(video, 32, 17)
 {
-	load_image("resources/fireball.png");
+	load_image(Sprite::RIGHT, "resources/fireball.png");
 }

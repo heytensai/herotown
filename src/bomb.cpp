@@ -10,7 +10,8 @@ Bomb::Bomb(Video *video)
 	motion.active = 0;
 	motion.movement.x = 0;
 	motion.movement.y = 0;
-	load_image("resources/bomb.png");
+	direction = Sprite::NONE;
+	load_image(Sprite::NONE, "resources/bomb.png");
 
 	if (animation_1.get_frames() != 2){
 		animation_1.set_frames(2);

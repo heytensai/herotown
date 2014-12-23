@@ -34,6 +34,17 @@ public:
 
 class Sprite
 {
+public:
+	enum Direction
+	{
+		NONE = 0,
+		LEFT,
+		RIGHT,
+		UP,
+		DOWN,
+		MAX,
+	};
+
 private:
 	Video *video;
 	static const int ANIMATION_MAX = 8;
@@ -41,7 +52,7 @@ private:
 	int animation_count;
 	int active_animation;
 	Uint32 animation_frame;
-	SDL_Texture *texture;
+	SDL_Texture *texture[Sprite::MAX];
 	bool use_animation_always;
 	Uint32 last_animation_tick;
 
@@ -58,6 +69,8 @@ public:
 	int width;
 	int height;
 	bool hidden;
+	int direction;
+	Uint32 facing;
 	static const int step = 4;
 	static const int edge_size = 00;
 	static const int DIRECTION_UP = 0x01;
@@ -69,7 +82,7 @@ public:
 	~Sprite();
 	bool moving();
 	bool can_move(char direction);
-	void load_image(const char *file);
+	void load_image(Direction d, const char *file);
 	void render();
 	bool is_animated();
 	bool intersects(Sprite *other, int buffer);

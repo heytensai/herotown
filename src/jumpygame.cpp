@@ -77,9 +77,13 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 	}
 	if (state[hero[heronum]->input_map[Hero::LEFT]]){
 		hero[heronum]->motion.movement.x = -Sprite::step * run;
+		hero[heronum]->direction = Sprite::LEFT;
+		hero[heronum]->facing = Sprite::LEFT;
 	}
 	if (state[hero[heronum]->input_map[Hero::RIGHT]]){
 		hero[heronum]->motion.movement.x = Sprite::step * run;
+		hero[heronum]->direction = Sprite::RIGHT;
+		hero[heronum]->facing = Sprite::RIGHT;
 	}
 	if (state[hero[heronum]->input_map[Hero::FIREBALL]]){
 		if (hero[heronum]->fireball == NULL){
@@ -89,6 +93,7 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 			f->location.y = hero[heronum]->location.y;
 			f->velocity.direction = PI/2;
 			f->velocity.speed = 5;
+			f->facing = Sprite::RIGHT;
 		}
 	}
 }

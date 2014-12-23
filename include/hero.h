@@ -24,7 +24,6 @@ public:
 	static const int STEP = 5;
 	static const int TERMINAL_VELOCITY = -15;
 	Uint32 input_map[5];
-	int direction;
 	int action;
 	int score;
 	Uint32 last_bomb_added;

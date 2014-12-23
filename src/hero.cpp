@@ -27,9 +27,9 @@ Mario::Mario(Video *video)
 	input_map[Hero::SPEED] = SDL_SCANCODE_RCTRL;
 	input_map[Hero::FIREBALL] = SDL_SCANCODE_KP_0;
 
-	direction = 0;
-	score = 0;
-	load_image("resources/mario0.png");
+	facing = Sprite::RIGHT;
+	load_image(Sprite::RIGHT, "resources/mario0.png");
+	load_image(Sprite::LEFT, "resources/mario-left0.png");
 
 	Animation *a = new Animation();
 	a->set_frames(8);
@@ -77,9 +77,9 @@ Yoshi::Yoshi(Video *video)
 	input_map[Hero::SPEED] = SDL_SCANCODE_LSHIFT;
 	input_map[Hero::FIREBALL] = SDL_SCANCODE_B;
 
-	direction = 0;
-	score = 0;
-	load_image("resources/yoshi0.png");
+	facing = Sprite::RIGHT;
+	load_image(Sprite::RIGHT, "resources/yoshi0.png");
+	load_image(Sprite::LEFT, "resources/yoshi-left0.png");
 
 	Animation *a;
 	a = new Animation();
