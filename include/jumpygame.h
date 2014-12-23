@@ -16,6 +16,7 @@ private:
 
 	void render();
 	void process_inputs();
+	void process_hero_inputs(const Uint8 *state, int heronum);
 	void process_events();
 	void move_hero(int i);
 	void init_hero();

@@ -20,6 +20,12 @@ void Hero::subtract_coins(int count)
 Mario::Mario(Video *video)
 	: Hero(video, 48, 64)
 {
+	input_map[Hero::LEFT] = SDL_SCANCODE_LEFT;
+	input_map[Hero::RIGHT] = SDL_SCANCODE_RIGHT;
+	input_map[Hero::JUMP] = SDL_SCANCODE_KP_ENTER;
+	input_map[Hero::SPEED] = SDL_SCANCODE_RCTRL;
+	input_map[Hero::FIREBALL] = SDL_SCANCODE_KP_0;
+
 	direction = 0;
 	score = 0;
 	load_image("resources/mario0.png");
@@ -64,6 +70,12 @@ Mario::Mario(Video *video)
 Yoshi::Yoshi(Video *video)
 	: Hero(video, 48, 64)
 {
+	input_map[Hero::LEFT] = SDL_SCANCODE_A;
+	input_map[Hero::RIGHT] = SDL_SCANCODE_D;
+	input_map[Hero::JUMP] = SDL_SCANCODE_SPACE;
+	input_map[Hero::SPEED] = SDL_SCANCODE_LSHIFT;
+	input_map[Hero::FIREBALL] = SDL_SCANCODE_B;
+
 	direction = 0;
 	score = 0;
 	load_image("resources/yoshi0.png");

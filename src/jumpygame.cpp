@@ -51,6 +51,32 @@ void JumpyGame::score_screen()
 	printf("JumpyGame::score_screen()\n");
 }
 
+void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
+{
+	//reset hero
+	hero[heronum]->motion.movement.x = 0;
+
+	int run = 1;
+	if (state[hero[heronum]->input_map[Hero::SPEED]]){
+		run = 2;
+	}
+
+	if (state[hero[heronum]->input_map[Hero::JUMP]]){
+		//somehow need to know if hero is on the ground
+		if (hero[heronum]->can_jump){
+			hero[heronum]->can_jump = false;
+			hero[heronum]->velocity.direction = 0;
+			hero[heronum]->velocity.speed = 30;
+		}
+	}
+	if (state[hero[heronum]->input_map[Hero::LEFT]]){
+		hero[heronum]->motion.movement.x = -Sprite::step * run;
+	}
+	if (state[hero[heronum]->input_map[Hero::RIGHT]]){
+		hero[heronum]->motion.movement.x = Sprite::step * run;
+	}
+}
+
 void JumpyGame::process_inputs()
 {
 	int numkeys;
@@ -66,47 +92,8 @@ void JumpyGame::process_inputs()
 		hero[0]->velocity.speed = 0;
 	}
 
-	//reset heros
-	hero[0]->motion.movement.x = 0;
-	hero[1]->motion.movement.x = 0;
-
-	int run_0 = 1;
-	if (state[SDL_SCANCODE_LSHIFT]){
-		run_0 = 2;
-	}
-	if (state[SDL_SCANCODE_SPACE]){
-		//somehow need to know if hero is on the ground
-		if (hero[0]->can_jump){
-			hero[0]->can_jump = false;
-			hero[0]->velocity.direction = 0;
-			hero[0]->velocity.speed = 30;
-		}
-	}
-	if (state[SDL_SCANCODE_A]){
-		hero[0]->motion.movement.x = -Sprite::step * run_0;
-	}
-	if (state[SDL_SCANCODE_D]){
-		hero[0]->motion.movement.x = Sprite::step * run_0;
-	}
-
-	int run_1 = 1;
-	if (state[SDL_SCANCODE_KP_0]){
-		run_1 = 2;
-	}
-	if (state[SDL_SCANCODE_KP_ENTER]){
-		//somehow need to know if hero is on the ground
-		if (hero[1]->can_jump){
-			hero[1]->can_jump = false;
-			hero[1]->velocity.direction = 0;
-			hero[1]->velocity.speed = 30;
-		}
-	}
-	if (state[SDL_SCANCODE_LEFT]){
-		hero[1]->motion.movement.x = -Sprite::step * run_1;
-	}
-	if (state[SDL_SCANCODE_RIGHT]){
-		hero[1]->motion.movement.x = Sprite::step * run_1;
-	}
+	process_hero_inputs(state, 0);
+	process_hero_inputs(state, 1);
 }
 
 void JumpyGame::process_events()

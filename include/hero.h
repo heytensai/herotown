@@ -12,11 +12,18 @@
 
 class Hero : public Sprite
 {
-private:
-
 public:
+	enum InputKey
+	{
+		LEFT = 0,
+		RIGHT,
+		JUMP,
+		SPEED,
+		FIREBALL,
+	};
 	static const int STEP = 5;
 	static const int TERMINAL_VELOCITY = -15;
+	Uint32 input_map[5];
 	int direction;
 	int action;
 	int score;
