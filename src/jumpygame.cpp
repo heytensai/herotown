@@ -70,6 +70,10 @@ void JumpyGame::process_inputs()
 	hero[0]->motion.movement.x = 0;
 	hero[1]->motion.movement.x = 0;
 
+	int run_0 = 1;
+	if (state[SDL_SCANCODE_LSHIFT]){
+		run_0 = 2;
+	}
 	if (state[SDL_SCANCODE_SPACE]){
 		//somehow need to know if hero is on the ground
 		if (hero[0]->can_jump){
@@ -79,12 +83,16 @@ void JumpyGame::process_inputs()
 		}
 	}
 	if (state[SDL_SCANCODE_A]){
-		hero[0]->motion.movement.x = -Sprite::step;
+		hero[0]->motion.movement.x = -Sprite::step * run_0;
 	}
 	if (state[SDL_SCANCODE_D]){
-		hero[0]->motion.movement.x = Sprite::step;
+		hero[0]->motion.movement.x = Sprite::step * run_0;
 	}
 
+	int run_1 = 1;
+	if (state[SDL_SCANCODE_KP_0]){
+		run_1 = 2;
+	}
 	if (state[SDL_SCANCODE_KP_ENTER]){
 		//somehow need to know if hero is on the ground
 		if (hero[1]->can_jump){
@@ -94,10 +102,10 @@ void JumpyGame::process_inputs()
 		}
 	}
 	if (state[SDL_SCANCODE_LEFT]){
-		hero[1]->motion.movement.x = -Sprite::step;
+		hero[1]->motion.movement.x = -Sprite::step * run_1;
 	}
 	if (state[SDL_SCANCODE_RIGHT]){
-		hero[1]->motion.movement.x = Sprite::step;
+		hero[1]->motion.movement.x = Sprite::step * run_1;
 	}
 }
 
@@ -154,10 +162,16 @@ void JumpyGame::move_hero(int i)
 	if (hero[i]->motion.movement.x < 0){
 		hero[i]->set_animation(Animation::WALK_LEFT);
 		hero[i]->location.x += hero[i]->motion.movement.x;
+		if (hero[i]->location.x < 0){
+			hero[i]->location.x = 0;
+		}
 	}
 	else if (hero[i]->motion.movement.x > 0){
 		hero[i]->set_animation(Animation::WALK_RIGHT);
 		hero[i]->location.x += hero[i]->motion.movement.x;
+		if (hero[i]->location.x > WIDTH){
+			hero[i]->location.x = WIDTH;
+		}
 	}
 	else{
 		hero[i]->set_animation(Animation::NONE);
