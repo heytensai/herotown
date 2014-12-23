@@ -1,6 +1,7 @@
 #ifndef HERO_H
 #define HERO_H
 #include "sprite.h"
+#include "bomb.h"
 
 #define HERO_MOVE_LEFT  0x01
 #define HERO_MOVE_RIGHT 0x02
@@ -20,6 +21,7 @@ public:
 		JUMP,
 		SPEED,
 		FIREBALL,
+		BOMB,
 	};
 	static const int STEP = 5;
 	static const int TERMINAL_VELOCITY = -15;
@@ -29,6 +31,7 @@ public:
 	Uint32 last_bomb_added;
 	bool can_jump;
 	Fireball *fireball;
+	Bomb *bomb;
 	
 	Hero(Video *video, int width, int height);
 	void subtract_coins(int count);

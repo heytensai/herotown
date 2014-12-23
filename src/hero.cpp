@@ -10,6 +10,7 @@ Hero::Hero(Video *video, int width, int height)
 	motion.movement.y = 0;
 	last_bomb_added = 0;
 	fireball = NULL;
+	bomb = NULL;
 }
 
 void Hero::subtract_coins(int count)
@@ -26,6 +27,7 @@ Mario::Mario(Video *video)
 	input_map[Hero::JUMP] = SDL_SCANCODE_KP_ENTER;
 	input_map[Hero::SPEED] = SDL_SCANCODE_RCTRL;
 	input_map[Hero::FIREBALL] = SDL_SCANCODE_KP_0;
+	input_map[Hero::BOMB] = SDL_SCANCODE_KP_PERIOD;
 
 	facing = Sprite::RIGHT;
 	load_image(Sprite::RIGHT, "resources/mario0.png");
@@ -76,6 +78,7 @@ Yoshi::Yoshi(Video *video)
 	input_map[Hero::JUMP] = SDL_SCANCODE_SPACE;
 	input_map[Hero::SPEED] = SDL_SCANCODE_LSHIFT;
 	input_map[Hero::FIREBALL] = SDL_SCANCODE_B;
+	input_map[Hero::BOMB] = SDL_SCANCODE_V;
 
 	facing = Sprite::RIGHT;
 	load_image(Sprite::RIGHT, "resources/yoshi0.png");

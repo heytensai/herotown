@@ -85,6 +85,20 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 		hero[heronum]->direction = Sprite::RIGHT;
 		hero[heronum]->facing = Sprite::RIGHT;
 	}
+	if (state[hero[heronum]->input_map[Hero::BOMB]]){
+		if (hero[heronum]->bomb == NULL){
+			Bomb *b = new Bomb(video);
+			hero[heronum]->bomb = b;
+			int flop = 1;
+			if (hero[heronum]->facing == Sprite::LEFT){
+				flop = -1;
+			}
+			b->location.x = hero[heronum]->location.x + (flop * 30);
+			b->location.y = hero[heronum]->location.y;
+			b->motion.movement.x = (flop * 2);
+			b->facing = Sprite::NONE;
+		}
+	}
 	if (state[hero[heronum]->input_map[Hero::FIREBALL]]){
 		if (hero[heronum]->fireball == NULL){
 			Fireball *f = new Fireball(video);
@@ -164,13 +178,22 @@ void JumpyGame::render()
 		}
 	}
 	hero[0]->render();
+	hero[1]->render();
+
 	if (hero[0]->fireball){
 		hero[0]->fireball->render();
 	}
-	hero[1]->render();
 	if (hero[1]->fireball){
 		hero[1]->fireball->render();
 	}
+
+	if (hero[0]->bomb){
+		hero[0]->bomb->render();
+	}
+	if (hero[1]->bomb){
+		hero[1]->bomb->render();
+	}
+
 	video->finish_render();
 }
 
@@ -184,6 +207,34 @@ void JumpyGame::move_hero(int i)
 		}
 		else{
 			hero[i]->fireball->location.x += hero[i]->fireball->motion.movement.x;
+		}
+	}
+
+	// move my bomb too
+	if (hero[i]->bomb){
+		if (hero[i]->bomb->location.x > WIDTH || hero[i]->bomb->location.x < 0){
+			delete hero[i]->bomb;
+			hero[i]->bomb = NULL;
+		}
+		else{
+			hero[i]->bomb->location.x += hero[i]->bomb->motion.movement.x;
+
+			// apply velocity
+			hero[i]->bomb->location.y -= hero[i]->bomb->velocity.speed;
+
+			// adjust velocity for gravity
+			hero[i]->bomb->velocity.speed -= gravity.speed;
+			if (hero[i]->bomb->velocity.speed < Hero::TERMINAL_VELOCITY){
+				hero[i]->bomb->velocity.speed = Hero::TERMINAL_VELOCITY;
+			}
+
+			// apply gravity
+			hero[i]->bomb->location.y += gravity.speed;
+
+			// hard coded floor
+			if (hero[i]->bomb->location.y >= 300){
+				hero[i]->bomb->location.y = 300;
+			}
 		}
 	}
 
