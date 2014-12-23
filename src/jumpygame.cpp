@@ -6,7 +6,7 @@ JumpyGame::JumpyGame(Video *video, Sound *sound)
 	running = true;
 	run_once = false;
 	gravity.direction = 3.14;
-	gravity.speed = 5;
+	gravity.speed = 2;
 }
 
 JumpyGame::~JumpyGame()
@@ -64,7 +64,7 @@ void JumpyGame::process_inputs()
 		if (hero[0]->can_jump){
 			hero[0]->can_jump = false;
 			hero[0]->velocity.direction = 0;
-			hero[0]->velocity.speed = 50;
+			hero[0]->velocity.speed = 30;
 		}
 	}
 	if (state[SDL_SCANCODE_ESCAPE]){
