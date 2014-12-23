@@ -6,6 +6,7 @@
 #define HEIGHT 600
 #define COLORDEPTH 32
 #define BPP (COLORDEPTH / 4)
+#define PI 3.1415f
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"

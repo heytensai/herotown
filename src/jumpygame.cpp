@@ -38,6 +38,12 @@ void JumpyGame::end()
 {
 	printf("JumpyGame::end()\n");
 	running = false;
+	for (int i=0; i<BLOCKS; i++){
+		if (blocks[i] != NULL){
+			delete blocks[i];
+			blocks[i] = NULL;
+		}
+	}
 }
 
 bool JumpyGame::intro_screen()
@@ -74,6 +80,16 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 	}
 	if (state[hero[heronum]->input_map[Hero::RIGHT]]){
 		hero[heronum]->motion.movement.x = Sprite::step * run;
+	}
+	if (state[hero[heronum]->input_map[Hero::FIREBALL]]){
+		if (hero[heronum]->fireball == NULL){
+			Fireball *f = new Fireball(video);
+			hero[heronum]->fireball = f;
+			f->location.x = hero[heronum]->location.x + 30;
+			f->location.y = hero[heronum]->location.y;
+			f->velocity.direction = PI/2;
+			f->velocity.speed = 5;
+		}
 	}
 }
 
@@ -140,12 +156,29 @@ void JumpyGame::render()
 		}
 	}
 	hero[0]->render();
+	if (hero[0]->fireball){
+		hero[0]->fireball->render();
+	}
 	hero[1]->render();
+	if (hero[1]->fireball){
+		hero[1]->fireball->render();
+	}
 	video->finish_render();
 }
 
 void JumpyGame::move_hero(int i)
 {
+	// move my fireball too
+	if (hero[i]->fireball){
+		if (hero[i]->fireball->location.x > WIDTH){
+			delete hero[i]->fireball;
+			hero[i]->fireball = NULL;
+		}
+		else{
+			hero[i]->fireball->location.x += hero[i]->fireball->velocity.speed;
+		}
+	}
+
 	if (hero[i]->motion.movement.x < 0){
 		hero[i]->set_animation(Animation::WALK_LEFT);
 		hero[i]->location.x += hero[i]->motion.movement.x;

@@ -366,3 +366,9 @@ Block::Block(Video *video)
 {
 	load_image("resources/block.png");
 }
+
+Fireball::Fireball(Video *video)
+	: Sprite(video, 32, 17)
+{
+	load_image("resources/fireball.png");
+}

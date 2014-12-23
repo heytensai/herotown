@@ -95,4 +95,10 @@ public:
 	Block(Video *video);
 };
 
+class Fireball : public Sprite
+{
+public:
+	Fireball(Video *video);
+};
+
 #endif /* SPRITE_H */

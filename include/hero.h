@@ -29,6 +29,7 @@ public:
 	int score;
 	Uint32 last_bomb_added;
 	bool can_jump;
+	Fireball *fireball;
 	
 	Hero(Video *video, int width, int height);
 	void subtract_coins(int count);
