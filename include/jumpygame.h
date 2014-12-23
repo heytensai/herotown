@@ -17,7 +17,7 @@ private:
 	void render();
 	void process_inputs();
 	void process_events();
-	void move_hero();
+	void move_hero(int i);
 	void init_hero();
 	void init_blocks();
 

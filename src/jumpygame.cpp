@@ -56,8 +56,19 @@ void JumpyGame::process_inputs()
 	int numkeys;
 	const Uint8 *state = SDL_GetKeyboardState(&numkeys);
 
-	//reset hero
+	// global keys
+	if (state[SDL_SCANCODE_ESCAPE]){
+		running = false;
+	}
+	if (state[SDL_SCANCODE_TAB]){
+		hero[0]->location.x = 30;
+		hero[0]->location.y = 300;
+		hero[0]->velocity.speed = 0;
+	}
+
+	//reset heros
 	hero[0]->motion.movement.x = 0;
+	hero[1]->motion.movement.x = 0;
 
 	if (state[SDL_SCANCODE_SPACE]){
 		//somehow need to know if hero is on the ground
@@ -67,19 +78,26 @@ void JumpyGame::process_inputs()
 			hero[0]->velocity.speed = 30;
 		}
 	}
-	if (state[SDL_SCANCODE_ESCAPE]){
-		running = false;
-	}
-	if (state[SDL_SCANCODE_TAB]){
-		hero[0]->location.x = 30;
-		hero[0]->location.y = 300;
-		hero[0]->velocity.speed = 0;
-	}
 	if (state[SDL_SCANCODE_A]){
 		hero[0]->motion.movement.x = -Sprite::step;
 	}
 	if (state[SDL_SCANCODE_D]){
 		hero[0]->motion.movement.x = Sprite::step;
+	}
+
+	if (state[SDL_SCANCODE_KP_ENTER]){
+		//somehow need to know if hero is on the ground
+		if (hero[1]->can_jump){
+			hero[1]->can_jump = false;
+			hero[1]->velocity.direction = 0;
+			hero[1]->velocity.speed = 30;
+		}
+	}
+	if (state[SDL_SCANCODE_LEFT]){
+		hero[1]->motion.movement.x = -Sprite::step;
+	}
+	if (state[SDL_SCANCODE_RIGHT]){
+		hero[1]->motion.movement.x = Sprite::step;
 	}
 }
 
@@ -127,39 +145,40 @@ void JumpyGame::render()
 		}
 	}
 	hero[0]->render();
+	hero[1]->render();
 	video->finish_render();
 }
 
-void JumpyGame::move_hero()
+void JumpyGame::move_hero(int i)
 {
-	if (hero[0]->motion.movement.x < 0){
-		hero[0]->set_animation(Animation::WALK_LEFT);
-		hero[0]->location.x += hero[0]->motion.movement.x;
+	if (hero[i]->motion.movement.x < 0){
+		hero[i]->set_animation(Animation::WALK_LEFT);
+		hero[i]->location.x += hero[i]->motion.movement.x;
 	}
-	else if (hero[0]->motion.movement.x > 0){
-		hero[0]->set_animation(Animation::WALK_RIGHT);
-		hero[0]->location.x += hero[0]->motion.movement.x;
+	else if (hero[i]->motion.movement.x > 0){
+		hero[i]->set_animation(Animation::WALK_RIGHT);
+		hero[i]->location.x += hero[i]->motion.movement.x;
 	}
 	else{
-		hero[0]->set_animation(Animation::NONE);
+		hero[i]->set_animation(Animation::NONE);
 	}
 
 	// apply velocity
-	hero[0]->location.y -= hero[0]->velocity.speed;
+	hero[i]->location.y -= hero[i]->velocity.speed;
 
 	// adjust velocity for gravity
-	hero[0]->velocity.speed -= gravity.speed;
-	if (hero[0]->velocity.speed < Hero::TERMINAL_VELOCITY){
-		hero[0]->velocity.speed = Hero::TERMINAL_VELOCITY;
+	hero[i]->velocity.speed -= gravity.speed;
+	if (hero[i]->velocity.speed < Hero::TERMINAL_VELOCITY){
+		hero[i]->velocity.speed = Hero::TERMINAL_VELOCITY;
 	}
 
 	// apply gravity
-	hero[0]->location.y += gravity.speed;
+	hero[i]->location.y += gravity.speed;
 
 	// hard coded floor
-	if (hero[0]->location.y >= 300){
-		hero[0]->can_jump = true;
-		hero[0]->location.y = 300;
+	if (hero[i]->location.y >= 300){
+		hero[i]->can_jump = true;
+		hero[i]->location.y = 300;
 	}
 }
 
@@ -168,6 +187,10 @@ void JumpyGame::init_hero()
 	hero[0] = new Yoshi(video);
 	hero[0]->location.x = 30;
 	hero[0]->location.y = 300;
+
+	hero[1] = new Mario(video);
+	hero[1]->location.x = 500;
+	hero[1]->location.y = 300;
 }
 
 void JumpyGame::main_loop()
@@ -176,7 +199,8 @@ void JumpyGame::main_loop()
 	while (running){
 		process_inputs();
 		process_events();
-		move_hero();
+		move_hero(0);
+		move_hero(1);
 		render();
 	}
 }
