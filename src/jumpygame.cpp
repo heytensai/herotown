@@ -95,7 +95,7 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 			}
 			f->location.x = hero[heronum]->location.x + (flop * 30);
 			f->location.y = hero[heronum]->location.y;
-			f->motion.movement.x = (flop * 5);
+			f->motion.movement.x = (flop * 8);
 			f->facing = hero[heronum]->facing;
 		}
 	}
