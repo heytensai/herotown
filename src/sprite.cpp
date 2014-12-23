@@ -388,4 +388,5 @@ Fireball::Fireball(Video *video)
 	: Sprite(video, 32, 17)
 {
 	load_image(Sprite::RIGHT, "resources/fireball.png");
+	load_image(Sprite::LEFT, "resources/fireball-left.png");
 }

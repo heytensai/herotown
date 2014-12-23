@@ -89,11 +89,14 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 		if (hero[heronum]->fireball == NULL){
 			Fireball *f = new Fireball(video);
 			hero[heronum]->fireball = f;
-			f->location.x = hero[heronum]->location.x + 30;
+			int flop = 1;
+			if (hero[heronum]->facing == Sprite::LEFT){
+				flop = -1;
+			}
+			f->location.x = hero[heronum]->location.x + (flop * 30);
 			f->location.y = hero[heronum]->location.y;
-			f->velocity.direction = PI/2;
-			f->velocity.speed = 5;
-			f->facing = Sprite::RIGHT;
+			f->motion.movement.x = (flop * 5);
+			f->facing = hero[heronum]->facing;
 		}
 	}
 }
@@ -175,12 +178,12 @@ void JumpyGame::move_hero(int i)
 {
 	// move my fireball too
 	if (hero[i]->fireball){
-		if (hero[i]->fireball->location.x > WIDTH){
+		if (hero[i]->fireball->location.x > WIDTH || hero[i]->fireball->location.x < 0){
 			delete hero[i]->fireball;
 			hero[i]->fireball = NULL;
 		}
 		else{
-			hero[i]->fireball->location.x += hero[i]->fireball->velocity.speed;
+			hero[i]->fireball->location.x += hero[i]->fireball->motion.movement.x;
 		}
 	}
 
