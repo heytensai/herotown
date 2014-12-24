@@ -200,6 +200,11 @@ void JumpyGame::render()
 
 void JumpyGame::move_hero(int i)
 {
+	int other_hero = 0;
+	if (i == 0){
+		other_hero = 1;
+	}
+
 	// move my fireball too
 	hero[i]->move_fireballs();
 
@@ -237,12 +242,24 @@ void JumpyGame::move_hero(int i)
 		if (hero[i]->location.x < 0){
 			hero[i]->location.x = 0;
 		}
+		//TODO check collision to the left
+		if (hero[i]->intersects(hero[other_hero], 0)){
+			while (hero[i]->intersects(hero[other_hero], 0)){
+				hero[i]->location.x++;
+			}
+		}
 	}
 	else if (hero[i]->motion.movement.x > 0){
 		hero[i]->set_animation(Animation::WALK_RIGHT);
 		hero[i]->location.x += hero[i]->motion.movement.x;
 		if (hero[i]->location.x > WIDTH){
 			hero[i]->location.x = WIDTH;
+		}
+		//TODO check collision to the right 
+		if (hero[i]->intersects(hero[other_hero], 0)){
+			while (hero[i]->intersects(hero[other_hero], 0)){
+				hero[i]->location.x--;
+			}
 		}
 	}
 	else{
