@@ -32,13 +32,37 @@ void JumpyGame::init_blocks()
 	}
 	//floor
 	for (int i=0; (i*32)<=video->width; i++){
-		add_block(i * 32, 540);
+		add_block((i * 32) - 16, 540);
 	}
 
-	add_block(0, 400);
-	add_block(32, 400);
-	add_block(64, 400);
-	add_block(96, 400);
+	add_block(16, 380);
+	add_block(48, 380);
+	add_block(80, 380);
+	add_block(112, 380);
+
+	add_block(video->width-16, 380);
+	add_block(video->width-48, 380);
+	add_block(video->width-80, 380);
+	add_block(video->width-112, 380);
+
+	int middle = video->width/2;
+	add_block(middle, 220);
+	add_block(middle + 32, 220);
+	add_block(middle + 64, 220);
+	add_block(middle + 96, 220);
+	add_block(middle - 32, 220);
+	add_block(middle - 64, 220);
+	add_block(middle - 96, 220);
+
+	add_block(16, 110);
+	add_block(48, 110);
+	add_block(80, 110);
+	add_block(112, 110);
+
+	add_block(video->width-16, 110);
+	add_block(video->width-48, 110);
+	add_block(video->width-80, 110);
+	add_block(video->width-112, 110);
 }
 
 void JumpyGame::start()
