@@ -182,6 +182,19 @@ void JumpyGame::render()
 	hero[0]->render();
 	hero[1]->render();
 
+	char score[4];
+	snprintf(score, sizeof(score), "%d", hero[0]->health);
+	video->render_text(10, 10, score);
+	snprintf(score, sizeof(score), "%d", hero[1]->health);
+	int offset = 30;
+	if (hero[1]->health > 99){
+		offset = 70;
+	}
+	else if (hero[1]->health > 9){
+		offset = 50;
+	}
+	video->render_text(WIDTH - offset, 10, score);
+
 	video->finish_render();
 }
 
