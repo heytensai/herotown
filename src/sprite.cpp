@@ -139,7 +139,7 @@ bool Sprite::intersects(Sprite *other, int buffer, int direction)
 	bounding_box_t them = other->get_bounding_box(buffer);
 
 	switch (direction){
-		case DIRECTION_UP:
+		case Sprite::UP:
 		{
 			if (me.bottom_right.x <= them.top_left.x) return false;
 			if (me.top_left.x >= them.bottom_right.x) return false;
@@ -147,7 +147,7 @@ bool Sprite::intersects(Sprite *other, int buffer, int direction)
 			if (me.top_left.y > them.bottom_right.y) return false;
 			return true;
 		};
-		case DIRECTION_DOWN:
+		case Sprite::DOWN:
 		{
 			/*
 			printf("me (%d, %d)              : them (%d, %d)\n"
@@ -164,7 +164,7 @@ bool Sprite::intersects(Sprite *other, int buffer, int direction)
 			if (me.bottom_right.y < them.top_left.y) return false;
 			return true;
 		};
-		case DIRECTION_LEFT:
+		case Sprite::LEFT:
 		{
 			if (me.top_left.y >= them.bottom_right.y) return false;
 			if (me.bottom_right.y <= them.top_left.y) return false;
@@ -172,13 +172,17 @@ bool Sprite::intersects(Sprite *other, int buffer, int direction)
 			if (me.bottom_right.x < them.bottom_right.x) return false;
 			return true;
 		};
-		case DIRECTION_RIGHT:
+		case Sprite::RIGHT:
 		{
 			if (me.top_left.y >= them.bottom_right.y) return false;
 			if (me.bottom_right.y <= them.top_left.y) return false;
 			if (me.top_left.x > them.top_left.x) return false;
 			if (me.bottom_right.x < them.top_left.x) return false;
 			return true;
+		};
+		default:
+		{
+			return false;
 		};
 	}
 

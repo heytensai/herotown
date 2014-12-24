@@ -73,10 +73,6 @@ public:
 	Uint32 facing;
 	static const int step = 4;
 	static const int edge_size = 00;
-	static const int DIRECTION_UP = 0x01;
-	static const int DIRECTION_DOWN = 0x02;
-	static const int DIRECTION_LEFT = 0x04;
-	static const int DIRECTION_RIGHT = 0x08;
 
 	Sprite(Video *video, int width, int height);
 	~Sprite();

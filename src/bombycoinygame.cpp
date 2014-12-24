@@ -460,22 +460,22 @@ void BombyCoinyGame::process_hero_state(int heronum)
 	hero[heronum]->motion.movement.x = 0;
 	hero[heronum]->set_animation(Animation::NONE);
 
-	if (process_hero_movement_direction(heronum, HERO_MOVE_UP, Sprite::DIRECTION_UP)){
+	if (process_hero_movement_direction(heronum, HERO_MOVE_UP, Sprite::UP)){
 		hero[heronum]->motion.movement.y -= Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_LEFT);
 		hero[heronum]->facing = Sprite::LEFT;
 	}
-	if (process_hero_movement_direction(heronum, HERO_MOVE_DOWN, Sprite::DIRECTION_DOWN)){
+	if (process_hero_movement_direction(heronum, HERO_MOVE_DOWN, Sprite::DOWN)){
 		hero[heronum]->motion.movement.y += Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_RIGHT);
 		hero[heronum]->facing = Sprite::RIGHT;
 	}
-	if (process_hero_movement_direction(heronum, HERO_MOVE_RIGHT, Sprite::DIRECTION_RIGHT)){
+	if (process_hero_movement_direction(heronum, HERO_MOVE_RIGHT, Sprite::RIGHT)){
 		hero[heronum]->motion.movement.x += Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_RIGHT);
 		hero[heronum]->facing = Sprite::RIGHT;
 	}
-	if (process_hero_movement_direction(heronum, HERO_MOVE_LEFT, Sprite::DIRECTION_LEFT)){
+	if (process_hero_movement_direction(heronum, HERO_MOVE_LEFT, Sprite::LEFT)){
 		hero[heronum]->motion.movement.x -= Hero::STEP;
 		hero[heronum]->set_animation(Animation::WALK_LEFT);
 		hero[heronum]->facing = Sprite::LEFT;
