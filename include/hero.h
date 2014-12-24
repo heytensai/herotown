@@ -40,6 +40,7 @@ public:
 	Uint32 last_bomb_added;
 	bool can_jump;
 	Bomb *bomb;
+	int health;
 	
 	Hero(Video *video, int width, int height);
 	void subtract_coins(int count);

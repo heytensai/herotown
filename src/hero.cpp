@@ -5,6 +5,7 @@ Hero::Hero(Video *video, int width, int height)
 {
 	direction = 0;
 	score = 0;
+	health = 100;
 	motion.active = 0;
 	motion.movement.x = 0;
 	motion.movement.y = 0;
@@ -25,7 +26,7 @@ void Hero::subtract_coins(int count)
 void Hero::add_fireball(Video *video)
 {
 	Uint32 curtick = SDL_GetTicks();
-	if (curtick - last_fireball_tick < 300){
+	if (curtick - last_fireball_tick < 500){
 		return;
 	}
 	int nextf = -1;
@@ -45,7 +46,7 @@ void Hero::add_fireball(Video *video)
 	int flop = (facing == Sprite::LEFT) ? -1 : 1;
 	f->location.x = location.x + (flop * 30);
 	f->location.y = location.y;
-	f->motion.movement.x = (flop * 9);
+	f->motion.movement.x = (flop * 13);
 	f->facing = facing;
 
 	fireballs[nextf] = f;
