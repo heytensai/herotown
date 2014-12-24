@@ -21,6 +21,7 @@ private:
 	void move_hero(int i);
 	void init_hero();
 	void init_blocks();
+	void add_block(int x, int y);
 
 public:
 	JumpyGame(Video *video, Sound *sound);

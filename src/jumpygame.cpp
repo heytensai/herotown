@@ -13,15 +13,28 @@ JumpyGame::~JumpyGame()
 {
 }
 
+void JumpyGame::add_block(int x, int y)
+{
+	for (int i=0; i<BLOCKS; i++){
+		if (blocks[i] == NULL){
+			blocks[i] = new Block(video);
+			blocks[i]->location.x = x;
+			blocks[i]->location.y = y;
+			return;
+		}
+	}
+}
+
 void JumpyGame::init_blocks()
 {
 	for (int i=0; i<BLOCKS; i++){
 		blocks[i] = NULL;
 	}
 	for (int i=0; (i*32)<=video->width; i++){
-		blocks[i] = new Block(video);
-		blocks[i]->location.x = i * 32;
-		blocks[i]->location.y = 340;
+		add_block(i * 32, 340);
+	}
+	for (int i=0; i<12; i++){
+		add_block(200 + (32 * i), 200);
 	}
 }
 
