@@ -31,7 +31,7 @@ void JumpyGame::init_blocks()
 		blocks[i] = NULL;
 	}
 	for (int i=0; (i*32)<=video->width; i++){
-		add_block(i * 32, 340);
+		add_block(i * 32, 540);
 	}
 	for (int i=0; i<12; i++){
 		add_block(200 + (32 * i), 200);
@@ -284,12 +284,12 @@ void JumpyGame::move_hero(int i)
 
 		// apply gravity
 		hero[i]->location.y += gravity.speed;
+	}
 
-		// hard coded floor
-		if (hero[i]->location.y >= 300){
-			hero[i]->can_jump = true;
-			hero[i]->location.y = 300;
-		}
+	// FIXME hard coded floor
+	if (hero[i]->location.y >= 500){
+		hero[i]->can_jump = true;
+		hero[i]->location.y = 500;
 	}
 }
 
