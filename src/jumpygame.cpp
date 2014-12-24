@@ -268,7 +268,7 @@ void JumpyGame::move_hero(int i)
 
 	// apply velocity
 	hero[i]->location.y -= hero[i]->velocity.speed;
-	if (hero[i]->intersects(hero[other_hero], 1)){
+	if (hero[i]->intersects(hero[other_hero], 0, Sprite::DOWN)){
 		while (hero[i]->intersects(hero[other_hero], 0)){
 			hero[i]->location.y--;
 		}
