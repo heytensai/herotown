@@ -9,14 +9,76 @@ Hero::Hero(Video *video, int width, int height)
 	motion.movement.x = 0;
 	motion.movement.y = 0;
 	last_bomb_added = 0;
-	fireball = NULL;
+	last_fireball_tick = 0;
 	bomb = NULL;
+	for (int i=0; i<FIREBALLS; i++){
+		fireballs[i] = NULL;
+	}
 }
 
 void Hero::subtract_coins(int count)
 {
 	score -= count;
 	if (score < 0) score = 0;
+}
+
+void Hero::add_fireball(Video *video)
+{
+	Uint32 curtick = SDL_GetTicks();
+	if (curtick - last_fireball_tick < 300){
+		return;
+	}
+	int nextf = -1;
+	for (int i=0; i<FIREBALLS; i++){
+		if (fireballs[i] == NULL){
+			nextf = i;
+			break;
+		}
+	}
+	if (nextf == -1){
+		// too many fireballs
+		return;
+	}
+	last_fireball_tick = curtick;
+
+	Fireball *f = new Fireball(video);
+	int flop = (facing == Sprite::LEFT) ? -1 : 1;
+	f->location.x = location.x + (flop * 30);
+	f->location.y = location.y;
+	f->motion.movement.x = (flop * 9);
+	f->facing = facing;
+
+	fireballs[nextf] = f;
+}
+
+void Hero::render()
+{
+	Sprite::render();
+	render_fireballs();
+}
+
+void Hero::move_fireballs()
+{
+	for (int i=0; i<FIREBALLS; i++){
+		if (fireballs[i] != NULL){
+			if (fireballs[i]->location.x > WIDTH || fireballs[i]->location.x < 0){
+				delete fireballs[i];
+				fireballs[i] = NULL;
+			}
+			else{
+				fireballs[i]->location.x += fireballs[i]->motion.movement.x;
+			}
+		}
+	}
+}
+
+void Hero::render_fireballs()
+{
+	for (int i=0; i<FIREBALLS; i++){
+		if (fireballs[i] != NULL){
+			fireballs[i]->render();
+		}
+	}
 }
 
 Mario::Mario(Video *video)

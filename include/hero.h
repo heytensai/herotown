@@ -14,6 +14,15 @@
 class Hero : public Sprite
 {
 public:
+	static const int FIREBALLS = 5;
+
+protected:
+	Uint32 last_fireball_tick;
+	Fireball *fireballs[FIREBALLS];
+
+	void render_fireballs();
+
+public:
 	enum InputKey
 	{
 		LEFT = 0,
@@ -30,11 +39,13 @@ public:
 	int score;
 	Uint32 last_bomb_added;
 	bool can_jump;
-	Fireball *fireball;
 	Bomb *bomb;
 	
 	Hero(Video *video, int width, int height);
 	void subtract_coins(int count);
+	void add_fireball(Video *video);
+	void move_fireballs();
+	void render();
 
 };
 

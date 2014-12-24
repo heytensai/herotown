@@ -100,18 +100,7 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 		}
 	}
 	if (state[hero[heronum]->input_map[Hero::FIREBALL]]){
-		if (hero[heronum]->fireball == NULL){
-			Fireball *f = new Fireball(video);
-			hero[heronum]->fireball = f;
-			int flop = 1;
-			if (hero[heronum]->facing == Sprite::LEFT){
-				flop = -1;
-			}
-			f->location.x = hero[heronum]->location.x + (flop * 30);
-			f->location.y = hero[heronum]->location.y;
-			f->motion.movement.x = (flop * 8);
-			f->facing = hero[heronum]->facing;
-		}
+		hero[heronum]->add_fireball(video);
 	}
 }
 
@@ -180,13 +169,6 @@ void JumpyGame::render()
 	hero[0]->render();
 	hero[1]->render();
 
-	if (hero[0]->fireball){
-		hero[0]->fireball->render();
-	}
-	if (hero[1]->fireball){
-		hero[1]->fireball->render();
-	}
-
 	if (hero[0]->bomb){
 		hero[0]->bomb->render();
 	}
@@ -200,15 +182,7 @@ void JumpyGame::render()
 void JumpyGame::move_hero(int i)
 {
 	// move my fireball too
-	if (hero[i]->fireball){
-		if (hero[i]->fireball->location.x > WIDTH || hero[i]->fireball->location.x < 0){
-			delete hero[i]->fireball;
-			hero[i]->fireball = NULL;
-		}
-		else{
-			hero[i]->fireball->location.x += hero[i]->fireball->motion.movement.x;
-		}
-	}
+	hero[i]->move_fireballs();
 
 	// move my bomb too
 	if (hero[i]->bomb){
