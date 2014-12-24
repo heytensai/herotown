@@ -268,20 +268,28 @@ void JumpyGame::move_hero(int i)
 
 	// apply velocity
 	hero[i]->location.y -= hero[i]->velocity.speed;
-
-	// adjust velocity for gravity
-	hero[i]->velocity.speed -= gravity.speed;
-	if (hero[i]->velocity.speed < Hero::TERMINAL_VELOCITY){
-		hero[i]->velocity.speed = Hero::TERMINAL_VELOCITY;
-	}
-
-	// apply gravity
-	hero[i]->location.y += gravity.speed;
-
-	// hard coded floor
-	if (hero[i]->location.y >= 300){
+	if (hero[i]->intersects(hero[other_hero], 1)){
+		while (hero[i]->intersects(hero[other_hero], 0)){
+			hero[i]->location.y--;
+		}
+		hero[i]->velocity.speed = 0;
 		hero[i]->can_jump = true;
-		hero[i]->location.y = 300;
+	}
+	else{
+		// adjust velocity for gravity
+		hero[i]->velocity.speed -= gravity.speed;
+		if (hero[i]->velocity.speed < Hero::TERMINAL_VELOCITY){
+			hero[i]->velocity.speed = Hero::TERMINAL_VELOCITY;
+		}
+
+		// apply gravity
+		hero[i]->location.y += gravity.speed;
+
+		// hard coded floor
+		if (hero[i]->location.y >= 300){
+			hero[i]->can_jump = true;
+			hero[i]->location.y = 300;
+		}
 	}
 }
 
