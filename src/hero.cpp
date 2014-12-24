@@ -55,6 +55,9 @@ void Hero::render()
 {
 	Sprite::render();
 	render_fireballs();
+	if (bomb){
+		bomb->render();
+	}
 }
 
 void Hero::move_fireballs()

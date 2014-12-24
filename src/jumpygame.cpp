@@ -169,13 +169,6 @@ void JumpyGame::render()
 	hero[0]->render();
 	hero[1]->render();
 
-	if (hero[0]->bomb){
-		hero[0]->bomb->render();
-	}
-	if (hero[1]->bomb){
-		hero[1]->bomb->render();
-	}
-
 	video->finish_render();
 }
 
