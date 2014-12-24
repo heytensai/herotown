@@ -30,12 +30,15 @@ void JumpyGame::init_blocks()
 	for (int i=0; i<BLOCKS; i++){
 		blocks[i] = NULL;
 	}
+	//floor
 	for (int i=0; (i*32)<=video->width; i++){
 		add_block(i * 32, 540);
 	}
-	for (int i=0; i<12; i++){
-		add_block(200 + (32 * i), 200);
-	}
+
+	add_block(0, 400);
+	add_block(32, 400);
+	add_block(64, 400);
+	add_block(96, 400);
 }
 
 void JumpyGame::start()
@@ -236,6 +239,7 @@ void JumpyGame::move_hero(int i)
 		}
 	}
 
+	//moving left
 	if (hero[i]->motion.movement.x < 0){
 		hero[i]->set_animation(Animation::WALK_LEFT);
 		hero[i]->location.x += hero[i]->motion.movement.x;
@@ -249,6 +253,7 @@ void JumpyGame::move_hero(int i)
 			}
 		}
 	}
+	//moving right
 	else if (hero[i]->motion.movement.x > 0){
 		hero[i]->set_animation(Animation::WALK_RIGHT);
 		hero[i]->location.x += hero[i]->motion.movement.x;
@@ -262,12 +267,38 @@ void JumpyGame::move_hero(int i)
 			}
 		}
 	}
+	//going nowhere
 	else{
 		hero[i]->set_animation(Animation::NONE);
 	}
 
+	//going up
+	if (hero[i]->velocity.speed > 0){
+		for (int j=0; j<BLOCKS; j++){
+			if (blocks[j] != NULL){
+				while (hero[i]->intersects(blocks[j], hero[i]->velocity.speed, Sprite::UP)){
+					hero[i]->velocity.speed--;
+				}
+			}
+		}
+	}
+
 	// apply velocity
 	hero[i]->location.y -= hero[i]->velocity.speed;
+
+	// on a block?
+	for (int j=0; j<BLOCKS; j++){
+		if (blocks[j] != NULL){
+			if (hero[i]->intersects(blocks[j], 0, Sprite::DOWN)){
+				while (hero[i]->intersects(blocks[j], 0, Sprite::DOWN)){
+					hero[i]->location.y--;
+				}
+				hero[i]->velocity.speed = 0;
+				hero[i]->can_jump = true;
+			}
+		}
+	}
+
 	if (hero[i]->intersects(hero[other_hero], 0, Sprite::DOWN)){
 		while (hero[i]->intersects(hero[other_hero], 0)){
 			hero[i]->location.y--;
@@ -284,12 +315,6 @@ void JumpyGame::move_hero(int i)
 
 		// apply gravity
 		hero[i]->location.y += gravity.speed;
-	}
-
-	// FIXME hard coded floor
-	if (hero[i]->location.y >= 500){
-		hero[i]->can_jump = true;
-		hero[i]->location.y = 500;
 	}
 }
 
