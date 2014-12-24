@@ -19,6 +19,7 @@ private:
 	void process_hero_inputs(const Uint8 *state, int heronum);
 	void process_events();
 	void move_hero(int i);
+	void move_bomb(Bomb *bomb);
 	void init_hero();
 	void init_blocks();
 	void add_block(int x, int y);

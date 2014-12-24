@@ -225,6 +225,40 @@ void JumpyGame::render()
 	video->finish_render();
 }
 
+void JumpyGame::move_bomb(Bomb *bomb)
+{
+	if (bomb == NULL){
+		return;
+	}
+
+	bomb->location.x += bomb->motion.movement.x;
+
+	// on a block?
+	for (int j=0; j<BLOCKS; j++){
+		if (blocks[j] != NULL){
+			if (bomb->intersects(blocks[j], 1, Sprite::DOWN)){
+				while (bomb->intersects(blocks[j], 0, Sprite::DOWN)){
+					bomb->location.y--;
+				}
+				bomb->velocity.speed = 0;
+				return;
+			}
+		}
+	}
+
+	// apply velocity
+	bomb->location.y -= bomb->velocity.speed;
+
+	// adjust velocity for gravity
+	bomb->velocity.speed -= gravity.speed;
+	if (bomb->velocity.speed < Hero::TERMINAL_VELOCITY){
+		bomb->velocity.speed = Hero::TERMINAL_VELOCITY;
+	}
+
+	// apply gravity
+	bomb->location.y += gravity.speed;
+}
+
 void JumpyGame::move_hero(int i)
 {
 	int other_hero = 0;
@@ -237,29 +271,14 @@ void JumpyGame::move_hero(int i)
 
 	// move my bomb too
 	if (hero[i]->bomb){
-		if (hero[i]->bomb->location.x > WIDTH || hero[i]->bomb->location.x < 0){
+		// delete if off screen
+		if (hero[i]->bomb->location.x > WIDTH || hero[i]->bomb->location.x < 0 || hero[i]->bomb->location.y > video->height){
 			delete hero[i]->bomb;
 			hero[i]->bomb = NULL;
+			return;
 		}
 		else{
-			hero[i]->bomb->location.x += hero[i]->bomb->motion.movement.x;
-
-			// apply velocity
-			hero[i]->bomb->location.y -= hero[i]->bomb->velocity.speed;
-
-			// adjust velocity for gravity
-			hero[i]->bomb->velocity.speed -= gravity.speed;
-			if (hero[i]->bomb->velocity.speed < Hero::TERMINAL_VELOCITY){
-				hero[i]->bomb->velocity.speed = Hero::TERMINAL_VELOCITY;
-			}
-
-			// apply gravity
-			hero[i]->bomb->location.y += gravity.speed;
-
-			// hard coded floor
-			if (hero[i]->bomb->location.y >= 300){
-				hero[i]->bomb->location.y = 300;
-			}
+			move_bomb(hero[i]->bomb);
 		}
 	}
 
