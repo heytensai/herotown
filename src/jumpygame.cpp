@@ -133,9 +133,9 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 			if (hero[heronum]->facing == Sprite::LEFT){
 				flop = -1;
 			}
-			b->location.x = hero[heronum]->location.x + (flop * 30);
+			b->location.x = hero[heronum]->location.x + (flop * 50);
 			b->location.y = hero[heronum]->location.y;
-			b->motion.movement.x = (flop * 2);
+			b->motion.movement.x = (flop * 3);
 			b->facing = Sprite::NONE;
 		}
 	}
@@ -233,6 +233,20 @@ void JumpyGame::move_bomb(Bomb *bomb)
 
 	bomb->location.x += bomb->motion.movement.x;
 
+	// hit a player?
+	if (!bomb->exploding()){
+		if (bomb->intersects(hero[0], 0)){
+			bomb->explode();
+			hero[0]->health -= 10;
+		}
+		if (bomb->intersects(hero[1], 0)){
+			if (!bomb->exploding()){
+				bomb->explode();
+			}
+			hero[1]->health -= 10;
+		}
+	}
+
 	// on a block?
 	for (int j=0; j<BLOCKS; j++){
 		if (blocks[j] != NULL){
@@ -244,6 +258,11 @@ void JumpyGame::move_bomb(Bomb *bomb)
 				return;
 			}
 		}
+	}
+
+	// ignore gravity if we're exploding
+	if (bomb->exploding()){
+		return;
 	}
 
 	// apply velocity
@@ -278,12 +297,6 @@ void JumpyGame::move_hero(int i)
 		}
 		else{
 			move_bomb(hero[i]->bomb);
-
-			// hit a player?
-			if (!hero[i]->bomb->exploding() && hero[i]->bomb->intersects(hero[other_hero], 0)){
-				hero[i]->bomb->explode();
-				hero[other_hero]->health -= 10;
-			}
 
 			if (hero[i]->bomb->exploded()){
 				delete hero[i]->bomb;
