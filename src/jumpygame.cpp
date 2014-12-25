@@ -50,9 +50,11 @@ void JumpyGame::init_blocks()
 	add_block(middle + 32, 220);
 	add_block(middle + 64, 220);
 	add_block(middle + 96, 220);
+	add_block(middle + 128, 220);
 	add_block(middle - 32, 220);
 	add_block(middle - 64, 220);
 	add_block(middle - 96, 220);
+	add_block(middle - 128, 220);
 
 	add_block(16, 110);
 	add_block(48, 110);
@@ -420,8 +422,9 @@ void JumpyGame::init_hero()
 	hero[0]->location.y = 300;
 
 	hero[1] = new Mario(video);
-	hero[1]->location.x = 500;
+	hero[1]->location.x = video->width - 30;
 	hero[1]->location.y = 300;
+	hero[1]->facing = Sprite::LEFT;
 }
 
 void JumpyGame::main_loop()
