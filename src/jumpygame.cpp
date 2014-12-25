@@ -280,6 +280,11 @@ void JumpyGame::move_bomb(Bomb *bomb)
 
 void JumpyGame::move_fireballs(int heronum)
 {
+	int other_hero = 0;
+	if (heronum == 0){
+		other_hero = 1;
+	}
+
 	for (int i=0; i<Hero::FIREBALLS; i++){
 		if (hero[heronum]->fireballs[i] != NULL){
 			if (hero[heronum]->fireballs[i]->location.x > WIDTH || hero[heronum]->fireballs[i]->location.x < 0){
@@ -288,6 +293,12 @@ void JumpyGame::move_fireballs(int heronum)
 			}
 			else{
 				hero[heronum]->fireballs[i]->location.x += hero[heronum]->fireballs[i]->motion.movement.x;
+
+				if (hero[heronum]->fireballs[i]->intersects(hero[other_hero], 0)){
+					hero[other_hero]->health -= 5;
+					delete hero[heronum]->fireballs[i];
+					hero[heronum]->fireballs[i] = NULL;
+				}
 			}
 		}
 	}
