@@ -49,6 +49,11 @@ void Bomb::explode()
 	set_animation(Animation::BOOM);
 }
 
+bool Bomb::exploding()
+{
+	return explode_start;
+}
+
 bool Bomb::exploded()
 {
 	if (!explode_start) return false;

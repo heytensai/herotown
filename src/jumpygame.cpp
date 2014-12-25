@@ -275,11 +275,22 @@ void JumpyGame::move_hero(int i)
 		if (hero[i]->bomb->location.x > WIDTH || hero[i]->bomb->location.x < 0 || hero[i]->bomb->location.y > video->height){
 			delete hero[i]->bomb;
 			hero[i]->bomb = NULL;
-			return;
 		}
 		else{
 			move_bomb(hero[i]->bomb);
+
+			// hit a player?
+			if (!hero[i]->bomb->exploding() && hero[i]->bomb->intersects(hero[other_hero], 0)){
+				hero[i]->bomb->explode();
+				hero[other_hero]->health -= 10;
+			}
+
+			if (hero[i]->bomb->exploded()){
+				delete hero[i]->bomb;
+				hero[i]->bomb = NULL;
+			}
 		}
+
 	}
 
 	hero[i]->can_jump = false;

@@ -21,6 +21,7 @@ public:
 	bool ready_to_explode();
 	void explode();
 	bool exploded();
+	bool exploding();
 
 };
 
