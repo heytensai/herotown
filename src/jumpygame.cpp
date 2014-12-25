@@ -278,6 +278,21 @@ void JumpyGame::move_bomb(Bomb *bomb)
 	bomb->location.y += gravity.speed;
 }
 
+void JumpyGame::move_fireballs(int heronum)
+{
+	for (int i=0; i<Hero::FIREBALLS; i++){
+		if (hero[heronum]->fireballs[i] != NULL){
+			if (hero[heronum]->fireballs[i]->location.x > WIDTH || hero[heronum]->fireballs[i]->location.x < 0){
+				delete hero[heronum]->fireballs[i];
+				hero[heronum]->fireballs[i] = NULL;
+			}
+			else{
+				hero[heronum]->fireballs[i]->location.x += hero[heronum]->fireballs[i]->motion.movement.x;
+			}
+		}
+	}
+}
+
 void JumpyGame::move_hero(int i)
 {
 	int other_hero = 0;
@@ -286,7 +301,7 @@ void JumpyGame::move_hero(int i)
 	}
 
 	// move my fireball too
-	hero[i]->move_fireballs();
+	move_fireballs(i);
 
 	// move my bomb too
 	if (hero[i]->bomb){

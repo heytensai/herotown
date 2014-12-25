@@ -13,12 +13,8 @@
 
 class Hero : public Sprite
 {
-public:
-	static const int FIREBALLS = 5;
-
 protected:
 	Uint32 last_fireball_tick;
-	Fireball *fireballs[FIREBALLS];
 
 	void render_fireballs();
 
@@ -34,18 +30,19 @@ public:
 	};
 	static const int STEP = 5;
 	static const int TERMINAL_VELOCITY = -15;
+	static const int FIREBALLS = 5;
 	Uint32 input_map[5];
 	int action;
 	int score;
 	Uint32 last_bomb_added;
 	bool can_jump;
 	Bomb *bomb;
+	Fireball *fireballs[FIREBALLS];
 	int health;
 	
 	Hero(Video *video, int width, int height);
 	void subtract_coins(int count);
 	void add_fireball(Video *video);
-	void move_fireballs();
 	void render();
 
 };

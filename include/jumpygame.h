@@ -20,6 +20,7 @@ private:
 	void process_events();
 	void move_hero(int i);
 	void move_bomb(Bomb *bomb);
+	void move_fireballs(int heronum);
 	void init_hero();
 	void init_blocks();
 	void add_block(int x, int y);

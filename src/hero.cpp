@@ -61,21 +61,6 @@ void Hero::render()
 	}
 }
 
-void Hero::move_fireballs()
-{
-	for (int i=0; i<FIREBALLS; i++){
-		if (fireballs[i] != NULL){
-			if (fireballs[i]->location.x > WIDTH || fireballs[i]->location.x < 0){
-				delete fireballs[i];
-				fireballs[i] = NULL;
-			}
-			else{
-				fireballs[i]->location.x += fireballs[i]->motion.movement.x;
-			}
-		}
-	}
-}
-
 void Hero::render_fireballs()
 {
 	for (int i=0; i<FIREBALLS; i++){
