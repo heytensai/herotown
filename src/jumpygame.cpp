@@ -301,6 +301,17 @@ void JumpyGame::move_fireballs(int heronum)
 					delete hero[heronum]->fireballs[i];
 					hero[heronum]->fireballs[i] = NULL;
 				}
+				else{
+					for (int j=0; j<BLOCKS; j++){
+						if (blocks[j] != NULL){
+							if (hero[heronum]->fireballs[i]->intersects(blocks[j], 0)){
+								delete hero[heronum]->fireballs[i];
+								hero[heronum]->fireballs[i] = NULL;
+								break;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
