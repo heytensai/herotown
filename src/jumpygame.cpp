@@ -282,6 +282,8 @@ void JumpyGame::move_hero(int i)
 		}
 	}
 
+	hero[i]->can_jump = false;
+
 	//moving left
 	if (hero[i]->motion.movement.x < 0){
 		hero[i]->set_animation(Animation::WALK_LEFT);
