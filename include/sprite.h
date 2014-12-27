@@ -12,16 +12,19 @@ private:
 	Uint32 last_loaded_texture;
 
 public:
-	const static int NONE = 0x0000;
-	const static int WALK_LEFT = 0x0001;
-	const static int WALK_RIGHT = 0x0002;
-	const static int TICK = 0x0003;
-	const static int BOOM = 0x0004;
-	const static int SPIN = 0x0005;
-	const static int PAIN_LEFT = 0x0006;
-	const static int PAIN_RIGHT = 0x0007;
+	enum Name
+	{
+		NAME_NONE = 0,
+		NAME_WALK_LEFT,
+		NAME_WALK_RIGHT,
+		NAME_TICK,
+		NAME_BOOM,
+		NAME_SPIN,
+		NAME_PAIN_LEFT,
+		NAME_PAIN_RIGHT,
+	};
 	SDL_Texture **texture;
-	int name;
+	Name name;
 	Uint32 speed;
 	int width;
 	int height;
@@ -39,12 +42,12 @@ class Sprite
 public:
 	enum Direction
 	{
-		NONE = 0,
-		LEFT,
-		RIGHT,
-		UP,
-		DOWN,
-		MAX,
+		DIR_NONE = 0,
+		DIR_LEFT,
+		DIR_RIGHT,
+		DIR_UP,
+		DIR_DOWN,
+		DIR_MAX,
 	};
 
 private:
@@ -54,7 +57,7 @@ private:
 	int animation_count;
 	int active_animation;
 	Uint32 animation_frame;
-	SDL_Texture *texture[Sprite::MAX];
+	SDL_Texture *texture[Sprite::DIR_MAX];
 	bool use_animation_always;
 	Uint32 last_animation_tick;
 
@@ -71,8 +74,8 @@ public:
 	int width;
 	int height;
 	bool hidden;
-	int direction;
-	Uint32 facing;
+	Uint32 direction;
+	Direction facing;
 	static const int step = 4;
 	static const int edge_size = 00;
 
@@ -88,7 +91,7 @@ public:
 	bounding_box_t get_bounding_box(int buffer = 0);
 	void always_animate(bool b);
 	bool add_animation(Animation *animation);
-	bool set_animation(const int name);
+	bool set_animation(Animation::Name name);
 
 };
 

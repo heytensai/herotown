@@ -10,12 +10,12 @@ Bomb::Bomb(Video *video)
 	motion.active = 0;
 	motion.movement.x = 0;
 	motion.movement.y = 0;
-	facing = Sprite::NONE;
-	load_image(Sprite::NONE, "resources/bomb.png");
+	facing = Sprite::DIR_NONE;
+	load_image(Sprite::DIR_NONE, "resources/bomb.png");
 
 	if (animation_1.get_frames() != 2){
 		animation_1.set_frames(2);
-		animation_1.name = Animation::TICK;
+		animation_1.name = Animation::NAME_TICK;
 		animation_1.speed = 200;
 		animation_1.width = width;
 		animation_1.height = height;
@@ -23,11 +23,11 @@ Bomb::Bomb(Video *video)
 		animation_1.load_image(video, "resources/bomb1.png");
 	}
 	add_animation(&animation_1);
-	set_animation(Animation::TICK);
+	set_animation(Animation::NAME_TICK);
 
 	if (animation_2.get_frames() != 5){
 		animation_2.set_frames(5);
-		animation_2.name = Animation::BOOM;
+		animation_2.name = Animation::NAME_BOOM;
 		animation_2.speed = 20;
 		animation_2.width = 103;
 		animation_2.height = 101;
@@ -46,7 +46,7 @@ Bomb::Bomb(Video *video)
 void Bomb::explode()
 {
 	explode_start = SDL_GetTicks();
-	set_animation(Animation::BOOM);
+	set_animation(Animation::NAME_BOOM);
 }
 
 bool Bomb::exploding()

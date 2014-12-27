@@ -3,7 +3,7 @@
 Hero::Hero(Video *video, int width, int height)
 	: Sprite(video, width, height)
 {
-	direction = 0;
+	direction = Sprite::DIR_NONE;
 	score = 0;
 	health = 100;
 	motion.active = 0;
@@ -43,7 +43,7 @@ void Hero::add_fireball(Video *video)
 	last_fireball_tick = curtick;
 
 	Fireball *f = new Fireball(video);
-	int flop = (facing == Sprite::LEFT) ? -1 : 1;
+	int flop = (facing == Sprite::DIR_LEFT) ? -1 : 1;
 	f->location.x = location.x + (flop * 30);
 	f->location.y = location.y;
 	f->motion.movement.x = (flop * 13);
@@ -80,13 +80,13 @@ Mario::Mario(Video *video)
 	input_map[Hero::FIREBALL] = SDL_SCANCODE_KP_0;
 	input_map[Hero::BOMB] = SDL_SCANCODE_KP_PERIOD;
 
-	facing = Sprite::RIGHT;
-	load_image(Sprite::RIGHT, "resources/mario0.png");
-	load_image(Sprite::LEFT, "resources/mario-left0.png");
+	facing = Sprite::DIR_RIGHT;
+	load_image(Sprite::DIR_RIGHT, "resources/mario0.png");
+	load_image(Sprite::DIR_LEFT, "resources/mario-left0.png");
 
 	Animation *a = new Animation();
 	a->set_frames(8);
-	a->name = Animation::WALK_RIGHT;
+	a->name = Animation::NAME_WALK_RIGHT;
 	a->speed = 40;
 	a->width = width;
 	a->height = height;
@@ -103,7 +103,7 @@ Mario::Mario(Video *video)
 
 	a = new Animation();
 	a->set_frames(8);
-	a->name = Animation::WALK_LEFT;
+	a->name = Animation::NAME_WALK_LEFT;
 	a->speed = 40;
 	a->width = width;
 	a->height = height;
@@ -118,7 +118,7 @@ Mario::Mario(Video *video)
 	a->load_image(video, "resources/mario-left8.png");
 	add_animation(a);
 
-	set_animation(Animation::NONE);
+	set_animation(Animation::NAME_NONE);
 }
 
 Yoshi::Yoshi(Video *video)
@@ -131,14 +131,14 @@ Yoshi::Yoshi(Video *video)
 	input_map[Hero::FIREBALL] = SDL_SCANCODE_B;
 	input_map[Hero::BOMB] = SDL_SCANCODE_V;
 
-	facing = Sprite::RIGHT;
-	load_image(Sprite::RIGHT, "resources/yoshi0.png");
-	load_image(Sprite::LEFT, "resources/yoshi-left0.png");
+	facing = Sprite::DIR_RIGHT;
+	load_image(Sprite::DIR_RIGHT, "resources/yoshi0.png");
+	load_image(Sprite::DIR_LEFT, "resources/yoshi-left0.png");
 
 	Animation *a;
 	a = new Animation();
 	a->set_frames(8);
-	a->name = Animation::WALK_RIGHT;
+	a->name = Animation::NAME_WALK_RIGHT;
 	a->speed = 50;
 	a->width = width;
 	a->height = height;
@@ -155,7 +155,7 @@ Yoshi::Yoshi(Video *video)
 
 	a = new Animation();
 	a->set_frames(8);
-	a->name = Animation::WALK_LEFT;
+	a->name = Animation::NAME_WALK_LEFT;
 	a->speed = 50;
 	a->width = width;
 	a->height = height;
@@ -170,6 +170,6 @@ Yoshi::Yoshi(Video *video)
 	a->load_image(video, "resources/yoshi-left8.png");
 	add_animation(a);
 
-	set_animation(Animation::NONE);
+	set_animation(Animation::NAME_NONE);
 }
 

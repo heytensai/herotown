@@ -119,26 +119,26 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 	}
 	if (state[hero[heronum]->input_map[Hero::LEFT]]){
 		hero[heronum]->motion.movement.x = -Sprite::step * run;
-		hero[heronum]->direction = Sprite::LEFT;
-		hero[heronum]->facing = Sprite::LEFT;
+		hero[heronum]->direction = Sprite::DIR_LEFT;
+		hero[heronum]->facing = Sprite::DIR_LEFT;
 	}
 	if (state[hero[heronum]->input_map[Hero::RIGHT]]){
 		hero[heronum]->motion.movement.x = Sprite::step * run;
-		hero[heronum]->direction = Sprite::RIGHT;
-		hero[heronum]->facing = Sprite::RIGHT;
+		hero[heronum]->direction = Sprite::DIR_RIGHT;
+		hero[heronum]->facing = Sprite::DIR_RIGHT;
 	}
 	if (state[hero[heronum]->input_map[Hero::BOMB]]){
 		if (hero[heronum]->bomb == NULL){
 			Bomb *b = new Bomb(video);
 			hero[heronum]->bomb = b;
 			int flop = 1;
-			if (hero[heronum]->facing == Sprite::LEFT){
+			if (hero[heronum]->facing == Sprite::DIR_LEFT){
 				flop = -1;
 			}
 			b->location.x = hero[heronum]->location.x + (flop * 50);
 			b->location.y = hero[heronum]->location.y;
 			b->motion.movement.x = (flop * 3);
-			b->facing = Sprite::NONE;
+			b->facing = Sprite::DIR_NONE;
 		}
 	}
 	if (state[hero[heronum]->input_map[Hero::FIREBALL]]){
@@ -252,8 +252,8 @@ void JumpyGame::move_bomb(Bomb *bomb)
 	// on a block?
 	for (int j=0; j<BLOCKS; j++){
 		if (blocks[j] != NULL){
-			if (bomb->intersects(blocks[j], 1, Sprite::DOWN)){
-				while (bomb->intersects(blocks[j], 0, Sprite::DOWN)){
+			if (bomb->intersects(blocks[j], 1, Sprite::DIR_DOWN)){
+				while (bomb->intersects(blocks[j], 0, Sprite::DIR_DOWN)){
 					bomb->location.y--;
 				}
 				bomb->velocity.speed = 0;
@@ -349,7 +349,7 @@ void JumpyGame::move_hero(int i)
 
 	//moving left
 	if (hero[i]->motion.movement.x < 0){
-		hero[i]->set_animation(Animation::WALK_LEFT);
+		hero[i]->set_animation(Animation::NAME_WALK_LEFT);
 		hero[i]->location.x += hero[i]->motion.movement.x;
 		if (hero[i]->location.x < 0){
 			hero[i]->location.x = 0;
@@ -363,7 +363,7 @@ void JumpyGame::move_hero(int i)
 	}
 	//moving right
 	else if (hero[i]->motion.movement.x > 0){
-		hero[i]->set_animation(Animation::WALK_RIGHT);
+		hero[i]->set_animation(Animation::NAME_WALK_RIGHT);
 		hero[i]->location.x += hero[i]->motion.movement.x;
 		if (hero[i]->location.x > WIDTH){
 			hero[i]->location.x = WIDTH;
@@ -377,14 +377,14 @@ void JumpyGame::move_hero(int i)
 	}
 	//going nowhere
 	else{
-		hero[i]->set_animation(Animation::NONE);
+		hero[i]->set_animation(Animation::NAME_NONE);
 	}
 
 	//going up
 	if (hero[i]->velocity.speed > 0){
 		for (int j=0; j<BLOCKS; j++){
 			if (blocks[j] != NULL){
-				while (hero[i]->intersects(blocks[j], hero[i]->velocity.speed, Sprite::UP)){
+				while (hero[i]->intersects(blocks[j], hero[i]->velocity.speed, Sprite::DIR_UP)){
 					hero[i]->velocity.speed--;
 				}
 			}
@@ -397,8 +397,8 @@ void JumpyGame::move_hero(int i)
 	// on a block?
 	for (int j=0; j<BLOCKS; j++){
 		if (blocks[j] != NULL){
-			if (hero[i]->intersects(blocks[j], 0, Sprite::DOWN)){
-				while (hero[i]->intersects(blocks[j], 0, Sprite::DOWN)){
+			if (hero[i]->intersects(blocks[j], 0, Sprite::DIR_DOWN)){
+				while (hero[i]->intersects(blocks[j], 0, Sprite::DIR_DOWN)){
 					hero[i]->location.y--;
 				}
 				hero[i]->velocity.speed = 0;
@@ -407,7 +407,7 @@ void JumpyGame::move_hero(int i)
 		}
 	}
 
-	if (hero[i]->intersects(hero[other_hero], 0, Sprite::DOWN)){
+	if (hero[i]->intersects(hero[other_hero], 0, Sprite::DIR_DOWN)){
 		while (hero[i]->intersects(hero[other_hero], 0)){
 			hero[i]->location.y--;
 		}
@@ -435,7 +435,7 @@ void JumpyGame::init_hero()
 	hero[1] = new Mario(video);
 	hero[1]->location.x = video->width - 30;
 	hero[1]->location.y = 300;
-	hero[1]->facing = Sprite::LEFT;
+	hero[1]->facing = Sprite::DIR_LEFT;
 }
 
 void JumpyGame::main_loop()

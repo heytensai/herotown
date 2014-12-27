@@ -70,7 +70,7 @@ Sprite::Sprite(Video *video, int width, int height)
 	this->video = video;
 	this->width = width;
 	this->height = height;
-	for (int i=0; i<Sprite::MAX; i++){
+	for (int i=0; i<Sprite::DIR_MAX; i++){
 		texture[i] = NULL;
 	}
 	hidden = false;
@@ -78,13 +78,13 @@ Sprite::Sprite(Video *video, int width, int height)
 	animation_count = -1;
 	memset(animation, 0, sizeof(animation));
 	velocity.speed = 0;
-	direction = 0;
-	facing = 0;
+	direction = Sprite::DIR_NONE;
+	facing = Sprite::DIR_NONE;
 }
 
 Sprite::~Sprite()
 {
-	for (int i=0; i<Sprite::MAX; i++){
+	for (int i=0; i<Sprite::DIR_MAX; i++){
 		if (texture[i] != NULL){
 			SDL_DestroyTexture(texture[i]);
 			texture[i] = NULL;
@@ -102,9 +102,9 @@ bool Sprite::add_animation(Animation *animation)
 	return true;
 }
 
-bool Sprite::set_animation(const int name)
+bool Sprite::set_animation(Animation::Name name)
 {
-	if (name != Animation::NONE){
+	if (name != Animation::NAME_NONE){
 		for (int i=0; i<=animation_count; i++){
 			if (animation[i]->name == name){
 				active_animation = i;
@@ -139,7 +139,7 @@ bool Sprite::intersects(Sprite *other, int buffer, int direction)
 	bounding_box_t them = other->get_bounding_box();
 
 	switch (direction){
-		case Sprite::UP:
+		case Sprite::DIR_UP:
 		{
 			them.bottom_right.y += buffer;
 			if (me.bottom_right.x <= them.top_left.x) return false;
@@ -148,7 +148,7 @@ bool Sprite::intersects(Sprite *other, int buffer, int direction)
 			if (me.top_left.y > them.bottom_right.y) return false;
 			return true;
 		};
-		case Sprite::DOWN:
+		case Sprite::DIR_DOWN:
 		{
 			them.top_left.y -= buffer;
 			if (me.bottom_right.x <= them.top_left.x) return false;
@@ -157,7 +157,7 @@ bool Sprite::intersects(Sprite *other, int buffer, int direction)
 			if (me.bottom_right.y < them.top_left.y) return false;
 			return true;
 		};
-		case Sprite::LEFT:
+		case Sprite::DIR_LEFT:
 		{
 			them.bottom_right.x += buffer;
 			if (me.top_left.y >= them.bottom_right.y) return false;
@@ -166,7 +166,7 @@ bool Sprite::intersects(Sprite *other, int buffer, int direction)
 			if (me.bottom_right.x < them.bottom_right.x) return false;
 			return true;
 		};
-		case Sprite::RIGHT:
+		case Sprite::DIR_RIGHT:
 		{
 			them.top_left.x -= buffer;
 			if (me.top_left.y >= them.bottom_right.y) return false;
@@ -271,8 +271,8 @@ void Sprite::render_static()
 	if (texture[facing] != NULL){
 		t = texture[facing];
 	}
-	else if (texture[NONE] != NULL){
-		t = texture[NONE];
+	else if (texture[Sprite::DIR_NONE] != NULL){
+		t = texture[Sprite::DIR_NONE];
 	}
 	else{
 		return;
@@ -360,10 +360,10 @@ Animation Coin::animation_1;
 Coin::Coin(Video *video)
 	: Sprite(video, 30, 32)
 {
-	load_image(Sprite::NONE, "resources/coin0.png");
+	load_image(Sprite::DIR_NONE, "resources/coin0.png");
 	if (animation_1.texture == NULL){
 		animation_1.set_frames(4);
-		animation_1.name = Animation::SPIN;
+		animation_1.name = Animation::NAME_SPIN;
 		animation_1.speed = 200;
 		animation_1.width = width;
 		animation_1.height = height;
@@ -373,19 +373,19 @@ Coin::Coin(Video *video)
 		animation_1.load_image(video, "resources/coins3.png");
 	}
 	add_animation(&animation_1);
-	set_animation(Animation::SPIN);
+	set_animation(Animation::NAME_SPIN);
 	always_animate(true);
 }
 
 Block::Block(Video *video)
 	: Sprite(video, 32, 16)
 {
-	load_image(Sprite::NONE, "resources/block.png");
+	load_image(Sprite::DIR_NONE, "resources/block.png");
 }
 
 Fireball::Fireball(Video *video)
 	: Sprite(video, 32, 17)
 {
-	load_image(Sprite::RIGHT, "resources/fireball.png");
-	load_image(Sprite::LEFT, "resources/fireball-left.png");
+	load_image(Sprite::DIR_RIGHT, "resources/fireball.png");
+	load_image(Sprite::DIR_LEFT, "resources/fireball-left.png");
 }
