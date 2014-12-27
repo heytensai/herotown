@@ -446,6 +446,15 @@ void JumpyGame::main_loop()
 		process_events();
 		move_hero(0);
 		move_hero(1);
+
+		//TODO proper end game
+		if (hero[0]->health <= 0){
+			hero[0]->hidden = true;
+		}
+		if (hero[1]->health <= 0){
+			hero[1]->hidden = true;
+		}
+
 		render();
 	}
 }
