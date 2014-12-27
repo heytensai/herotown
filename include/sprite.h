@@ -18,6 +18,8 @@ public:
 	const static int TICK = 0x0003;
 	const static int BOOM = 0x0004;
 	const static int SPIN = 0x0005;
+	const static int PAIN_LEFT = 0x0006;
+	const static int PAIN_RIGHT = 0x0007;
 	SDL_Texture **texture;
 	int name;
 	Uint32 speed;
