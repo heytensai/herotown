@@ -27,11 +27,12 @@ public:
 		INPUT_SPEED,
 		INPUT_FIREBALL,
 		INPUT_BOMB,
+		INPUT_MAX,
 	};
 	static const int STEP = 5;
 	static const int TERMINAL_VELOCITY = -15;
 	static const int FIREBALLS = 5;
-	Uint32 input_map[5];
+	Uint32 input_map[INPUT_MAX];
 	int action;
 	int score;
 	Uint32 last_bomb_added;
