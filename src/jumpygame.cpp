@@ -105,11 +105,11 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 	hero[heronum]->motion.movement.x = 0;
 
 	int run = 1;
-	if (state[hero[heronum]->input_map[Hero::SPEED]]){
+	if (state[hero[heronum]->input_map[Hero::INPUT_SPEED]]){
 		run = 2;
 	}
 
-	if (state[hero[heronum]->input_map[Hero::JUMP]]){
+	if (state[hero[heronum]->input_map[Hero::INPUT_JUMP]]){
 		//somehow need to know if hero is on the ground
 		if (hero[heronum]->can_jump){
 			hero[heronum]->can_jump = false;
@@ -117,17 +117,17 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 			hero[heronum]->velocity.speed = 30;
 		}
 	}
-	if (state[hero[heronum]->input_map[Hero::LEFT]]){
+	if (state[hero[heronum]->input_map[Hero::INPUT_LEFT]]){
 		hero[heronum]->motion.movement.x = -Sprite::step * run;
 		hero[heronum]->direction = Sprite::DIR_LEFT;
 		hero[heronum]->facing = Sprite::DIR_LEFT;
 	}
-	if (state[hero[heronum]->input_map[Hero::RIGHT]]){
+	if (state[hero[heronum]->input_map[Hero::INPUT_RIGHT]]){
 		hero[heronum]->motion.movement.x = Sprite::step * run;
 		hero[heronum]->direction = Sprite::DIR_RIGHT;
 		hero[heronum]->facing = Sprite::DIR_RIGHT;
 	}
-	if (state[hero[heronum]->input_map[Hero::BOMB]]){
+	if (state[hero[heronum]->input_map[Hero::INPUT_BOMB]]){
 		if (hero[heronum]->bomb == NULL){
 			Bomb *b = new Bomb(video);
 			hero[heronum]->bomb = b;
@@ -141,7 +141,7 @@ void JumpyGame::process_hero_inputs(const Uint8 *state, int heronum)
 			b->facing = Sprite::DIR_NONE;
 		}
 	}
-	if (state[hero[heronum]->input_map[Hero::FIREBALL]]){
+	if (state[hero[heronum]->input_map[Hero::INPUT_FIREBALL]]){
 		hero[heronum]->add_fireball(video);
 	}
 }

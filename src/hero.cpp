@@ -73,12 +73,12 @@ void Hero::render_fireballs()
 Mario::Mario(Video *video)
 	: Hero(video, 48, 64)
 {
-	input_map[Hero::LEFT] = SDL_SCANCODE_LEFT;
-	input_map[Hero::RIGHT] = SDL_SCANCODE_RIGHT;
-	input_map[Hero::JUMP] = SDL_SCANCODE_KP_ENTER;
-	input_map[Hero::SPEED] = SDL_SCANCODE_RCTRL;
-	input_map[Hero::FIREBALL] = SDL_SCANCODE_KP_0;
-	input_map[Hero::BOMB] = SDL_SCANCODE_KP_PERIOD;
+	input_map[Hero::INPUT_LEFT] = SDL_SCANCODE_LEFT;
+	input_map[Hero::INPUT_RIGHT] = SDL_SCANCODE_RIGHT;
+	input_map[Hero::INPUT_JUMP] = SDL_SCANCODE_KP_ENTER;
+	input_map[Hero::INPUT_SPEED] = SDL_SCANCODE_RCTRL;
+	input_map[Hero::INPUT_FIREBALL] = SDL_SCANCODE_KP_0;
+	input_map[Hero::INPUT_BOMB] = SDL_SCANCODE_KP_PERIOD;
 
 	facing = Sprite::DIR_RIGHT;
 	load_image(Sprite::DIR_RIGHT, "resources/mario0.png");
@@ -124,12 +124,12 @@ Mario::Mario(Video *video)
 Yoshi::Yoshi(Video *video)
 	: Hero(video, 48, 64)
 {
-	input_map[Hero::LEFT] = SDL_SCANCODE_A;
-	input_map[Hero::RIGHT] = SDL_SCANCODE_D;
-	input_map[Hero::JUMP] = SDL_SCANCODE_SPACE;
-	input_map[Hero::SPEED] = SDL_SCANCODE_LSHIFT;
-	input_map[Hero::FIREBALL] = SDL_SCANCODE_B;
-	input_map[Hero::BOMB] = SDL_SCANCODE_V;
+	input_map[Hero::INPUT_LEFT] = SDL_SCANCODE_A;
+	input_map[Hero::INPUT_RIGHT] = SDL_SCANCODE_D;
+	input_map[Hero::INPUT_JUMP] = SDL_SCANCODE_SPACE;
+	input_map[Hero::INPUT_SPEED] = SDL_SCANCODE_LSHIFT;
+	input_map[Hero::INPUT_FIREBALL] = SDL_SCANCODE_B;
+	input_map[Hero::INPUT_BOMB] = SDL_SCANCODE_V;
 
 	facing = Sprite::DIR_RIGHT;
 	load_image(Sprite::DIR_RIGHT, "resources/yoshi0.png");

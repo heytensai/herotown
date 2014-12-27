@@ -21,12 +21,12 @@ protected:
 public:
 	enum InputKey
 	{
-		LEFT = 0,
-		RIGHT,
-		JUMP,
-		SPEED,
-		FIREBALL,
-		BOMB,
+		INPUT_LEFT = 0,
+		INPUT_RIGHT,
+		INPUT_JUMP,
+		INPUT_SPEED,
+		INPUT_FIREBALL,
+		INPUT_BOMB,
 	};
 	static const int STEP = 5;
 	static const int TERMINAL_VELOCITY = -15;
