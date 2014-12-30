@@ -1,13 +1,7 @@
-#include "bombycoinygame.h"
-#include "jumpygame.h"
+#include "explorygame.h"
 
 int main(int argc, char **argv)
 {
-	if (argc == 1){
-		printf("no game requested\n");
-		return 1;
-	}
-
 	Video video(WIDTH, HEIGHT);
 	video.init();
 	video.create_window();
@@ -16,13 +10,7 @@ int main(int argc, char **argv)
 	Sound sound;
 	sound.init();
 
-	Game *game;
-	if (strcmp("bombycoiny", argv[1]) == 0){
-		game = new BombyCoinyGame(&video, &sound);
-	}
-	else if (strcmp("jumpy", argv[1]) == 0){
-		game = new JumpyGame(&video, &sound);
-	}
+	Game *game = new ExploryGame(&video, &sound);
 
 	if (game == NULL){
 		printf("invalid game\n");

@@ -2,11 +2,11 @@
 #define GLOBALS_H
 
 #define APPNAME "herotown"
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 1024
+#define HEIGHT 576
 #define COLORDEPTH 32
 #define BPP (COLORDEPTH / 4)
-#define PI 3.1415f
+#define PI (3.1415f)
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"

@@ -1,5 +1,5 @@
-H=include/bombycoinygame.h include/video.h include/point.h include/sprite.h include/sound.h include/input.h include/hero.h include/bomb.h include/menu.h include/game.h include/jumpygame.h
-SRC=src/main.cpp src/sprite.cpp src/video.cpp src/sound.cpp src/bombycoinygame.cpp src/hero.cpp src/bomb.cpp src/menu.cpp src/game.cpp src/jumpygame.cpp
+H=include/explorygame.h include/video.h include/point.h include/sprite.h include/sound.h include/input.h include/hero.h include/bomb.h include/menu.h include/game.h include/tile.h
+SRC=src/main.cpp src/sprite.cpp src/video.cpp src/sound.cpp src/hero.cpp src/bomb.cpp src/menu.cpp src/game.cpp src/explorygame.cpp src/tile.cpp
 APP=herotown
 
 ${APP}: ${SRC} ${H}
